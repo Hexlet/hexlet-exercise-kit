@@ -1,0 +1,10 @@
+.vagrant
+*.swp
+*.swo
+exercises
+lessons
+hexlet
+hexlet-site
+.docker
+backends
+.DS_Store
