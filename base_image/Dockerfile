@@ -62,5 +62,6 @@ ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
 # ONBUILD ADD exercise /usr/src/app
 
 ENV PYTHONDONTWRITEBYTECODE true
+ENV NODE_PATH /usr/lib/node_modules
 
 ENV TERM xterm
