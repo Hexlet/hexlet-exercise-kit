@@ -3,7 +3,7 @@ Kit for Hexlet lesson creators
 
 ## 1. Get hexlet-exercise-kit
 
-    git clone git@github.com:Hexlet/hexlet-exercise-kit.git
+    git clone https://github.com/Hexlet/hexlet-exercise-kit.git
     cd hexlet-exercise-kit
 
 ## 2. Install boot2docker
