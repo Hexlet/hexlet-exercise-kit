@@ -51,6 +51,9 @@ RUN ln -s /opt/phantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin/phantomjs /usr/bin/
 
 RUN apt-install make vim
 
+RUN pip install ansible
+COPY ansible.cfg /etc/ansible/ansible.cfg
+
 VOLUME /tmp /var/tmp /usr/tmp
 
 COPY supervisord.conf /etc/supervisor/supervisord.conf

@@ -1,10 +1,6 @@
 .vagrant
 *.swp
 *.swo
-exercises
-lessons
-hexlet
-hexlet-site
+courses
 .docker
-backends
 .DS_Store
