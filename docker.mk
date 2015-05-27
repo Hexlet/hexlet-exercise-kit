@@ -48,4 +48,6 @@ else
 	docker exec $(CONTAINER_ID) make test -C /exercise_internal
 endif
 
+all: build start test
+
 .PHONY: test build bash run stop

@@ -49,9 +49,20 @@ ENV PHANTOMJS_VERSION 1.9.7
 RUN wget --no-check-certificate -q -O - https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 | tar xjC /opt
 RUN ln -s /opt/phantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin/phantomjs /usr/bin/phantomjs
 
-RUN apt-install make vim
+# RUN apt-install software-properties-common
 
-RUN pip install ansible
+RUN apt-install man make vim
+
+RUN apt-install python-paramiko python-yaml python-jinja2 python-httplib2 python-setuptools sshpass
+RUN apt-install build-essential cdbs debhelper dpkg-dev git-core reprepro python-support fakeroot asciidoc devscripts
+
+RUN git clone https://github.com/ansible/ansible.git --branch v1.9.1-1 \
+    && cd ansible \
+    && make deb \
+    && dpkg -i deb-build/unstable/ansible_1.9.1-0.git201504272113~unstable_all.deb \
+    && rm -rf ansible
+RUN apt-get -fy install
+
 COPY ansible.cfg /etc/ansible/ansible.cfg
 
 VOLUME /tmp /var/tmp /usr/tmp
