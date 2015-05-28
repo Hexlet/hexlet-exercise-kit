@@ -25,7 +25,7 @@ ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
 	@ echo "Please, run 'make build' before 'make start'" >&2; exit 1;
 else
 	docker run --read-only -d -t -v $(CURDIR)/exercise/:/usr/src/app -v $(CURDIR)/exercise_internal:/exercise_internal \
-		-p 8000:8000 -p 8080:8080 -u user --name $(CONTAINER_ID) $(IMAGE_ID)
+		-p 8000:8000 -p 8080:8080 --name $(CONTAINER_ID) $(IMAGE_ID)
 endif
 
 # stop:
