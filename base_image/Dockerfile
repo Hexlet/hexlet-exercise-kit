@@ -44,10 +44,14 @@ VOLUME /home/user/.npm
 RUN apt-install racket
 RUN raco pkg install --deps force --scope installation rackunit
 
-RUN apt-install bzip2
-ENV PHANTOMJS_VERSION 1.9.7
-RUN wget --no-check-certificate -q -O - https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 | tar xjC /opt
-RUN ln -s /opt/phantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin/phantomjs /usr/bin/phantomjs
+RUN apt-install bzip2 build-essential chrpath libssl-dev
+# libxft-dev libfreetype6 libfreetype6-dev libfontconfig1 libfontconfig1-dev
+
+ENV PHANTOM_JS phantomjs-1.9.8-linux-x86_64
+RUN wget https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOM_JS.tar.bz2 \
+    && tar xvjf $PHANTOM_JS.tar.bz2 \
+    && mv $PHANTOM_JS /usr/local/share \
+    && ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin
 
 # RUN apt-install software-properties-common
 
@@ -65,6 +69,7 @@ RUN npm install -g mocha nightmare chai
 
 VOLUME /tmp /var/tmp /usr/tmp
 
+COPY phantomjs-shims.js /phantomjs/shims.js
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 
 WORKDIR /usr/src/app
