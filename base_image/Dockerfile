@@ -53,17 +53,15 @@ RUN ln -s /opt/phantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin/phantomjs /usr/bin/
 
 RUN apt-install man make vim
 
-RUN apt-install python-paramiko python-yaml python-jinja2 python-httplib2 python-setuptools sshpass
-RUN apt-install build-essential cdbs debhelper dpkg-dev git-core reprepro python-support fakeroot asciidoc devscripts
+# RUN apt-install python-paramiko python-yaml python-jinja2 python-httplib2 python-setuptools sshpass
+# RUN apt-install build-essential cdbs debhelper dpkg-dev git-core reprepro python-support fakeroot asciidoc devscripts
 
-RUN git clone https://github.com/ansible/ansible.git --branch v1.9.1-1 \
-    && cd ansible \
-    && make deb \
-    && dpkg -i deb-build/unstable/ansible_1.9.1-0.git201504272113~unstable_all.deb \
-    && rm -rf ansible
-RUN apt-get -fy install
-
+RUN pip install ansible
 COPY ansible.cfg /etc/ansible/ansible.cfg
+
+# USER root
+# NOTE: https://github.com/progrium/dokku/issues/280#issuecomment-36219930
+RUN npm install -g mocha nightmare chai
 
 VOLUME /tmp /var/tmp /usr/tmp
 
