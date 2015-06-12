@@ -41,23 +41,24 @@ RUN wget https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOM_JS.tar.bz2 \
     && tar xvjf $PHANTOM_JS.tar.bz2 \
     && mv $PHANTOM_JS /usr/local/share \
     && ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin
-COPY phantomjs-shims.js /phantomjs/shims.js
 
 # # RUN apt-install python-paramiko python-yaml python-jinja2 python-httplib2 python-setuptools sshpass
 # # RUN apt-install cdbs debhelper dpkg-dev git-core reprepro python-support fakeroot asciidoc devscripts
 
 # RUN useradd -ms /bin/bash user
 
-RUN curl -sL https://deb.nodesource.com/setup | bash -
-RUN apt-install nodejs npm
-RUN ln -s /usr/bin/nodejs /usr/bin/node
-ENV NODE_PATH /usr/local/lib/node_modules
-
+RUN apt-install openssh-server curl
 RUN pip install paramiko PyYAML Jinja2 httplib2
-RUN apt-install openssh-server
+
 RUN apt-add-repository ppa:ansible/ansible
 RUN apt-install ansible
 COPY ansible.cfg /etc/ansible/ansible.cfg
+
+RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash -
+RUN apt-install nodejs
+# RUN ln -s /usr/bin/nodejs /usr/bin/node
+RUN npm install -g mocha nightmare chai babel-core
+ENV NODE_PATH /usr/lib/node_modules
 
 # RUN mkdir /home/user/.npm
 # RUN chown user:user /home/user/.npm
@@ -67,7 +68,6 @@ COPY ansible.cfg /etc/ansible/ansible.cfg
 # # libxft-dev libfreetype6 libfreetype6-dev libfontconfig1 libfontconfig1-dev
 
 # # NOTE: https://github.com/progrium/dokku/issues/280#issuecomment-36219930
-RUN npm install -g mocha nightmare chai
 
 VOLUME /tmp /var/tmp /usr/tmp
 
