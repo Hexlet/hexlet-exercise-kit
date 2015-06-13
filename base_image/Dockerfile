@@ -60,6 +60,11 @@ RUN apt-install nodejs
 RUN npm install -g mocha nightmare chai babel-core
 ENV NODE_PATH /usr/lib/node_modules
 
+ENV LANG C.UTF-8
+RUN add-apt-repository ppa:ondrej/php5-5.6
+RUN apt-install php5
+RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+RUN composer global require "phpunit/phpunit=4.7.*"
 # RUN mkdir /home/user/.npm
 # RUN chown user:user /home/user/.npm
 # VOLUME /home/user/.npm
