@@ -54,17 +54,15 @@ RUN apt-add-repository ppa:ansible/ansible
 RUN apt-install ansible
 COPY ansible.cfg /etc/ansible/ansible.cfg
 
-RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash -
+# RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash -
+RUN curl -sL https://deb.nodesource.com/setup | bash -
 RUN apt-install nodejs
 # RUN ln -s /usr/bin/nodejs /usr/bin/node
-RUN npm install -g mocha nightmare chai babel-core
 ENV NODE_PATH /usr/lib/node_modules
 
 ENV LANG C.UTF-8
 RUN add-apt-repository ppa:ondrej/php5-5.6
 RUN apt-install php5
-RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
-RUN composer global require "phpunit/phpunit=4.7.*"
 # RUN mkdir /home/user/.npm
 # RUN chown user:user /home/user/.npm
 # VOLUME /home/user/.npm
@@ -73,6 +71,10 @@ RUN composer global require "phpunit/phpunit=4.7.*"
 # # libxft-dev libfreetype6 libfreetype6-dev libfontconfig1 libfontconfig1-dev
 
 # # NOTE: https://github.com/progrium/dokku/issues/280#issuecomment-36219930
+RUN npm install -g mocha nightmare chai babel-core pty.js
+
+RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+RUN composer global require "phpunit/phpunit=4.7.*"
 
 VOLUME /tmp /var/tmp /usr/tmp
 
