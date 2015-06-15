@@ -60,7 +60,9 @@ RUN apt-install nodejs
 # RUN ln -s /usr/bin/nodejs /usr/bin/node
 ENV NODE_PATH /usr/lib/node_modules
 
-ENV LANG C.UTF-8
+RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+ENV LANG en_US.utf8
+
 RUN add-apt-repository ppa:ondrej/php5-5.6
 RUN apt-install php5
 # RUN mkdir /home/user/.npm
@@ -87,3 +89,4 @@ ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
 # ONBUILD ADD exercise /usr/src/app
 
 ENV PYTHONDONTWRITEBYTECODE true
+ENV HOME /root
