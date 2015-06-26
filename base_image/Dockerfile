@@ -42,6 +42,8 @@ RUN wget https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOM_JS.tar.bz2 \
     && mv $PHANTOM_JS /usr/local/share \
     && ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin
 
+COPY phantomjs-shims.js /phantomjs/shims.js
+
 # # RUN apt-install python-paramiko python-yaml python-jinja2 python-httplib2 python-setuptools sshpass
 # # RUN apt-install cdbs debhelper dpkg-dev git-core reprepro python-support fakeroot asciidoc devscripts
 
