@@ -22,7 +22,6 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
 RUN apt-install python-pip python-dev
 RUN apt-install ruby ruby-dev
-RUN apt-install erlang
 RUN apt-install scala
 RUN apt-install php5 php5-dev
 RUN apt-install golang
@@ -84,6 +83,10 @@ COPY supervisord.conf /etc/supervisor/supervisord.conf
 
 WORKDIR /usr/src/app
 CMD ["/usr/bin/supervisord", "-n"]
+
+RUN apt-install libwxbase2.8 libwxgtk2.8-dev libqt4-opengl-dev
+RUN wget -O erlang.deb http://packages.erlang-solutions.com/site/esl/esl-erlang/FLAVOUR_1_esl/esl-erlang_18.0-1~ubuntu~precise_amd64.deb \
+        && dpkg -i erlang.deb && rm -rf erlang.deb
 
 ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
 # ONBUILD ADD exercise /usr/src/app
