@@ -21,7 +21,6 @@ RUN apt-install oracle-java8-installer
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
 RUN apt-install python-pip python-dev
-RUN apt-install ruby ruby-dev
 RUN apt-install scala
 RUN apt-install php5 php5-dev
 RUN apt-install golang
@@ -53,8 +52,8 @@ RUN apt-add-repository ppa:ansible/ansible
 RUN apt-install ansible
 COPY ansible.cfg /etc/ansible/ansible.cfg
 
-# RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash -
-RUN curl -sL https://deb.nodesource.com/setup | bash -
+RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash -
+# RUN curl -sL https://deb.nodesource.com/setup | bash -
 RUN apt-install nodejs
 # RUN ln -s /usr/bin/nodejs /usr/bin/node
 ENV NODE_PATH /usr/lib/node_modules
@@ -87,6 +86,10 @@ CMD ["/usr/bin/supervisord", "-n"]
 RUN apt-install libwxbase2.8 libwxgtk2.8-dev libqt4-opengl-dev
 RUN wget -O erlang.deb http://packages.erlang-solutions.com/site/esl/esl-erlang/FLAVOUR_1_esl/esl-erlang_18.0-1~ubuntu~precise_amd64.deb \
         && dpkg -i erlang.deb && rm -rf erlang.deb
+
+RUN apt-add-repository ppa:brightbox/ruby-ng
+RUN apt-install ruby2.2 ruby2.2-dev
+RUN gem install minitest
 
 ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
 # ONBUILD ADD exercise /usr/src/app
