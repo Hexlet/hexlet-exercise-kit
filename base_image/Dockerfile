@@ -89,7 +89,7 @@ RUN wget -O erlang.deb http://packages.erlang-solutions.com/site/esl/esl-erlang/
 
 RUN apt-add-repository ppa:brightbox/ruby-ng
 RUN apt-install ruby2.2 ruby2.2-dev
-RUN gem install minitest
+RUN gem install minitest wrong
 
 ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
 # ONBUILD ADD exercise /usr/src/app
