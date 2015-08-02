@@ -63,6 +63,9 @@ ENV LANG en_US.utf8
 
 RUN add-apt-repository ppa:ondrej/php5-5.6
 RUN apt-install php5
+
+RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+RUN composer global require "phpunit/phpunit=4.7.*"
 # RUN mkdir /home/user/.npm
 # RUN chown user:user /home/user/.npm
 # VOLUME /home/user/.npm
@@ -71,17 +74,6 @@ RUN apt-install php5
 # # libxft-dev libfreetype6 libfreetype6-dev libfontconfig1 libfontconfig1-dev
 
 # # NOTE: https://github.com/progrium/dokku/issues/280#issuecomment-36219930
-RUN npm install -g mocha nightmare chai babel-core pty.js
-
-RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
-RUN composer global require "phpunit/phpunit=4.7.*"
-
-VOLUME /tmp /var/tmp /usr/tmp
-
-COPY supervisord.conf /etc/supervisor/supervisord.conf
-
-WORKDIR /usr/src/app
-CMD ["/usr/bin/supervisord", "-n"]
 
 RUN apt-install libwxbase2.8 libwxgtk2.8-dev libqt4-opengl-dev
 RUN wget -O erlang.deb http://packages.erlang-solutions.com/site/esl/esl-erlang/FLAVOUR_1_esl/esl-erlang_18.0-1~ubuntu~precise_amd64.deb \
@@ -90,6 +82,15 @@ RUN wget -O erlang.deb http://packages.erlang-solutions.com/site/esl/esl-erlang/
 RUN apt-add-repository ppa:brightbox/ruby-ng
 RUN apt-install ruby2.2 ruby2.2-dev
 RUN gem install minitest wrong
+
+RUN npm install -g mocha nightmare chai babel express morgan lodash
+
+VOLUME /tmp /var/tmp /usr/tmp
+
+COPY supervisord.conf /etc/supervisor/supervisord.conf
+
+WORKDIR /usr/src/app
+CMD ["/usr/bin/supervisord", "-n"]
 
 ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
 # ONBUILD ADD exercise /usr/src/app
