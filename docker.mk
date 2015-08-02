@@ -15,7 +15,7 @@ build: stop
 	docker build -t $(IMAGE_ID) .
 
 bash:
-	docker run -it --read-only -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) /bin/bash -l
+	docker run -it -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) /bin/bash -l
 
 attach:
 	docker exec -it $(CONTAINER_ID) /bin/bash -l
@@ -24,7 +24,7 @@ start: stop
 ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
 	@ echo "Please, run 'make build' before 'make start'" >&2; exit 1;
 else
-	docker run --read-only -d -t -v $(CURDIR)/exercise/:/usr/src/app -v $(CURDIR)/exercise_internal:/exercise_internal \
+	docker run -d -t -v $(CURDIR)/exercise/:/usr/src/app -v $(CURDIR)/exercise_internal:/exercise_internal \
 		-p 8000:8000 -p 8080:8080 --name $(CONTAINER_ID) $(IMAGE_ID)
 endif
 
@@ -50,4 +50,4 @@ endif
 
 all: build start test
 
-.PHONY: test build bash run stop
+.PHONY: test build bash run stop start
