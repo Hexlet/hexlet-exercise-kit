@@ -22,7 +22,7 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
 RUN apt-install python-pip python-dev
 RUN apt-install scala
-RUN apt-install php5 php5-dev
+RUN apt-install php5 php5-dev php5-xdebug
 RUN apt-install golang
 RUN apt-install ghc
 RUN apt-install perl
