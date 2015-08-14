@@ -20,6 +20,9 @@ bash:
 attach:
 	docker exec -it $(CONTAINER_ID) /bin/bash -l
 
+logs:
+	docker logs -f $(CONTAINER_ID)
+
 start: stop
 ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
 	@ echo "Please, run 'make build' before 'make start'" >&2; exit 1;
