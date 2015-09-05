@@ -22,7 +22,6 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
 RUN apt-install python-pip python-dev
 RUN apt-install scala
-RUN apt-install php5 php5-dev php5-xdebug
 RUN apt-install golang
 RUN apt-install ghc
 RUN apt-install perl
@@ -62,7 +61,7 @@ RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 ENV LANG en_US.utf8
 
 RUN add-apt-repository ppa:ondrej/php5-5.6
-RUN apt-install php5
+RUN apt-install php5 php5-dev php5-xdebug
 
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 RUN composer global require "phpunit/phpunit=4.7.*"
@@ -76,14 +75,14 @@ RUN composer global require "phpunit/phpunit=4.7.*"
 # # NOTE: https://github.com/progrium/dokku/issues/280#issuecomment-36219930
 
 RUN apt-install libwxbase2.8 libwxgtk2.8-dev libqt4-opengl-dev
-RUN wget -O erlang.deb http://packages.erlang-solutions.com/site/esl/esl-erlang/FLAVOUR_1_esl/esl-erlang_18.0-1~ubuntu~precise_amd64.deb \
-        && dpkg -i erlang.deb && rm -rf erlang.deb
 
 RUN apt-add-repository ppa:brightbox/ruby-ng
 RUN apt-install ruby2.2 ruby2.2-dev
 RUN gem install minitest wrong
 
 RUN npm install -g mocha nightmare chai babel express morgan lodash
+
+RUN wget -O erlang.deb http://packages.erlang-solutions.com/site/esl/esl-erlang/FLAVOUR_1_general/esl-erlang_18.0-1~ubuntu~precise_amd64.deb && dpkg -i erlang.deb && rm -rf erlang.deb
 
 VOLUME /tmp /var/tmp /usr/tmp
 
