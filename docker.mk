@@ -11,6 +11,13 @@ else
 	docker exec -it $(CONTAINER_ID) make test -C /usr/src/app
 endif
 
+prepare:
+ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
+	@ echo "Please, run 'make start' before 'make test'" >&2; exit 1;
+else
+	docker exec -it $(CONTAINER_ID) make prepare -C /usr/src/app
+endif
+
 build: stop
 	docker build -t $(IMAGE_ID) .
 
@@ -52,5 +59,8 @@ else
 endif
 
 all: build start test
+
+macos:
+	eval "$(docker-machine env default)"
 
 .PHONY: test build bash run stop start
