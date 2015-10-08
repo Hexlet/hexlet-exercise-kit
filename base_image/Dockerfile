@@ -80,7 +80,7 @@ RUN apt-add-repository ppa:brightbox/ruby-ng
 RUN apt-install ruby2.2 ruby2.2-dev
 RUN gem install minitest wrong
 
-RUN npm install -g mocha nightmare chai babel express morgan lodash
+RUN npm install -g mocha nightmare chai babel express morgan lodash && rm -rf /tmp/npm*
 
 RUN wget -O erlang.deb http://packages.erlang-solutions.com/site/esl/esl-erlang/FLAVOUR_1_general/esl-erlang_18.0-1~ubuntu~precise_amd64.deb && dpkg -i erlang.deb && rm -rf erlang.deb
 
