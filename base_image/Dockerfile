@@ -25,7 +25,6 @@ RUN apt-install scala
 RUN apt-install golang
 RUN apt-install ghc
 RUN apt-install perl
-# RUN apt-install clojure1.4
 RUN apt-install r-base
 
 RUN apt-install racket
@@ -39,11 +38,6 @@ RUN wget https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOM_JS.tar.bz2 \
     && mv $PHANTOM_JS /usr/local/share \
     && ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin
 
-# # RUN apt-install python-paramiko python-yaml python-jinja2 python-httplib2 python-setuptools sshpass
-# # RUN apt-install cdbs debhelper dpkg-dev git-core reprepro python-support fakeroot asciidoc devscripts
-
-# RUN useradd -ms /bin/bash user
-
 RUN apt-install openssh-server curl
 RUN pip install paramiko PyYAML Jinja2 httplib2
 
@@ -52,9 +46,7 @@ RUN apt-install ansible
 COPY ansible.cfg /etc/ansible/ansible.cfg
 
 RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash -
-# RUN curl -sL https://deb.nodesource.com/setup | bash -
 RUN apt-install nodejs
-# RUN ln -s /usr/bin/nodejs /usr/bin/node
 ENV NODE_PATH /usr/lib/node_modules
 
 RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
@@ -65,12 +57,6 @@ RUN apt-install php5 php5-dev php5-xdebug php5-readline
 
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 RUN composer global require "phpunit/phpunit=4.7.*"
-# RUN mkdir /home/user/.npm
-# RUN chown user:user /home/user/.npm
-# VOLUME /home/user/.npm
-
-# RUN apt-install bzip2 build-essential chrpath libssl-dev
-# # libxft-dev libfreetype6 libfreetype6-dev libfontconfig1 libfontconfig1-dev
 
 # # NOTE: https://github.com/progrium/dokku/issues/280#issuecomment-36219930
 
@@ -92,7 +78,6 @@ WORKDIR /usr/src/app
 CMD ["/usr/bin/supervisord", "-n"]
 
 ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
-# ONBUILD ADD exercise /usr/src/app
 
 ENV PYTHONDONTWRITEBYTECODE true
 ENV HOME /root
