@@ -13,7 +13,8 @@ RUN chmod +x /bin/apt-install
 
 RUN echo 'LC_ALL="en_US.UTF-8"' >> /etc/environment
 RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
-RUN apt-install man make vim supervisor wget curl
+RUN apt-install build-essential
+RUN apt-install man vim supervisor wget curl
 RUN apt-install software-properties-common
 
 COPY supervisord.conf /etc/supervisor/supervisord.conf
@@ -77,10 +78,6 @@ CMD ["/usr/bin/supervisord", "-n"]
 # # # NOTE: https://github.com/progrium/dokku/issues/280#issuecomment-36219930
 
 # RUN apt-install libwxbase2.8 libwxgtk2.8-dev libqt4-opengl-dev
-
-# RUN apt-add-repository ppa:brightbox/ruby-ng
-# RUN apt-install ruby2.2 ruby2.2-dev
-# RUN gem install minitest wrong
 
 # RUN npm install -g mocha nightmare chai babel express morgan lodash
 

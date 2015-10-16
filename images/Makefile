@@ -1,12 +1,12 @@
 # I :=
 
 build:
-	docker build -t hexlet/hexlet-$(I) $(I)
+	docker build -t hexlet/hexlet-$(L) $(L)
 
 run:
-	docker run -it --read-only hexlet/hexlet-$(I) /bin/bash
+	docker run -it --read-only hexlet/hexlet-$(L) /bin/bash
 
 push:
-	docker push hexlet/hexlet-$(I)
+	docker push hexlet/hexlet-$(L)
 
 .PHONY: build run
