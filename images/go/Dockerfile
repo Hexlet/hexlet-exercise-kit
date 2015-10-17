@@ -1,5 +1,5 @@
 FROM hexlet/hexlet-base
 
-RUN apt-get install golang
+RUN apt-install golang
 
 
