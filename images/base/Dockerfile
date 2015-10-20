@@ -16,6 +16,7 @@ RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 RUN apt-install build-essential
 RUN apt-install man vim supervisor wget curl
 RUN apt-install software-properties-common
+RUN apt-install git
 
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 
