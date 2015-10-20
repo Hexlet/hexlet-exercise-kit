@@ -42,7 +42,7 @@ endif
 # 	@ docker stop $(CS) > /dev/null 2>&1; echo ""
 
 stop:
-	@ docker rm -f $(CS) > /dev/null 2>&1; echo ""
+	@ docker rm -v -f $(CS) > /dev/null 2>&1; echo ""
 
 # start_internal: stop
 # ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
