@@ -6,3 +6,5 @@ RUN dpkg -i erlang.deb #&& rm -rf erlang.deb
 RUN curl -k -o /usr/local/bin/rebar3 https://s3.amazonaws.com/rebar3/rebar3 && chmod +x /usr/local/bin/rebar3
 COPY rebar.config rebar.config
 RUN rebar3 compile
+
+ENV ERL_LIBS /usr/share/erlang

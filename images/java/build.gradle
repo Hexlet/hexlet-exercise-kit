@@ -10,6 +10,6 @@ dependencies {
 }
 
 task copyToLib(type: Copy) {
-    into "/root/java"
+    into "/usr/share/java"
     from configurations.runtime
 }
