@@ -29,3 +29,5 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
 # ENV NODE_PATH /usr/lib/node_modules
 
 RUN npm install -g mocha nightmare chai babel express morgan lodash && rm -rf /tmp/*
+
+ENV NODE_PATH /usr/local/lib/node_modules
