@@ -22,12 +22,7 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
   && grep " node-v$NODE_VERSION-linux-x64.tar.gz\$" SHASUMS256.txt.asc | sha256sum -c - \
   && tar -xzf "node-v$NODE_VERSION-linux-x64.tar.gz" -C /usr/local --strip-components=1 \
   && rm "node-v$NODE_VERSION-linux-x64.tar.gz" SHASUMS256.txt.asc
-# RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash -
-# # RUN curl -sL https://deb.nodesource.com/setup | bash -
-# RUN apt-install nodejs
-# # RUN ln -s /usr/bin/nodejs /usr/bin/node
-# ENV NODE_PATH /usr/lib/node_modules
 
 RUN npm install -g mocha nightmare chai babel express morgan lodash && rm -rf /tmp/*
 
-ENV NODE_PATH /usr/local/lib/node_modules
+ENV NODE_PATH /usr/local/lib/node_modules:$NODE_PATH
