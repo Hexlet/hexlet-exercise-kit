@@ -1,0 +1,6 @@
+.vagrant
+*.swp
+*.swo
+courses
+.docker
+.DS_Store
