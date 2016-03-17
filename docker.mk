@@ -22,10 +22,10 @@ build: stop
 	docker build -t $(IMAGE_ID) .
 
 bash:
-	docker run -it -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) /bin/bash -l
+	docker run -it -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) /bin/bash -c 'sudo -E PATH=$$PATH -u nobody /bin/bash --norc'
 
 attach:
-	docker exec -it $(CONTAINER_ID) /bin/bash -l
+	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo -E PATH=$$PATH -u nobody /bin/bash --norc'
 
 logs:
 	docker logs -f $(CONTAINER_ID)
