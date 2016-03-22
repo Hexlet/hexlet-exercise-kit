@@ -1,3 +1,4 @@
+HOME := '/tmp'
 ID := $(shell basename $(CURDIR))
 CONTAINER_ID := $(addsuffix _container, $(ID))
 CONTAINER_ID_INTERNAL := $(addsuffix _container_internal, $(ID))
@@ -8,7 +9,7 @@ test:
 ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
 	@ echo "Please, run 'make start' before 'make test'" >&2; exit 1;
 else
-	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo -E PATH=$$PATH -u nobody make test -C /usr/src/app'
+	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u nobody make test -C /usr/src/app'
 endif
 
 prepare:
