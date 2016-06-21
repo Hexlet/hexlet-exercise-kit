@@ -26,7 +26,7 @@ bash:
 	docker run -it -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) /bin/bash -c 'sudo -E PATH=$$PATH -u nobody /bin/bash --norc'
 
 attach:
-	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo -E PATH=$$PATH -u nobody /bin/bash --norc'
+	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u nobody /bin/bash --norc'
 
 logs:
 	docker logs -f $(CONTAINER_ID)
