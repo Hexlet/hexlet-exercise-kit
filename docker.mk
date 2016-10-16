@@ -20,6 +20,7 @@ else
 endif
 
 build: stop
+	touch $(CURDIR)/.bash_history
 	docker build -t $(IMAGE_ID) .
 
 bash:
@@ -36,6 +37,7 @@ ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
 	@ echo "Please, run 'make build' before 'make start'" >&2; exit 1;
 else
 	docker run -d -t \
+		-v $(CURDIR)/.bash_history:$(HOME)/.bash_history \
 		-v $(CURDIR)/services.conf:/etc/supervisor/conf.d/services.conf \
 		-v $(CURDIR)/exercise/:/usr/src/app \
 		-v $(CURDIR)/exercise_internal:/exercise_internal \
