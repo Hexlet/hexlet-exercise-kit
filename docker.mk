@@ -1,4 +1,4 @@
-HOME := '/tmp'
+HOME := /tmp
 ID := $(shell basename $(CURDIR))
 CONTAINER_ID := $(addsuffix _container, $(ID))
 CONTAINER_ID_INTERNAL := $(addsuffix _container_internal, $(ID))
@@ -66,8 +66,5 @@ else
 endif
 
 all: build start test
-
-macos:
-	eval "$(docker-machine env default)"
 
 .PHONY: test build bash run stop start
