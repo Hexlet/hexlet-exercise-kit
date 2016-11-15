@@ -50,6 +50,9 @@ endif
 stop:
 	@ docker rm -v -f $(CS) > /dev/null 2>&1; echo ""
 
+diff:
+	@ docker diff $(CS)
+
 # start_internal: stop
 # ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
 # 	@ echo "Please, run 'make build'" >&2; exit 1;
