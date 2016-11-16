@@ -1,4 +1,4 @@
-HOME := /tmp
+HOME := /nonexistent
 ID := $(shell basename $(CURDIR))
 CONTAINER_ID := $(addsuffix _container, $(ID))
 CONTAINER_ID_INTERNAL := $(addsuffix _container_internal, $(ID))
@@ -38,7 +38,6 @@ ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
 else
 	docker run -d -t --read-only \
 		-v /var/tmp \
-		-v $(CURDIR)/.bash_history:$(HOME)/.bash_history \
 		-v $(CURDIR)/services.conf:/etc/supervisor/conf.d/services.conf \
 		-v $(CURDIR)/exercise/:/usr/src/app \
 		-v $(CURDIR)/exercise_internal:/exercise_internal \
