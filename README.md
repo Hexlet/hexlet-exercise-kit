@@ -10,7 +10,9 @@ This is a complete kit for teachers who want to create exercises on the Hexlet p
 ### 2. Create Folders
 
     cd hexlet-exercise-kit
-    mkdir courses
-    mkdir courses/course-<name>
-    mkdir courses/course-<name>/<lesson-name>_exercise
+
+    mkdir exercises
+
+    mkdir exercises/course-<name>/<lesson-name>_exercise
+    mkdir exercises/challenge-<name>/<lesson-name>_challenge
 
