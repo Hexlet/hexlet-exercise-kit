@@ -40,7 +40,7 @@ else
 		-v $(CURDIR)/services.conf:/etc/supervisor/conf.d/services.conf \
 		-v $(CURDIR)/exercise/:/usr/src/app \
 		-v $(CURDIR)/exercise_internal:/exercise_internal \
-		-p 8000:8000 -p 8080:8080 --name $(CONTAINER_ID) $(IMAGE_ID)
+		-p 8000:8000 -p 80:8080 --name $(CONTAINER_ID) $(IMAGE_ID)
 endif
 
 # stop:
