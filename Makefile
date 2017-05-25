@@ -9,4 +9,5 @@ pull:
 
 javascript-setup:
 	sudo npm install -g hexlet-pairs hexlet-pairs-data hexlet-points
+	sudo npm install -g hexlet-html-tags hexlet-http-request
 	sudo npm install -g import-documentation
