@@ -13,6 +13,6 @@ This is a complete kit for teachers who want to create exercises on the Hexlet p
 
     mkdir exercises
 
-    mkdir exercises/course-<name>/<lesson-name>_exercise
-    mkdir exercises/challenge-<name>/<lesson-name>_challenge
+    mkdir -p exercises/course-<name>/<lesson-name>_exercise
+    mkdir -p exercises/challenge-<name>/<lesson-name>_challenge
 
