@@ -1,3 +1,4 @@
+USER := nobody
 HOME := /nonexistent
 ID := $(shell basename $(CURDIR))
 CONTAINER_ID := $(addsuffix _container, $(ID))
@@ -9,7 +10,7 @@ test:
 ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
 	@ echo "Please, run 'make start' before 'make test'" >&2; exit 1;
 else
-	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u nobody make test -C /usr/src/app'
+	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u $(USER) make test -C /usr/src/app'
 endif
 
 prepare:
@@ -23,10 +24,10 @@ build: stop
 	docker build -t $(IMAGE_ID) .
 
 bash:
-	docker run --read-only -it -v /var/tmp -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u nobody /bin/bash --norc'
+	docker run --read-only -it -v /var/tmp -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u $(USER) /bin/bash --norc'
 
 attach:
-	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u nobody /bin/bash --norc'
+	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u $(USER) /bin/bash --norc'
 
 logs:
 	docker logs -f $(CONTAINER_ID)
