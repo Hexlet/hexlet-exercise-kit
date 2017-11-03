@@ -5,6 +5,10 @@ CONTAINER_ID := $(addsuffix _container, $(ID))
 CONTAINER_ID_INTERNAL := $(addsuffix _container_internal, $(ID))
 IMAGE_ID := $(addsuffix _image, $(ID))
 CS = $(shell docker ps -a -q)
+ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+
+docs:
+	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u $(USER) rm -rf docs && mkdir -p docs && /import-documentation/dist/bin/import-documentation.js . -o docs'
 
 test:
 ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
@@ -37,6 +41,7 @@ ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
 	@ echo "Please, run 'make build' before 'make start'" >&2; exit 1;
 else
 	docker run -d -t --read-only \
+		-v $(ROOT_DIR)import-documentation:/import-documentation \
 		-v /var/tmp \
 		-v $(CURDIR)/services.conf:/etc/supervisor/conf.d/services.conf \
 		-v $(CURDIR)/exercise/:/usr/src/app \

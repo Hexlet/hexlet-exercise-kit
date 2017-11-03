@@ -5,3 +5,4 @@ courses
 exercises
 .docker
 .DS_Store
+.tern-port
