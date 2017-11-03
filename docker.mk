@@ -7,7 +7,7 @@ IMAGE_ID := $(addsuffix _image, $(ID))
 CS = $(shell docker ps -a -q)
 ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-docs:
+docs-js:
 	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u $(USER) rm -rf docs && mkdir -p docs && /import-documentation/dist/bin/import-documentation.js . -o docs'
 
 test:
