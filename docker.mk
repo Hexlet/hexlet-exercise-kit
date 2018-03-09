@@ -69,7 +69,8 @@ test_internal:
 ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
 	@ echo "Please, run 'make start_internal'" >&2; exit 1;
 else
-	docker exec $(CONTAINER_ID) make test -C /exercise_internal
+	# docker exec $(CONTAINER_ID) make test -C /exercise_internal
+	docker exec $(CONTAINER_ID) /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u $(USER) make test -C /exercise_internal'
 endif
 
 all: build start test
