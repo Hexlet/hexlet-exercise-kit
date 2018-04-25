@@ -42,7 +42,7 @@ ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
 else
 	docker run -d -t --read-only \
 		-v $(ROOT_DIR)import-documentation:/import-documentation \
-		-v /var/tmp \
+		-v /tmp \
 		-v $(CURDIR)/services.conf:/etc/supervisor/conf.d/services.conf \
 		-v $(CURDIR)/exercise/:/usr/src/app \
 		-v $(CURDIR)/exercise_internal:/exercise_internal \
