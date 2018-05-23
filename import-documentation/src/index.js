@@ -4,15 +4,13 @@ import 'babel-polyfill';
 import debug from 'debug';
 
 import path from 'path';
-import fs from 'fs';
-// import { getInstalledPath } from 'get-installed-path'; FIXME: use after they will support yarn
+import { promises as fs } from 'fs';
+import { getInstalledPath } from 'get-installed-path';
 import { parse } from 'babylon';
 import documentation from 'documentation';
 import { flatten } from 'lodash';
 
 const log = debug('import-documentation');
-const prefix = '/usr/local/share/.config/yarn/global/node_modules';
-const getInstalledPath = name => path.join(prefix, name);
 
 const getLocalName = (specifier) => {
   const map = {
@@ -23,8 +21,9 @@ const getLocalName = (specifier) => {
   return map[specifier.type](specifier);
 };
 
-export const generate = (files: Array<string>) => {
-  const contents = files.map(file => fs.readFileSync(file, 'utf8'));
+export const generate = async (files: Array<string>) => {
+  const contentPromises = files.map(async file => await fs.readFile(file, 'utf8'));
+  const contents = await Promise.all(contentPromises);
   const sources = contents.map(content => parse(content, { sourceType: 'module' }));
   const imports = sources.reduce((acc, source) => {
     const programImports = source.program.body
@@ -64,25 +63,29 @@ export const generate = (files: Array<string>) => {
   return Promise.all(promises);
 };
 
-export const write = (dir, docs) => {
+export const write = (dir: string, docs) => {
   const promises = docs.map(async ({ packageName, packageDocs }) => {
     const md = await documentation.formats.md(packageDocs, {});
     const file = path.resolve(dir, `${packageName}.md`);
-    fs.writeFileSync(file, md);
+    await fs.writeFile(file, md);
   });
   return Promise.all(promises);
 };
 
-const getJsFiles = dir => fs.readdirSync(dir)
-  .filter(file => file.endsWith('js'))
-  .map(file => path.resolve(dir, file));
+const getJsFiles = async (dir) => {
+  const files = await fs.readdir(dir);
+  return files.filter(file => file.endsWith('js'))
+    .map(file => path.resolve(dir, file));
+}
 
 export default async (outDir: string, items: Array<string>) => {
-  const files = flatten(items.map((item) => {
+  const promises = items.map(async (item) => {
     const fullPath = path.resolve(process.cwd(), item);
-    const isDir = fs.lstatSync(fullPath).isDirectory();
-    return isDir ? getJsFiles(item) : item;
-  }));
+    const stats = await fs.lstat(fullPath);
+    return stats.isDirectory() ? getJsFiles(item) : item;
+  });
+  const nestedFiles = await Promise.all(promises);
+  const files = flatten(nestedFiles);
   const pathnames = files.map(file => path.resolve(process.cwd(), file));
   log('files', pathnames);
   const packagesDocs = await generate(pathnames);
