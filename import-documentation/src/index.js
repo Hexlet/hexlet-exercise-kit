@@ -1,12 +1,13 @@
 // @flow
 
-import 'babel-polyfill';
+import '@babel/polyfill';
 import debug from 'debug';
 
 import path from 'path';
 import { promises as fs } from 'fs';
 import { getInstalledPath } from 'get-installed-path';
-import { parse } from 'babylon';
+import { parse } from '@babel/parser';
+# FIXME: waiting for https://github.com/documentationjs/documentation/pull/1036
 import documentation from 'documentation';
 import { flatten } from 'lodash';
 
@@ -22,7 +23,7 @@ const getLocalName = (specifier) => {
 };
 
 export const generate = async (files: Array<string>) => {
-  const contentPromises = files.map(async file => await fs.readFile(file, 'utf8'));
+  const contentPromises = files.map(file => fs.readFile(file, 'utf8'));
   const contents = await Promise.all(contentPromises);
   const sources = contents.map(content => parse(content, { sourceType: 'module' }));
   const imports = sources.reduce((acc, source) => {
@@ -76,7 +77,7 @@ const getJsFiles = async (dir) => {
   const files = await fs.readdir(dir);
   return files.filter(file => file.endsWith('js'))
     .map(file => path.resolve(dir, file));
-}
+};
 
 export default async (outDir: string, items: Array<string>) => {
   const promises = items.map(async (item) => {

@@ -7,7 +7,7 @@ import importDoc from '../src';
 
 test('test 1', async () => {
   const out = fs.mkdtempSync(path.join(os.tmpdir(), 'importer-'));
-  const files = [`${__dirname}/fixtures/example.js`];
+  const files = [`${__dirname}/__fixtures__/example.js`];
   await importDoc(out, files);
   const result = path.resolve(out, 'hexlet-pairs.md');
   expect(fs.lstatSync(result).isFile()).toBe(true);
@@ -17,7 +17,7 @@ test('test 1', async () => {
 
 test('test 2', async () => {
   const out = fs.mkdtempSync(path.join(os.tmpdir(), 'importer-'));
-  const dir = [`${__dirname}/fixtures`];
+  const dir = [`${__dirname}/__fixtures__`];
   await importDoc(out, dir);
   const result = path.resolve(out, 'hexlet-pairs.md');
   expect(fs.lstatSync(result).isFile()).toBe(true);
