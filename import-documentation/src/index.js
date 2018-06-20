@@ -7,7 +7,7 @@ import path from 'path';
 import { promises as fs } from 'fs';
 import { getInstalledPath } from 'get-installed-path';
 import { parse } from '@babel/parser';
-# FIXME: waiting for https://github.com/documentationjs/documentation/pull/1036
+// FIXME: waiting for https://github.com/documentationjs/documentation/pull/1036
 import documentation from 'documentation';
 import { flatten } from 'lodash';
 
