@@ -2,7 +2,7 @@ all: install build
 
 install:
 	npm install
-	npm run flow-typed install
+	npx flow-typed install
 
 build:
 	rm -rf dist
@@ -12,7 +12,7 @@ test:
 	npm test
 
 lint:
-	npm run eslint .
+	npx eslint .
 
 publish:
 	npm publish
