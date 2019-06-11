@@ -66,7 +66,7 @@ export const generate = async (files: Array<string>) => {
 export const write = (dir: string, docs) => {
   const promises = docs.map(async ({ packageName, packageDocs }) => {
     const md = await documentation.formats.md(packageDocs, {});
-    const fileName = packageName.replace(/^@hexlet\//, 'hexlet-');
+    const fileName = packageName.replace(/\//, '-');
     const file = path.resolve(dir, `${fileName}.md`);
     await fs.writeFile(file, md);
   });
