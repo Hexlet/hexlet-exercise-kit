@@ -1,6 +1,6 @@
 {
   "name": "import-documentation",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "",
   "bin": "dist/bin/import-documentation.js",
   "main": "dist/index.js",
@@ -49,6 +49,7 @@
     "flow-typed": "^2.5.1",
     "hexlet-co": "^0.1.7",
     "hexlet-pairs": "^1.0.8",
+    "@hexlet/tagged-types": "*",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0"
   },
