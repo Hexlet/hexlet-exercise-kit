@@ -28,7 +28,7 @@ export const generate = async (files: Array<string>) => {
   const imports = sources.reduce((acc, source) => {
     const programImports = source.program.body
       .filter(item => item.type === 'ImportDeclaration')
-      .filter(item => item.source.value.startsWith('hexlet'));
+      .filter(item => item.source.value.includes('hexlet'));
     return [...acc, ...programImports];
   }, []);
 
@@ -66,7 +66,8 @@ export const generate = async (files: Array<string>) => {
 export const write = (dir: string, docs) => {
   const promises = docs.map(async ({ packageName, packageDocs }) => {
     const md = await documentation.formats.md(packageDocs, {});
-    const file = path.resolve(dir, `${packageName}.md`);
+    const fileName = packageName.replace(/\//, '-');
+    const file = path.resolve(dir, `${fileName}.md`);
     await fs.writeFile(file, md);
   });
   return Promise.all(promises);

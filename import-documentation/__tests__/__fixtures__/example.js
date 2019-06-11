@@ -7,3 +7,4 @@ import co from 'hexlet-co';
 import axios, { get } from 'axios';
 import { get as toStr, post } from 'http';
 import * as pairs from 'hexlet-pairs';
+import { attach } from '@hexlet/tagged-types';

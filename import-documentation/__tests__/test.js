@@ -13,6 +13,8 @@ test('test 1', async () => {
   expect(fs.lstatSync(result).isFile()).toBe(true);
   const result2 = path.resolve(out, 'hexlet-co.md');
   expect(fs.lstatSync(result2).isFile()).toBe(true);
+  const result3 = path.resolve(out, '@hexlet-tagged-types.md');
+  expect(fs.lstatSync(result3).isFile()).toBe(true);
 });
 
 test('test 2', async () => {
@@ -23,4 +25,6 @@ test('test 2', async () => {
   expect(fs.lstatSync(result).isFile()).toBe(true);
   const result2 = path.resolve(out, 'hexlet-co.md');
   expect(fs.lstatSync(result2).isFile()).toBe(true);
+  const result3 = path.resolve(out, '@hexlet-tagged-types.md');
+  expect(fs.lstatSync(result3).isFile()).toBe(true);
 });
