@@ -28,7 +28,10 @@ build: stop
 	docker build -t $(IMAGE_ID) .
 
 bash:
-	docker run --read-only -it -v /tmp -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u $(USER) /bin/bash --norc'
+	docker run --read-only -it -v /tmp \
+	  -v $(CURDIR)/exercise_internal:/exercise_internal \
+	  -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) \
+	  /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u $(USER) /bin/bash --norc'
 
 attach:
 	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u $(USER) /bin/bash --norc'
