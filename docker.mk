@@ -56,6 +56,9 @@ endif
 # 	@ docker stop $(CS) > /dev/null 2>&1; echo ""
 
 stop:
+	@ docker rm -v -f $(CONTAINER_ID) > /dev/null 2>&1; echo ""
+	
+stop_all:
 	@ docker rm -v -f $(CS) > /dev/null 2>&1; echo ""
 
 diff:
