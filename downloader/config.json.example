@@ -1,0 +1,11 @@
+{
+    "username": "",
+    "password": "",
+    "team_name": "hexlet",
+    "api_url": "https://api.bitbucket.org/2.0/repositories/",
+    "dirs": {
+        "exercise": "/your_path_to_hexlet-exercise-kit/courses",
+        "course": "/your_path_to_hexlet-exercise-kit/",
+        "challenge": "/your_path_to_hexlet-exercise-kit/challenges"
+    }
+}
