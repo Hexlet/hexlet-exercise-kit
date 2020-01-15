@@ -35,8 +35,10 @@ export const generate = async (files: Array<string>) => {
   const packages = imports.reduce((acc, importDeclaration) => {
     const previousSpecifiers = acc[importDeclaration.source.value] || new Set();
     const filteredSpecifiers = importDeclaration.specifiers.filter(s => s.type !== 'ImportNamespaceSpecifier');
-    const newSpecifiers = filteredSpecifiers.reduce((specifiers, specifier) =>
-      specifiers.add(getLocalName(specifier)), previousSpecifiers);
+    const newSpecifiers = filteredSpecifiers.reduce(
+      (specifiers, specifier) => specifiers.add(getLocalName(specifier)),
+      previousSpecifiers,
+    );
     return { ...acc, [importDeclaration.source.value]: newSpecifiers };
   }, {});
 
