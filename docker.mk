@@ -43,7 +43,8 @@ start: stop
 ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
 	@ echo "Please, run 'make build' before 'make start'" >&2; exit 1;
 else
-	docker run -d -t --read-only \
+	docker run -d -t --read-only --rm \
+		--label hexlet-exercise \
 		-v $(ROOT_DIR)import-documentation:/import-documentation \
 		-v /tmp \
 		-v $(CURDIR)/services.conf:/etc/supervisor/conf.d/services.conf \
@@ -52,14 +53,8 @@ else
 		-p 8000:8000 -p 80:8080 --name $(CONTAINER_ID) $(IMAGE_ID)
 endif
 
-# stop:
-# 	@ docker stop $(CS) > /dev/null 2>&1; echo ""
-
 stop:
-	@ docker rm -v -f $(CONTAINER_ID) > /dev/null 2>&1; echo ""
-	
-stop_all:
-	@ docker rm -v -f $(CS) > /dev/null 2>&1; echo ""
+	docker stop `docker ps -a -q --filter label=hexlet-exercise` || true
 
 diff:
 	@ docker diff $(CS)
