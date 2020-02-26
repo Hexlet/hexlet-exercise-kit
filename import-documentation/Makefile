@@ -2,7 +2,6 @@ all: install build
 
 install:
 	npm install
-	npx flow-typed install
 
 build:
 	rm -rf dist

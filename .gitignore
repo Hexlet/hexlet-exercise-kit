@@ -1,8 +1,7 @@
-.vagrant
 *.swp
 *.swo
 courses
 exercises
+projects
 .docker
 .DS_Store
-.tern-port

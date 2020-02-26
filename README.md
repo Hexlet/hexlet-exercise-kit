@@ -1,18 +1,22 @@
 [![Hexlet chat](http://slack-ru.hexlet.io/badge.svg)](http://slack-ru.hexlet.io)
 
 # hexlet-exercise-kit
+
 This is a complete kit for teachers who want to create exercises on the Hexlet platform.
 
-### 1. Get hexlet-exercise-kit
+## Setup
 
-    git clone https://github.com/Hexlet/hexlet-exercise-kit.git
+```sh
+$ git clone https://github.com/Hexlet/hexlet-exercise-kit.git
 
-### 2. Create Folders
+$ cd hexlet-exercise-kit
+$ make install
+```
 
-    cd hexlet-exercise-kit
+## New stuff
 
-    mkdir exercises
-
-    mkdir -p exercises/course-<name>/<lesson-name>_exercise
-    mkdir -p exercises/challenge-<course-name>/<name>_challenge
+```sh
+$ mkdir -p exercises/course-<name>/<lesson-name>_exercise
+$ mkdir -p exercises/challenge-<course-name>/<name>_challenge
+```
 

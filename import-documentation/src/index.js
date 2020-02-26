@@ -1,6 +1,7 @@
 // @flow
 
-import '@babel/polyfill';
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import debug from 'debug';
 
 import path from 'path';
@@ -21,8 +22,8 @@ const getLocalName = (specifier) => {
   return map[specifier.type](specifier);
 };
 
-export const generate = async (files: Array<string>) => {
-  const contentPromises = files.map(file => fs.readFile(file, 'utf8'));
+export const generate = async (filePaths) => {
+  const contentPromises = filePaths.map((filepath) => fs.readFile(filepath, 'utf8'));
   const contents = await Promise.all(contentPromises);
   const sources = contents.map(content => parse(content, { sourceType: 'module' }));
   const imports = sources.reduce((acc, source) => {
@@ -65,23 +66,23 @@ export const generate = async (files: Array<string>) => {
   return Promise.all(promises);
 };
 
-export const write = (dir: string, docs) => {
+export const write = (dir, docs) => {
   const promises = docs.map(async ({ packageName, packageDocs }) => {
     const md = await documentation.formats.md(packageDocs, {});
     const fileName = packageName.replace(/\//, '-');
-    const file = path.resolve(dir, `${fileName}.md`);
-    await fs.writeFile(file, md);
+    const filepath = path.resolve(dir, `${fileName}.md`);
+    await fs.writeFile(filepath, md);
   });
   return Promise.all(promises);
 };
 
 const getJsFiles = async (dir) => {
   const files = await fs.readdir(dir);
-  return files.filter(file => file.endsWith('js'))
-    .map(file => path.resolve(dir, file));
+  return files.filter((filepath) => filepath.endsWith('js'))
+    .map((filepath) => path.resolve(dir, filepath));
 };
 
-export default async (outDir: string, items: Array<string>) => {
+export default async (outDir, items) => {
   const promises = items.map(async (item) => {
     const fullPath = path.resolve(process.cwd(), item);
     const stats = await fs.lstat(fullPath);
@@ -89,7 +90,7 @@ export default async (outDir: string, items: Array<string>) => {
   });
   const nestedFiles = await Promise.all(promises);
   const files = flatten(nestedFiles);
-  const pathnames = files.map(file => path.resolve(process.cwd(), file));
+  const pathnames = files.map((filepath) => path.resolve(process.cwd(), filepath));
   log('files', pathnames);
   const packagesDocs = await generate(pathnames);
   await write(outDir, packagesDocs);

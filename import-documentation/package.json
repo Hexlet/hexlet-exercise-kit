@@ -20,44 +20,36 @@
   },
   "homepage": "https://github.com/hexlet-boilerplates/javascript-package#readme",
   "dependencies": {
-    "@babel/parser": "^7.2.2",
-    "@babel/polyfill": "^7.0.0",
-    "commander": "^2.19.0",
-    "debug": "^4.1.0",
-    "documentation": "^9.0.0",
+    "@babel/parser": "^7.8.4",
+    "commander": "^4.1.1",
+    "core-js": "^3.6.4",
+    "debug": "^4.1.1",
+    "documentation": "^12.1.4",
     "get-installed-path": "^4.0.8",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.15",
+    "regenerator-runtime": "^0.13.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.0",
-    "@babel/core": "^7.2.2",
-    "@babel/generator": "^7.2.2",
-    "@babel/preset-env": "^7.2.0",
-    "@babel/preset-flow": "^7.0.0",
-    "axios": "^0.18.0",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-eslint": "^10.0.1",
-    "babel-jest": "^23.6.0",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@babel/generator": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@hexlet/co": "^0.1.8",
+    "@hexlet/pairs": "^1.0.10",
+    "@hexlet/tagged-types": "^1.0.4",
+    "axios": "^0.19.2",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^25.1.0",
     "babelify": "^10.0.0",
-    "eslint": "^5.10.0",
-    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-babel": "^5.3.0",
-    "eslint-plugin-flowtype": "^3.2.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jest": "^22.1.2",
-    "flow-bin": "^0.89.0",
-    "flow-typed": "^2.5.1",
-    "hexlet-co": "^0.1.7",
-    "hexlet-pairs": "^1.0.8",
-    "@hexlet/tagged-types": "*",
-    "jest": "^23.6.0",
-    "jest-cli": "^23.6.0"
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jest": "^23.8.0",
+    "jest": "^25.1.0",
+    "jest-cli": "^25.1.0"
   },
   "jest": {
-    "testEnvironment": "node",
-    "testPathIgnorePatterns": [
-      "__tests__/__fixtures__",
-      "node_modules"
-    ]
+    "testEnvironment": "node"
   }
 }
