@@ -1,0 +1,6 @@
+{
+    "username": "",
+    "password": "",
+    "team_name": "hexlet",
+    "api_url": "https://api.bitbucket.org/2.0/repositories/"
+}

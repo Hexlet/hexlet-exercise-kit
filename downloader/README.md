@@ -1,25 +1,17 @@
 # bitbucket_repo_downloader
-Download all repositories from bitbucket account
+Download all repositories from the Bitbucket account
+
+## Requirements
+Docker.
 
 ## Install
-```
-poetry install
-```
+1. `make build`
+2. `make register`
 
 ## Configure
-1. Change paths to your hexlet-exerise-kit dir in the config.json.example
-2. Rename this file to config.json
+1. Create an environment variable `HEXLET_EXERCISE_KIT_DIR` with your path to Hexlet exercise kit directory.
+2. Move `.hexdownloader` to the home directory and add bitbucket credentials into it. For password you shouldn't use your actual password! You should generate an application password instead. Just create one at your profile's settings page.
 
 ## Usage
-### Downloading
-If you want to download all repositories with courses, exercises and challenges, run:
-```
-poetry run python3 downloader.py
-```
-Existing repos will be unchanged
-
-### Updating
-If you want to pull updates from repositories to your machine, run:
-```
-poetry run python3 downloader.py --update
-```
+`hexdownloader` — download all repositories with courses, exercises and challenges
+`hexdownloader --update` — pull updates from repositories to your machine

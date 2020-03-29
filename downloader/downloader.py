@@ -69,10 +69,18 @@ def clone(repo, paths):
         if not os.path.exists(path):
             os.makedirs(path, exist_ok=True)
             print('Cloning {}'.format(repo['name']))
-            git.Repo.clone_from(repo['link'], path)
+            git.Repo.clone_from(
+                repo['link'],
+                path,
+                env={
+                    'GIT_SSH_COMMAND': 'ssh -o StrictHostKeyChecking=no',
+                    'GIT_SSH_COMMAND': 'ssh -o UserKnownHostsFile=/dev/null',
+                    'GIT_SSH_COMMAND': 'ssh -i /.ssh/id_rsa',
+                },
+            )
             print('Done')
             return time.sleep(1)
-        print('Already exists')
+        # print('Already exists')
 
 
 def pull(repo, paths):
@@ -97,9 +105,16 @@ def main(config, params=None):
     url = '{}{}'.format(config['api_url'], config['team_name'])
     cred_bytes = ('{}:{}'.format(
         config['username'],
-        config['password']).encode('utf-8'))
+        config['password'],
+    ).encode('utf-8'))
     credentials = str(base64.b64encode(cred_bytes), 'utf-8')
-    paths = config['dirs']
+    paths = {
+        'exercise': '{}courses'.format(os.environ['HEXLET_EXERCISE_KIT_DIR']),
+        'course': os.environ['HEXLET_EXERCISE_KIT_DIR'],
+        'challenge': '{}challenges'.format(
+            os.environ['HEXLET_EXERCISE_KIT_DIR'],
+        ),
+    }
 
     if '--update' in params:
         not_updated = []
@@ -108,9 +123,10 @@ def main(config, params=None):
             result = pull(repo, paths)
             not_updated.append(result)
         print(
-            'There is the list of not updated repositories:\n{}'
-            .format('\n'.join(list(filter(None, not_updated))))
-            )
+            'There is the list of not updated repositories:\n{}'.format(
+                '\n'.join(list(filter(None, not_updated))),
+            ),
+        )
     else:
         for repo in get_repos_data(url, credentials):
             clone(repo, paths)
@@ -118,9 +134,8 @@ def main(config, params=None):
 
 if __name__ == '__main__':
     try:
-        sys.argv[1]
-        params = sys.argv[1]
+        options = sys.argv[1]
     except IndexError:
-        params = ''
-    with open('config.json') as config:
-        main(json.load(config), params=params)
+        options = ''
+    with open('.hexdownloader') as config:
+        main(json.load(config), params=options)
