@@ -6,4 +6,4 @@ docker run --rm \
 -v "$HOME:$HOME" \
 -v "$HOME/.ssh:/.ssh:ro" \
 -e "HEXLET_EXERCISE_KIT_DIR=$HEXLET_EXERCISE_KIT_DIR" \
-hexdownloader:latest $1
+hexdownloader:latest "$1"

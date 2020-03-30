@@ -72,11 +72,7 @@ def clone(repo, paths):
             git.Repo.clone_from(
                 repo['link'],
                 path,
-                env={
-                    'GIT_SSH_COMMAND': 'ssh -o StrictHostKeyChecking=no',
-                    'GIT_SSH_COMMAND': 'ssh -o UserKnownHostsFile=/dev/null',
-                    'GIT_SSH_COMMAND': 'ssh -i /.ssh/id_rsa',
-                },
+                env={'GIT_SSH_COMMAND': 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /.ssh/id_rsa'},
             )
             print('Done')
             return time.sleep(1)
