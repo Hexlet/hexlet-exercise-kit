@@ -2,7 +2,7 @@
 
 import program from 'commander';
 
-import importDoc from '../src/index.js';
+import importDoc from '../index.js';
 
 program
   .option('-o, --out-dir <path>', 'Folder for generated docs')
