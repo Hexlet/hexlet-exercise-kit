@@ -24,7 +24,7 @@
     "commander": "^4.1.1",
     "core-js": "^3.6.4",
     "debug": "^4.1.1",
-    "documentation": "^12.1.4",
+    "documentation": "^13.0.0",
     "get-installed-path": "^4.0.8",
     "lodash": "^4.17.15",
     "regenerator-runtime": "^0.13.3"
