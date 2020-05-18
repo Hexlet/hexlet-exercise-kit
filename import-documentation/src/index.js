@@ -1,7 +1,7 @@
-// @flow
+// @ts-check
 
-import "core-js/stable";
-import "regenerator-runtime/runtime";
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 import debug from 'debug';
 
 import path from 'path';
@@ -15,8 +15,8 @@ const log = debug('import-documentation');
 
 const getLocalName = (specifier) => {
   const map = {
-    ImportDefaultSpecifier: s => s.local.name,
-    ImportSpecifier: s => s.imported.name,
+    ImportDefaultSpecifier: (s) => s.local.name,
+    ImportSpecifier: (s) => s.imported.name,
   };
 
   return map[specifier.type](specifier);
@@ -25,17 +25,17 @@ const getLocalName = (specifier) => {
 export const generate = async (filePaths) => {
   const contentPromises = filePaths.map((filepath) => fs.readFile(filepath, 'utf8'));
   const contents = await Promise.all(contentPromises);
-  const sources = contents.map(content => parse(content, { sourceType: 'module' }));
+  const sources = contents.map((content) => parse(content, { sourceType: 'module' }));
   const imports = sources.reduce((acc, source) => {
     const programImports = source.program.body
-      .filter(item => item.type === 'ImportDeclaration')
-      .filter(item => item.source.value.includes('hexlet'));
+      .filter((item) => item.type === 'ImportDeclaration')
+      .filter((item) => item.source.value.includes('hexlet'));
     return [...acc, ...programImports];
   }, []);
 
   const packages = imports.reduce((acc, importDeclaration) => {
     const previousSpecifiers = acc[importDeclaration.source.value] || new Set();
-    const filteredSpecifiers = importDeclaration.specifiers.filter(s => s.type !== 'ImportNamespaceSpecifier');
+    const filteredSpecifiers = importDeclaration.specifiers.filter((s) => s.type !== 'ImportNamespaceSpecifier');
     const newSpecifiers = filteredSpecifiers.reduce(
       (specifiers, specifier) => specifiers.add(getLocalName(specifier)),
       previousSpecifiers,
@@ -53,13 +53,13 @@ export const generate = async (filePaths) => {
     const allPackageDocs = await documentation.build([path.resolve(packagePath, 'src', 'index.js')], {});
     const functions = [...packages[packageName]];
     const packageDocsAll = functions.map((func) => {
-      const docs = allPackageDocs.find(item => item.name === func);
+      const docs = allPackageDocs.find((item) => item.name === func);
       if (docs === undefined) {
         console.warn(`Documentation for function "${func}" not found!`);
       }
       return docs;
     });
-    const packageDocs = packageDocsAll.filter(obj => obj !== undefined);
+    const packageDocs = packageDocsAll.filter((obj) => obj !== undefined);
     return { packageName, packageDocs };
   });
 
