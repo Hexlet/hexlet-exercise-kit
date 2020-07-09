@@ -15,13 +15,13 @@ pull:
 	docker pull hexlet/hexlet-php
 
 clone:
-	docker run --rm -it --name hexletdownloader \
+	docker run --rm -it --name hexlet/bitbucket-downloader \
 		-u $(CURRENT_USER) \
 		-v /etc/passwd:/etc/passwd:ro \
 		-v $(SSH_KEY_PATH):/downloader/.ssh/id_rsa \
 		-v $(CURDIR):/repos \
 		--env-file ./bitbucket.config.env \
-		docker.pkg.github.com/melodyn/bitbucket_repo_downloader/hexdownloader:latest $(UPDATE_FLAG)
+		docker.pkg.github.com/melodyn/bitbucket_repo_downloader/bitbucket_downloader:latest $(UPDATE_FLAG)
 
 rebase:
 	make clone UPDATE_FLAG=--update
