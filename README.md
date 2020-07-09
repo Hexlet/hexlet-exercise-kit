@@ -6,23 +6,26 @@ This is a complete kit for teachers who want to create exercises on the Hexlet p
 
 ## Setup
 
-Set in *bitbucket.config.env* your auth data for download repositories.
-
 ```sh
 $ git clone https://github.com/Hexlet/hexlet-exercise-kit.git
 
 $ cd hexlet-exercise-kit
 $ make setup
+```
 
-$ make clone_repos
+
+If your has access for a clone Hexlet repositories then set in *bitbucket.config.env* your auth data for download repositories and run:
+
+```sh
+$ make clone
 # or make clone SSH_KEY_PATH=/specific/path/to/your/private_bitbucket_ssh_key # what's need for clone repos 
 ```
 
 For pulling into cloned repos:
 ```sh
-$ make pull_repos
+$ make rebase
 ```
- 
+
 
 ## New stuff
 

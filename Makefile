@@ -14,7 +14,7 @@ pull:
 	docker pull hexlet/hexlet-javascript
 	docker pull hexlet/hexlet-php
 
-clone_repos:
+clone:
 	docker run --rm -it --name hexletdownloader \
 		-u $(CURRENT_USER) \
 		-v /etc/passwd:/etc/passwd:ro \
@@ -23,5 +23,5 @@ clone_repos:
 		--env-file ./bitbucket.config.env \
 		docker.pkg.github.com/melodyn/bitbucket_repo_downloader/hexdownloader:latest $(UPDATE_FLAG)
 
-pull_repos:
+rebase:
 	make clone UPDATE_FLAG=--update
