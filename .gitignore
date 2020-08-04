@@ -3,5 +3,7 @@
 .idea
 courses*
 challenges
+exercises
+projects
 .docker
 .DS_Store
