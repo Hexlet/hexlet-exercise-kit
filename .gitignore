@@ -1,6 +1,8 @@
 *.swp
 *.swo
-courses
+.idea
+courses*
+challenges
 exercises
 projects
 .docker
