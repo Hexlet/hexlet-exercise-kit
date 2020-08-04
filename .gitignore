@@ -1,7 +1,7 @@
 *.swp
 *.swo
-courses
-exercises
-projects
+.idea
+courses*
+challenges
 .docker
 .DS_Store

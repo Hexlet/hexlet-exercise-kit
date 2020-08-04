@@ -1,7 +1,7 @@
+DOWNLOADER_IMAGE_NAME=hexlet/bitbucket_downloader
 CURRENT_USER=$(shell id -u):$(shell id -g)
+SSH_KEYS_PATH?=$(HOME)/.ssh
 DOWNLOADER_FLAG?=
-
-SSH_KEY_PATH?=$(HOME)/.ssh/id_rsa
 
 setup: pull
 	mkdir exercises
@@ -15,14 +15,18 @@ pull:
 	docker pull hexlet/hexlet-javascript
 	docker pull hexlet/hexlet-php
 
-clone:
+build_downloader:
+	docker build -t $(DOWNLOADER_IMAGE_NAME):latest \
+		--build-arg UNAME=$(USERNAME) \
+		--build-arg UID=$(shell id -u) \
+		./repo_downloader || true
+
+clone: build_downloader
 	docker run --rm -it --name hexlet_downloader \
-		-u $(CURRENT_USER) \
-		-v /etc/passwd:/etc/passwd:ro \
-		-v $(SSH_KEY_PATH):/downloader/.ssh/id_rsa \
+		-v $(SSH_KEYS_PATH):$(SSH_KEYS_PATH) \
 		-v $(CURDIR):/repos \
 		--env-file ./bitbucket.config.env \
-		docker.pkg.github.com/kirill-chertkov/bitbucket_repo_downloader/bitbucket_downloader:latest $(DOWNLOADER_FLAG)
+		$(DOWNLOADER_IMAGE_NAME):latest $(DOWNLOADER_FLAG)
 
-rebase:
+rebase: build_downloader
 	make clone DOWNLOADER_FLAG=--update
