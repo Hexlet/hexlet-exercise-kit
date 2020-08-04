@@ -18,7 +18,9 @@ If your has access for a clone Hexlet repositories then set in *bitbucket.config
 
 ```sh
 $ make clone
-# or make clone SSH_KEY_PATH=/specific/path/to/your/private_bitbucket_ssh_key # what's need for clone repos 
+
+# if you .ssh catalog has specific path:
+$ make clone SSH_KEYS_PATH=/specific/path/to/your/.ssh 
 ```
 
 For pulling into cloned repos:

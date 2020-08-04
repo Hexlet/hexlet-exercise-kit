@@ -1,5 +1,4 @@
 DOWNLOADER_IMAGE_NAME=hexlet/bitbucket_downloader
-CURRENT_USER=$(shell id -u):$(shell id -g)
 SSH_KEYS_PATH?=$(HOME)/.ssh
 DOWNLOADER_FLAG?=
 
