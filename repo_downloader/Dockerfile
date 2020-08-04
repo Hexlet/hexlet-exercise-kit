@@ -2,6 +2,7 @@ FROM python:3.8
 
 ARG UNAME
 ARG UID
+ARG GID
 
 ENV PIP_DISABLE_PIP_VERSION_CHECK=on \
     POETRY_VERSION=1.0.0
@@ -16,7 +17,7 @@ RUN poetry config virtualenvs.create false \
   && poetry install --no-interaction --no-ansi
 RUN chmod a+x ./downloader.py
 
-RUN useradd -l -u $UID -g users $UNAME
+RUN useradd -l -u $UID -g $GID $UNAME
 USER $UNAME
 
 ENTRYPOINT ["./downloader.py"]

@@ -17,7 +17,8 @@ pull:
 build_downloader:
 	docker build -t $(DOWNLOADER_IMAGE_NAME):latest \
 		--build-arg UNAME=$(USERNAME) \
-		--build-arg UID=$(shell id -u) \
+		--build-arg UID=$(UID) \
+		--build-arg GID=$(GID) \
 		./repo_downloader || true
 
 clone: build_downloader
