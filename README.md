@@ -14,7 +14,9 @@ $ make setup
 ```
 
 
-If your has access for a clone Hexlet repositories then set in *bitbucket.config.env* your auth data for download repositories and run:
+If your has access for a clone Hexlet repositories:
+* copy *bitbucket.config.env.example* as *bitbucket.config.env*
+* set in *bitbucket.config.env* your auth data for download repositories and run:
 
 ```sh
 $ make clone
