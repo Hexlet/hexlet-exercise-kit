@@ -15,10 +15,12 @@ $ make setup
 
 
 If your has access for a clone Hexlet repositories:
-* copy *bitbucket.config.env.example* as *bitbucket.config.env*
-* set in *bitbucket.config.env* your auth data for download repositories and run:
+* create app password on this page: https://bitbucket.org/account/settings/app-passwords/ 
+  in needed for access to bitbucket API
+* use bitbucket username and app password for create config file
 
 ```sh
+$ make config NICKNAME=username APPPASS=paSsw0rd
 $ make clone
 
 # if you .ssh catalog has specific path:
