@@ -20,7 +20,7 @@ If your has access for a clone Hexlet repositories:
 * use bitbucket username and app password for create config file
 
 ```sh
-$ make config NICKNAME=username APPPASS=paSsw0rd
+$ make bitbucket.config.env NICKNAME=username APPPASS=paSsw0rd
 $ make clone
 
 # if you .ssh catalog has specific path:
