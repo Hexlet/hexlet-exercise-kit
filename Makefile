@@ -4,7 +4,7 @@ DOWNLOADER_FLAG?=
 UNAME=$(shell whoami)
 UID=$(shell id -u)
 
-setup: pull
+setup: pull build-downloader
 	mkdir exercises
 	mkdir courses
 	mkdir projects
@@ -16,19 +16,16 @@ pull:
 	docker pull hexlet/hexlet-javascript
 	docker pull hexlet/hexlet-php
 
-build_downloader:
+create-config:
+	cp -n bitbucket.config.env.example bitbucket.config.env || true
+
+build-downloader: create-config
 	docker build -t $(DOWNLOADER_IMAGE_NAME):latest \
 		--build-arg UNAME=$(UNAME) \
 		--build-arg UID=$(UID) \
 		./repo_downloader || true
 
-bitbucket.config.env:
-	echo "BITBUCKET_USERNAME=$(NICKNAME)\n\
-	BITBUCKET_APP_PASSWORD=$(APPPASS)\n\
-	BITBUCKET_TEAM_NAME=hexlet\n\
-	BITBUCKET_API_URL=https://api.bitbucket.org/2.0/repositories/" > bitbucket.config.env
-
-clone: bitbucket.config.env build_downloader
+clone: build-downloader
 	docker run --rm -it --name hexlet_downloader \
 		-v $(SSH_KEYS_PATH):/home/$(UNAME)/.ssh \
 		-v $(CURDIR):/repos \
