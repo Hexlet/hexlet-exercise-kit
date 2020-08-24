@@ -8,3 +8,4 @@ projects
 .docker
 .DS_Store
 *.env
+*.log
