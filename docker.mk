@@ -1,4 +1,4 @@
-USER := nobody
+USER := tirion
 HOME := /nonexistent
 ID := $(shell basename $(CURDIR))
 CONTAINER_ID := $(addsuffix _container, $(ID))
