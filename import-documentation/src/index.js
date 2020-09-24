@@ -9,7 +9,7 @@ import { promises as fs } from 'fs';
 import { getInstalledPath } from 'get-installed-path';
 import { parse } from '@babel/parser';
 import documentation from 'documentation';
-import { flatten } from 'lodash';
+import { flatten, get } from 'lodash';
 
 const log = debug('import-documentation');
 
@@ -50,7 +50,10 @@ export const generate = async (filePaths) => {
     } catch (e) {
       packagePath = await getInstalledPath(packageName);
     }
-    const allPackageDocs = await documentation.build([path.resolve(packagePath, 'src', 'index.js')], {});
+    const packageJsonContent = await fs.readFile(path.join(packagePath, 'package.json'), 'utf8');
+    const packageSources = JSON.parse(packageJsonContent);
+    const entryPointPath = get(packageSources, 'main', 'index.js');
+    const allPackageDocs = await documentation.build([path.resolve(packagePath, entryPointPath)], {});
     const functions = [...packages[packageName]];
     const packageDocsAll = functions.map((func) => {
       const docs = allPackageDocs.find((item) => item.name === func);
