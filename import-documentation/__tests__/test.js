@@ -1,11 +1,12 @@
 // @ts-check
 
+import { test, expect } from '@jest/globals';
 import os from 'os';
 import fs from 'fs';
 import path from 'path';
-import importDoc from '../src/index.js';
+import importDoc from '../index.js';
 
-const getFixturePath = (filename = '') => path.join(__dirname, '..', '__fixtures__', filename);
+const getFixturePath = (filename = '') => path.join('__fixtures__', filename);
 
 test('test 1', async () => {
   const out = fs.mkdtempSync(path.join(os.tmpdir(), 'importer-'));

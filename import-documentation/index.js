@@ -6,10 +6,10 @@ import debug from 'debug';
 
 import path from 'path';
 import { promises as fs } from 'fs';
-import { getInstalledPath } from 'get-installed-path';
-import { parse } from '@babel/parser';
+import resolver from 'get-installed-path';
+import parser from '@babel/parser';
 import documentation from 'documentation';
-import { flatten, get } from 'lodash';
+import _ from 'lodash';
 
 const log = debug('import-documentation');
 
@@ -25,7 +25,7 @@ const getLocalName = (specifier) => {
 export const generate = async (filePaths) => {
   const contentPromises = filePaths.map((filepath) => fs.readFile(filepath, 'utf8'));
   const contents = await Promise.all(contentPromises);
-  const sources = contents.map((content) => parse(content, { sourceType: 'module' }));
+  const sources = contents.map((content) => parser.parse(content, { sourceType: 'module' }));
   const imports = sources.reduce((acc, source) => {
     const programImports = source.program.body
       .filter((item) => item.type === 'ImportDeclaration')
@@ -46,13 +46,13 @@ export const generate = async (filePaths) => {
   const promises = Object.keys(packages).map(async (packageName) => {
     let packagePath;
     try {
-      packagePath = await getInstalledPath(packageName, { local: true });
+      packagePath = await resolver.getInstalledPath(packageName, { local: true });
     } catch (e) {
-      packagePath = await getInstalledPath(packageName);
+      packagePath = await resolver.getInstalledPath(packageName);
     }
     const packageJsonContent = await fs.readFile(path.join(packagePath, 'package.json'), 'utf8');
     const packageSources = JSON.parse(packageJsonContent);
-    const entryPointPath = get(packageSources, 'main', 'index.js');
+    const entryPointPath = _.get(packageSources, 'main', 'index.js');
     const allPackageDocs = await documentation.build([path.resolve(packagePath, entryPointPath)], {});
     const functions = [...packages[packageName]];
     const packageDocsAll = functions.map((func) => {
@@ -92,7 +92,7 @@ export default async (outDir, items) => {
     return stats.isDirectory() ? getJsFiles(item) : item;
   });
   const nestedFiles = await Promise.all(promises);
-  const files = flatten(nestedFiles);
+  const files = nestedFiles.flat(Infinity);
   const pathnames = files.map((filepath) => path.resolve(process.cwd(), filepath));
   log('files', pathnames);
   const packagesDocs = await generate(pathnames);
