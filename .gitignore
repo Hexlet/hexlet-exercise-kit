@@ -9,3 +9,4 @@ projects
 .DS_Store
 *.env
 *.log
+node_modules
