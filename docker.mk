@@ -74,6 +74,10 @@ else
 	docker exec $(CONTAINER_ID) /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u $(USER) make test -C /exercise_internal'
 endif
 
+
+lint-js:
+	npx eslint .
+
 all: build start test
 
 .PHONY: test build bash run stop start
