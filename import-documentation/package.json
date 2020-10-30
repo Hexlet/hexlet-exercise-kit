@@ -5,7 +5,7 @@
   "bin": "bin/import-documentation.js",
   "type": "module",
   "scripts": {
-    "test": "npx -n --experimental-vm-modules jest"
+    "test": "npx -n --experimental-vm-modules jest --colors"
   },
   "repository": {
     "type": "git",
