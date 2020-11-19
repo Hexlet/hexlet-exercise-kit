@@ -1,5 +1,4 @@
 USER := tirion
-HOME := /nonexistent
 ID := $(shell basename $(CURDIR))
 CONTAINER_ID := $(addsuffix _container, $(ID))
 CONTAINER_ID_INTERNAL := $(addsuffix _container_internal, $(ID))
@@ -8,20 +7,20 @@ CS = $(shell docker ps -a -q)
 ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 docs-js:
-	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u $(USER) rm -rf docs && mkdir -p docs && /import-documentation/dist/bin/import-documentation.js . -o docs'
+	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo --preserve-env=PATH -u $(USER) rm -rf docs && mkdir -p docs && /import-documentation/dist/bin/import-documentation.js . -o docs'
 
 test:
 ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
 	@ echo "Please, run 'make start' before 'make test'" >&2; exit 1;
 else
-	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u $(USER) make test -C /usr/src/app'
+	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo --preserve-env=PATH -u $(USER) make test'
 endif
 
 prepare:
 ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
 	@ echo "Please, run 'make start' before 'make test'" >&2; exit 1;
 else
-	docker exec -it $(CONTAINER_ID) make prepare -C /usr/src/app
+	docker exec -it $(CONTAINER_ID) make prepare
 endif
 
 build: stop
@@ -31,10 +30,10 @@ bash:
 	docker run --read-only -it -v /tmp \
 	  -v $(CURDIR)/exercise_internal:/exercise_internal \
 	  -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) \
-	  /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u $(USER) /bin/bash --norc'
+	  /bin/bash -c 'sudo -u $(USER) --preserve-env=PATH -s'
 
 attach:
-	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u $(USER) /bin/bash --norc'
+	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo --preserve-env=PATH -u $(USER) -s'
 
 logs:
 	docker logs -f $(CONTAINER_ID)
@@ -71,7 +70,7 @@ ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
 	@ echo "Please, run 'make start_internal'" >&2; exit 1;
 else
 	# docker exec $(CONTAINER_ID) make test -C /exercise_internal
-	docker exec $(CONTAINER_ID) /bin/bash -c 'sudo -E PATH=$$PATH HOME=$(HOME) -u $(USER) make test -C /exercise_internal'
+	docker exec $(CONTAINER_ID) /bin/bash -c 'sudo --preserve-env=PATH -u $(USER) make test -C /exercise_internal'
 endif
 
 

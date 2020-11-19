@@ -43,6 +43,8 @@ install-linters:
 	npm i eslint-plugin-jsx-a11y
 	npm i eslint-plugin-jest
 	npm i eslint-plugin-import
+	npm i eslint-plugin-testing-library
+	npm i eslint-plugin-jest-dom
 	npm i jest
 	npm i react
 
