@@ -31,6 +31,18 @@ For pulling into cloned repos:
 $ make rebase
 ```
 
+## Run exercise
+
+```sh
+$ cd <path/to/exercise/catalog>
+$ make build # build exercise container
+$ make start # run exercise and listen port 80
+$ make test # run tests
+$ make lint-js # run linter
+```
+
+For frontend exercise after `make start` open http://localhost:80 in your browser.
+
 
 ## New stuff
 
