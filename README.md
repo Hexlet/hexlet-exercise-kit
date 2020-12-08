@@ -43,6 +43,10 @@ $ make lint-js # run linter
 
 For frontend exercise after `make start` open http://localhost:80 in your browser.
 
+```sh
+$ make stop # stopped container
+```
+
 
 ## New stuff
 
