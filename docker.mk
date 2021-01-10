@@ -5,15 +5,16 @@ CONTAINER_ID_INTERNAL := $(addsuffix _container_internal, $(ID))
 IMAGE_ID := $(addsuffix _image, $(ID))
 CS = $(shell docker ps -a -q)
 ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+PRESERVE_ENV_LIST := NODE_PATH,PATH
 
 docs-js:
-	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo --preserve-env=PATH -u $(USER) rm -rf docs && mkdir -p docs && /import-documentation/dist/bin/import-documentation.js . -o docs'
+	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo --preserve-env=${PRESERVE_ENV_LIST} -u $(USER) rm -rf docs && mkdir -p docs && /import-documentation/dist/bin/import-documentation.js . -o docs'
 
 test:
 ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
 	@ echo "Please, run 'make start' before 'make test'" >&2; exit 1;
 else
-	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo --preserve-env=PATH -u $(USER) make test'
+	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo --preserve-env=${PRESERVE_ENV_LIST} -u $(USER) make test'
 endif
 
 prepare:
@@ -30,10 +31,10 @@ bash:
 	docker run --read-only -it -v /tmp \
 	  -v $(CURDIR)/exercise_internal:/exercise_internal \
 	  -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) \
-	  /bin/bash -c 'sudo -u $(USER) --preserve-env=PATH -s'
+	  /bin/bash -c 'sudo -u $(USER) --preserve-env=${PRESERVE_ENV_LIST} -s'
 
 attach:
-	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo --preserve-env=PATH -u $(USER) -s'
+	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo --preserve-env=${PRESERVE_ENV_LIST} -u $(USER) -s'
 
 logs:
 	docker logs -f $(CONTAINER_ID)
@@ -70,7 +71,7 @@ ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
 	@ echo "Please, run 'make start_internal'" >&2; exit 1;
 else
 	# docker exec $(CONTAINER_ID) make test -C /exercise_internal
-	docker exec $(CONTAINER_ID) /bin/bash -c 'sudo --preserve-env=PATH -u $(USER) make test -C /exercise_internal'
+	docker exec $(CONTAINER_ID) /bin/bash -c 'sudo --preserve-env=${PRESERVE_ENV_LIST} -u $(USER) make test -C /exercise_internal'
 endif
 
 
