@@ -13,6 +13,9 @@ import _ from 'lodash';
 
 const log = debug('import-documentation');
 
+/**
+ * @param {{ type: string | number; }} specifier
+ */
 const getLocalName = (specifier) => {
   const map = {
     ImportDefaultSpecifier: (s) => s.local.name,
@@ -35,7 +38,9 @@ export const generate = async (filePaths) => {
 
   const packages = imports.reduce((acc, importDeclaration) => {
     const previousSpecifiers = acc[importDeclaration.source.value] || new Set();
-    const filteredSpecifiers = importDeclaration.specifiers.filter((s) => s.type !== 'ImportNamespaceSpecifier');
+    const filteredSpecifiers = importDeclaration.specifiers.filter(
+      (s) => s.type !== 'ImportNamespaceSpecifier',
+    );
     const newSpecifiers = filteredSpecifiers.reduce(
       (specifiers, specifier) => specifiers.add(getLocalName(specifier)),
       previousSpecifiers,
@@ -53,7 +58,10 @@ export const generate = async (filePaths) => {
     const packageJsonContent = await fs.readFile(path.join(packagePath, 'package.json'), 'utf8');
     const packageSources = JSON.parse(packageJsonContent);
     const entryPointPath = _.get(packageSources, 'main', 'index.js');
-    const allPackageDocs = await documentation.build([path.resolve(packagePath, entryPointPath)], {});
+    const allPackageDocs = await documentation.build(
+      [path.resolve(packagePath, entryPointPath)],
+      {},
+    );
     const functions = [...packages[packageName]];
     const packageDocsAll = functions.map((func) => {
       const docs = allPackageDocs.find((item) => item.name === func);
@@ -81,7 +89,8 @@ export const write = (dir, docs) => {
 
 const getJsFiles = async (dir) => {
   const files = await fs.readdir(dir);
-  return files.filter((filepath) => filepath.endsWith('js'))
+  return files
+    .filter((filepath) => filepath.endsWith('js'))
     .map((filepath) => path.resolve(dir, filepath));
 };
 
