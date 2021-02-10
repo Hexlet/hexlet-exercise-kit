@@ -47,5 +47,6 @@ install-linters:
 	npm i eslint-plugin-jest-dom
 	npm i jest
 	npm i react
+	npm i prettier-eslint
 
 .PHONY: clone

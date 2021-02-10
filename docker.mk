@@ -47,6 +47,7 @@ else
 		--label hexlet-exercise \
 		-v $(ROOT_DIR)import-documentation:/import-documentation \
 		-v /tmp \
+		-e $(shell $(ROOT_DIR)scripts/forward-envs) \
 		-v $(CURDIR)/services.conf:/etc/supervisor/conf.d/services.conf \
 		-v $(CURDIR)/exercise/:/usr/src/app \
 		-v $(CURDIR)/exercise_internal:/exercise_internal \
