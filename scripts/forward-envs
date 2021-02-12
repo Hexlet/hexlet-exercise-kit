@@ -7,10 +7,10 @@ const envLine = data.split('\n')
   .filter((l) => l.startsWith('environment'))
   .map((l) => l.replace('environment=', ''))
   .flatMap((l) => l.split(','))
-  .filter((kv) => kv.startsWith('X_FORWARED_'))
+  .filter((kv) => kv.startsWith('X_FORWARDED_'))
   .map((kv) => {
     const [name, value] = kv.split('=');
-    const realName = name.replace('X_FORWARED_', '');
+    const realName = name.replace('X_FORWARDED_', '');
     return `${realName}=${value}`;
   })
   .join(',');
