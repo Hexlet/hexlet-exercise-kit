@@ -33,6 +33,12 @@ bash:
 	  -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) \
 	  /bin/bash -c 'sudo -u $(USER) --preserve-env=${PRESERVE_ENV_LIST} -s'
 
+bash-root:
+	docker run -it -v /tmp \
+	  -v $(CURDIR)/exercise_internal:/exercise_internal \
+	  -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) \
+	  /bin/bash
+
 attach:
 	docker exec -it $(CONTAINER_ID) /bin/bash -c 'sudo --preserve-env=${PRESERVE_ENV_LIST} -u $(USER) -s'
 
