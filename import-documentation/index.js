@@ -5,7 +5,7 @@ import 'regenerator-runtime/runtime';
 import debug from 'debug';
 
 import path from 'path';
-import { promises as fs } from 'fs';
+import fs from 'fs/promises';
 import resolver from 'get-installed-path';
 import parser from '@babel/parser';
 import documentation from 'documentation';
