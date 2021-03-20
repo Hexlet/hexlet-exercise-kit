@@ -5,9 +5,10 @@ UNAME=$(shell whoami)
 UID=$(shell id -u)
 
 setup: pull build-downloader install-linters
-	mkdir exercises
-	mkdir courses
-	mkdir projects
+	mkdir -p exercises
+	mkdir -p courses
+	mkdir -p projects
+	mkdir -p programs
 	make -C import-documentation all
 
 pull:

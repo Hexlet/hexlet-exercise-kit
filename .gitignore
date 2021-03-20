@@ -5,9 +5,11 @@ courses*
 challenges
 exercises
 projects
+programs
 .docker
 .DS_Store
 *.env
 *.log
 node_modules
 package-lock.json
+package.json
