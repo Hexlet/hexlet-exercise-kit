@@ -8,7 +8,7 @@ import importDoc from '../index.js';
 
 const getFixturePath = (filename = '') => path.join('__fixtures__', filename);
 
-test('test 1', async () => {
+test('1', async () => {
   const out = fs.mkdtempSync(path.join(os.tmpdir(), 'importer-'));
   const filePaths = [getFixturePath('example.js')];
   await importDoc(out, filePaths);
@@ -20,7 +20,7 @@ test('test 1', async () => {
   expect(fs.lstatSync(result3).isFile()).toBe(true);
 });
 
-test('test 2', async () => {
+test('2', async () => {
   const out = fs.mkdtempSync(path.join(os.tmpdir(), 'importer-'));
   const dir = [getFixturePath()];
   await importDoc(out, dir);
