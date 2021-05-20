@@ -4,7 +4,7 @@ DOWNLOADER_FLAG?=
 UNAME=$(shell whoami)
 UID=$(shell id -u)
 
-setup: pull build-downloader
+setup: pull build-downloader install-linters
 	mkdir -p exercises
 	mkdir -p courses
 	mkdir -p projects
@@ -35,5 +35,19 @@ clone: build-downloader
 
 rebase:
 	make clone DOWNLOADER_FLAG=--update
+
+install-linters:
+	npm i eslint
+	npm i eslint-config-airbnb
+	npm i eslint-plugin-react
+	npm i babel-eslint
+	npm i eslint-plugin-jsx-a11y
+	npm i eslint-plugin-jest
+	npm i eslint-plugin-import
+	npm i eslint-plugin-testing-library
+	npm i eslint-plugin-jest-dom
+	npm i jest
+	npm i react
+	npm i prettier-eslint
 
 .PHONY: clone
