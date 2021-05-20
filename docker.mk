@@ -81,9 +81,17 @@ else
 	docker exec $(CONTAINER_ID) /bin/bash -c 'sudo --preserve-env=${PRESERVE_ENV_LIST} -u $(USER) make test -C /exercise_internal'
 endif
 
+lint-python:
+	@make lint L=python-flake8
 
 lint-js:
-	npx eslint .
+	@make lint L=eslint
+
+lint-php:
+	@make lint L=phpcs
+
+lint:
+	@docker run -it -v $(CURDIR)/exercise:/usr/src/app hexlet/common-${L}
 
 all: build start test
 
