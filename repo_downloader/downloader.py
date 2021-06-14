@@ -27,15 +27,15 @@ sys.tracebacklimit = 0
 
 def make_request(url, creds, pagelen=1, page=1):
     headers = {
-        'authorization': 'Basic {}'.format(creds),
+        'authorization': f"Basic {creds}",
     }
     querystring = {
-        "pagelen": pagelen,
-        "page": page,
+        'pagelen': pagelen,
+        'page': page,
     }
     response = requests.get(url, headers=headers, params=querystring)
     if response.status_code != 200:
-        raise ConnectionError("Check your credentials!\n")
+        raise ConnectionError('Check your credentials!\n')
     return response
 
 
@@ -61,9 +61,9 @@ def get_repos_data(url, creds):
     for page in range(1, pages + 1):
         repos_info = make_request(url, creds, pagesize, page).json()['values']
         for repo in repos_info:
-            dir_name = repo['project']['name']  # parent dir
             repo_name = repo['name']
             repo_type = get_type(repo_name)
+            dir_name = '' if repo_type == 'course' else repo['project']['name']
             clone_links = repo['links']['clone']
             ssh_link = list(filter(
                 lambda link: link['name'] == 'ssh', clone_links))[0]['href']
@@ -81,22 +81,22 @@ def get_repos_data(url, creds):
 def clone(repo, paths):
     if repo['type']:
         parent_dir = paths[repo['type']]
-        path = '{}/{}/{}'.format(parent_dir, repo['dir'], repo['name'])
+        path = f"{parent_dir}/{repo['dir']}/{repo['name']}"
         if not os.path.exists(path):
             os.makedirs(path, exist_ok=True)
-            print('Cloning {}'.format(repo['name']))
+            print(f"Cloning {repo['name']}")
             try:
                 repo = git.Repo.clone_from(
                     repo['link'],
                     path,
                 )
-                print(f'Cloned from {repo.remotes.origin.url} to {repo.working_dir}')
+                print(f"Cloned from {repo.remotes.origin.url} to {repo.working_dir}")
                 return True
             except Exception as error:
                 logger.error(error)
                 return False
         else:
-            logger.warning(f'{path} already exists. Repository was skipped')
+            logger.warning(f"{path} already exists. Repository was skipped")
             return True
     else:
         logger.warning(f"{repo['link']} is not valid type of repo")
@@ -106,7 +106,7 @@ def clone(repo, paths):
 def pull(repo, paths):
     if repo['type']:
         parent_dir = paths[repo['type']]
-        path = '{}/{}/{}'.format(parent_dir, repo['dir'], repo['name'])
+        path = f"{parent_dir}/{repo['dir']}/{repo['name']}"
         if os.path.exists(path):
             try:
                 local_repo = git.Repo(path)
@@ -116,22 +116,22 @@ def pull(repo, paths):
 
             changed_files = local_repo.index.diff(None)
             if changed_files:
-                logger.warning(f'{path} has changes. This repo was not updated')
+                logger.warning(f"{path} has changes. This repo was not updated")
                 return False
 
             if not local_repo.branches:
-                logger.warning(f'{path} has no branches. This repo was skipped')
+                logger.warning(f"{path} has no branches. This repo was skipped")
                 return False
 
             branch_name = local_repo.active_branch.name
             if 'master' not in branch_name:
-                logger.warning(f'{path} is not in master branch. This repo was not updated')
+                logger.warning(f"{path} is not in master branch. This repo was not updated")
                 return False
 
             print(f"Updating {repo['name']}")
             try:
                 local_repo.remotes.origin.pull('--rebase')
-                print(f'{repo["name"]} was updated')
+                print(f"{repo['name']} was updated")
                 return True
             except Exception as error:
                 logger.error(f"Couldn\'t update {path}\n{error}")
@@ -142,7 +142,7 @@ def pull(repo, paths):
 
 
 def main(params=None):
-    url = '{}{}'.format(os.environ['BITBUCKET_API_URL'], os.environ['BITBUCKET_TEAM_NAME'])
+    url = f"{os.environ['BITBUCKET_API_URL']}{os.environ['BITBUCKET_TEAM_NAME']}"
     cur_dir = '/repos'
     cred_bytes = ('{}:{}'.format(
         os.environ['BITBUCKET_USERNAME'],
@@ -150,20 +150,20 @@ def main(params=None):
     ).encode('utf-8'))
     credentials = str(base64.b64encode(cred_bytes), 'utf-8')
     paths = {
-        'exercise': '{}/courses'.format(cur_dir),
-        'course': cur_dir,
-        'challenge': '{}/challenges'.format(cur_dir),
+        'exercise': f"{cur_dir}/exercises",
+        'course': f"{cur_dir}/courses",
+        'challenge': f"{cur_dir}/exercises",
     }
 
     if '--update' in params:
         for repo in get_repos_data(url, credentials):
             if not pull(repo, paths):
-                print(f'An error occured with {repo["name"]}. See the log file for more details')
+                print(f"An error occured with {repo['name']}. See the log file for more details")
 
     else:
         for repo in get_repos_data(url, credentials):
             if not clone(repo, paths):
-                print("An error occured. See the log file for more details")
+                print('An error occured. See the log file for more details')
                 break
 
 
