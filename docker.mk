@@ -5,7 +5,7 @@ CONTAINER_ID_INTERNAL := $(addsuffix _container_internal, $(ID))
 IMAGE_ID := $(addsuffix _image, $(ID))
 CS = $(shell docker ps -a -q)
 ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-GET_ENVS := IFS=";" read -r -a ENVS <<< `get-forwarded-envs`
+GET_ENVS := IFS=";" ENVS=(`get-forwarded-envs`)
 
 docs-js:
 	docker exec -it $(CONTAINER_ID) /bin/bash -c '$(GET_ENVS) && sudo "$${ENVS[@]}" -u $(USER) rm -rf docs && mkdir -p docs && /import-documentation/dist/bin/import-documentation.js . -o docs'
