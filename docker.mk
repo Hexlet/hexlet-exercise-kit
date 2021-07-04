@@ -42,6 +42,7 @@ bash-root:
 	  /bin/bash -c '$(GET_ENVS) && sudo "$${ENVS[@]}" -u root -s'
 
 attach: start
+	# docker exec -it $(CONTAINER_ID) /bin/bash
 	docker exec -it $(CONTAINER_ID) /bin/bash -c '$(GET_ENVS) && sudo "$${ENVS[@]}" -u $(USER) -s'
 
 logs:
