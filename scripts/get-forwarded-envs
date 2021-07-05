@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# NOTE: получаем все переменные окружения префиксом X_FORWARDED_ и формируем
+# строку с разделителем ";" потому что переменные окружения могут содержать пробелы
+# Пример строки "ENV1=value1;ENV2=value with spaces;ENV3=value3"
+FORWARDED_ENVS=`env | grep 'X_FORWARDED_' | sed 's/X_FORWARDED_//' | sed -z 's/\n/;/g'`
+
+echo "${FORWARDED_ENVS}NODE_PATH=${NODE_PATH};PATH=${PATH}"
