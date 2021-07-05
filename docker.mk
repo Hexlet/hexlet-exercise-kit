@@ -5,6 +5,10 @@ CONTAINER_ID_INTERNAL := $(addsuffix _container_internal, $(ID))
 IMAGE_ID := $(addsuffix _image, $(ID))
 CS = $(shell docker ps -a -q)
 ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+# NOTE: сохраняем массив в перемнную ENVS из строки используя разделитель ";"
+# Далее распаковываем массив в аргументы при вызове команды sudo ${ENVS[@]}
+# Так переменные окружения попадют в сеанс sudo
+# Пример: sudo "ENV1=value1" "ENV2=value with spaces" "ENV3=value3" -u tirion -s
 GET_ENVS := IFS=";" ENVS=(`get-forwarded-envs`)
 
 docs-js:
