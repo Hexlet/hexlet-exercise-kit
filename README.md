@@ -7,23 +7,22 @@ This is a complete kit for teachers who want to create exercises on the Hexlet p
 ## Setup
 
 ```sh
-git clone https://github.com/Hexlet/hexlet-exercise-kit.git
+git clone https://gitlab.com/hexlethq/hexlet-exercise-kit.git
 
 cd hexlet-exercise-kit
 make setup
 ```
 
-If your has access for a clone Hexlet repositories:
+If you have access to clone Hexlet repositories:
 
-* create app password on this page: [https://bitbucket.org/account/settings/app-passwords/](https://bitbucket.org/account/settings/app-passwords/)
-  in needed for access to bitbucket API
-* add your bitbucket username and app password into *bitbucket.config.env*
+* create a personal access token on this page: [https://gitlab.com/-/profile/personal_access_tokens](https://gitlab.com/-/profile/personal_access_tokens)
+* add created token to *config.env* file
 
 ```sh
 make clone
 
-# if you .ssh catalog has specific path:
-make clone SSH_KEYS_PATH=/specific/path/to/your/.ssh
+# if your .ssh catalog has specific path:
+make clone SSH_KEYS_PATH=/specific/path/to/your/.ssh 
 ```
 
 For pulling into cloned repos:
