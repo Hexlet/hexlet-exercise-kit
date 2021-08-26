@@ -1,4 +1,4 @@
-DOWNLOADER_IMAGE_NAME=hexlet/bitbucket_downloader
+DOWNLOADER_IMAGE_NAME=hexlet/gitlab_downloader
 SSH_KEYS_PATH?=$(HOME)/.ssh
 DOWNLOADER_FLAG?=
 UNAME=$(shell whoami)
@@ -10,6 +10,7 @@ setup: pull build-downloader install-linters
 	mkdir -p projects
 	mkdir -p programs
 	make -C import-documentation all
+	echo 'include ../../../../docker.mk' > exercises/docker.mk
 
 pull:
 	docker pull hexlet/hexlet-python
@@ -18,7 +19,7 @@ pull:
 	docker pull hexlet/hexlet-php
 
 create-config:
-	cp -n bitbucket.config.env.example bitbucket.config.env || true
+	cp -n config.env.example config.env || true
 
 build-downloader: create-config
 	docker build -t $(DOWNLOADER_IMAGE_NAME):latest \
@@ -30,7 +31,7 @@ clone: build-downloader
 	docker run --rm -it --name hexlet_downloader \
 		-v $(SSH_KEYS_PATH):/home/$(UNAME)/.ssh \
 		-v $(CURDIR):/repos \
-		--env-file ./bitbucket.config.env \
+		--env-file ./config.env \
 		$(DOWNLOADER_IMAGE_NAME):latest $(DOWNLOADER_FLAG)
 
 rebase:

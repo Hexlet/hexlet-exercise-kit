@@ -8,6 +8,7 @@ authors = ["Kirill Chertkov <chertkov.k@gmail.com>"]
 python = "^3.7"
 requests = "^2.22.0"
 gitpython = "^3.0.5"
+python-gitlab = "^2.10.0"
 
 [tool.poetry.dev-dependencies]
 
