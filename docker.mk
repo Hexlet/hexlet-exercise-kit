@@ -99,8 +99,14 @@ lint-hexlet-js:
 lint-hexlet-php:
 	@make lint L=phpcs
 
+lint-hexlet-java:
+	@make lint L=checkstyle
+
+lint-hexlet-sql:
+	@make lint L=sqlint
+
 lint:
-	@docker run -it -v $(CURDIR)/exercise:/usr/src/app hexlet/common-${L}
+	@docker run --rm -it -v $(CURDIR)/exercise:/usr/src/app hexlet/common-${L}
 
 all: build start test
 
