@@ -50,6 +50,5 @@ make stop # stopped container
 ## New stuff
 
 ```sh
-mkdir -p exercises/course-<name>/<lesson-name>_exercise
-mkdir -p exercises/challenge-<course-name>/<name>_challenge
+mkdir -p exercises/ru/course-<name>/<lesson-name>_exercise
 ```
