@@ -1,8 +1,7 @@
-DOWNLOADER_IMAGE_NAME=hexlet/gitlab_downloader
+DOWNLOADER_IMAGE_NAME=hexlet/gitlab-downloader
 SSH_KEYS_PATH?=$(HOME)/.ssh
-DOWNLOADER_FLAG?=
-UNAME=$(shell whoami)
-UID=$(shell id -u)
+UID := $(shell id -u)
+GID := $(shell id -g)
 
 setup: pull build-downloader install-linters
 	mkdir -p exercises
@@ -19,20 +18,22 @@ pull:
 	docker pull hexlet/hexlet-php
 
 create-config:
-	cp -n config.env.example config.env || true
+	cp -n repo-downloader/.env.template .env
 
 build-downloader: create-config
 	docker build -t $(DOWNLOADER_IMAGE_NAME):latest \
-		--build-arg UNAME=$(UNAME) \
 		--build-arg UID=$(UID) \
-		./repo_downloader || true
+		--build-arg GID=$(GID) \
+		./repo-downloader
 
 clone: build-downloader
-	docker run --rm -it --name hexlet_downloader \
-		-v $(SSH_KEYS_PATH):/home/$(UNAME)/.ssh \
-		-v $(CURDIR):/repos \
-		--env-file ./config.env \
-		$(DOWNLOADER_IMAGE_NAME):latest $(DOWNLOADER_FLAG)
+	docker run --rm -it \
+		-v $(CURDIR)/repo-downloader:/home/tirion/app \
+		-v $(CURDIR):/home/tirion/repos \
+		-v $(HOME)/.ssh:/home/tirion/.ssh \
+		--env-file ./.env \
+		--env UPDATE=$(UPDATE) \
+		$(DOWNLOADER_IMAGE_NAME):latest
 
 # TODO: implement it
 clone-courses:
@@ -40,7 +41,7 @@ clone-exercises:
 clone-projects:
 
 rebase:
-	make clone DOWNLOADER_FLAG=--update
+	make clone UPDATE=true
 
 install-linters:
 	npm i eslint
