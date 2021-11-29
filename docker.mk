@@ -105,6 +105,9 @@ lint-hexlet-java:
 lint-hexlet-sql:
 	@make lint L=sqlint
 
+lint-hexlet-ruby:
+	@make lint L=rubocop
+
 lint:
 	@docker run --rm -it -v $(CURDIR)/exercise:/usr/src/app hexlet/common-${L}
 
