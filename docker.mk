@@ -32,14 +32,14 @@ build: stop
 	docker build -t $(IMAGE_ID) .
 
 bash:
-	docker run --read-only -it -v /tmp \
+	docker run --rm --read-only -it -v /tmp \
 		-v $(ROOT_DIR)scripts/get-forwarded-envs:/usr/local/bin/get-forwarded-envs \
 	  -v $(CURDIR)/exercise_internal:/exercise_internal \
 	  -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) \
 	  /bin/bash -c '$(GET_ENVS) && sudo "$${ENVS[@]}" -u $(USER) -s'
 
 bash-root:
-	docker run -it -v /tmp \
+	docker run --rm -it -v /tmp \
 		-v $(ROOT_DIR)scripts/get-forwarded-envs:/usr/local/bin/get-forwarded-envs \
 	  -v $(CURDIR)/exercise_internal:/exercise_internal \
 	  -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) \
