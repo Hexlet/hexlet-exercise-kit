@@ -88,7 +88,7 @@ else
 endif
 
 lint-js:
-	npx eslint .
+	@npx eslint .
 
 lint-hexlet-python:
 	@make lint L=python-flake8
