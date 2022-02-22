@@ -33,6 +33,11 @@ clone: build-downloader
 		--env-file ./config.env \
 		$(DOWNLOADER_IMAGE_NAME):latest $(DOWNLOADER_FLAG)
 
+# TODO: implement it
+clone-courses:
+clone-exercises:
+clone-projects:
+
 rebase:
 	make clone DOWNLOADER_FLAG=--update
 
