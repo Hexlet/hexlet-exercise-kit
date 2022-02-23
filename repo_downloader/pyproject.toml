@@ -5,10 +5,10 @@ description = "Download all repositories from the bitbucket account"
 authors = ["Kirill Chertkov <chertkov.k@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
-requests = "^2.22.0"
-gitpython = "^3.0.5"
-python-gitlab = "^2.10.0"
+python = "^3.11"
+requests = "^2.27.1"
+gitpython = "^3.1.27"
+python-gitlab = "^3.1.1"
 
 [tool.poetry.dev-dependencies]
 
