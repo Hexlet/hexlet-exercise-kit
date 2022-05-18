@@ -104,8 +104,8 @@ def pull(repo, paths):
                 return False
 
             branch_name = local_repo.active_branch.name
-            if 'master' not in branch_name:
-                logger.warning(f"{path} is not in master branch. This repo was not updated")
+            if branch_name not in ['main', 'master']:
+                logger.warning(f"{path} is not master or main branch. This repo was not updated")
                 return False
 
             print(f"Updating {repo['name']}")
