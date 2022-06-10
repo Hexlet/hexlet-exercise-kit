@@ -8,7 +8,7 @@ compose-build:
 	docker compose build
 
 compose-install:
-	docker compose run --rm assignments make install
+	docker compose run --rm assignments make setup
 
 compose-bash:
 	docker compose run --rm --service-ports assignments bash
