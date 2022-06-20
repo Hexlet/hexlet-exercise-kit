@@ -8,16 +8,16 @@ compose-build:
 	docker compose build
 
 compose-install:
-	docker compose run --rm assignments make setup
+	docker compose run --rm course make setup
 
 compose-bash:
-	docker compose run --rm --service-ports assignments bash
+	docker compose run --rm --service-ports course bash
 
 compose-test:
-	docker compose run --rm assignments make test
+	docker compose run --rm course make test
 
 compose-lint:
-	docker compose run --rm assignments make lint
+	docker compose run --rm course make lint
 
 compose:
 	docker compose up
