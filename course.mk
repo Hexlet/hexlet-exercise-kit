@@ -43,5 +43,9 @@ presentation-build:
 presentation:
 	npx slidev --open
 
-pdf:
+assignment-pdf:
 	npx @marp-team/marp-cli --allow-local-files assignment_data/presentation.md --pdf
+
+assignment-presentation:
+	npx @marp-team/marp-cli -w assignment_data/presentation.md
+	open presentation.html
