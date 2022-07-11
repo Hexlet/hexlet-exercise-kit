@@ -6,7 +6,7 @@ This is a complete kit for teachers who want to create exercises on the Hexlet p
 
 ## Setup
 
-```sh
+```bash
 git clone https://gitlab.com/hexlethq/hexlet-exercise-kit.git
 
 cd hexlet-exercise-kit

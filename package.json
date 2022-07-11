@@ -1,0 +1,23 @@
+{
+  "name": "course-handler",
+  "version": "0.1.0",
+  "description": "Package for build slides & presentations",
+  "private": true,
+  "scripts": {
+    "dev": "slidev --open",
+    "build": "slidev build",
+    "export": "slidev export"
+  },
+  "author": "Stanislav Dzisiak",
+  "license": "ISC",
+  "dependencies": {
+    "@slidev/cli": "^0.34.3",
+    "monaco-editor": "^0.33.0",
+    "slidev-theme-hexlet": "^0.0.17"
+  },
+  "devDependencies": {
+    "@iconify-json/bi": "^1.1.4",
+    "@marp-team/marp-cli": "^2.0.4",
+    "playwright-chromium": "^1.23.2"
+  }
+}

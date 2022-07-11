@@ -1,7 +1,5 @@
 // @ts-check
 
-import 'core-js/stable';
-import 'regenerator-runtime/runtime';
 import debug from 'debug';
 
 import path from 'path';

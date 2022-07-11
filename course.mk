@@ -24,3 +24,24 @@ compose:
 
 compose-down:
 	docker compose down -v --remove-orphans
+
+presentation-export-pdf:
+	npx slidev export
+
+presentation-export-pdf-with-clicks:
+	npx slidev export --with-clicks
+
+presentation-export-png:
+	npx slidev export --format png
+
+presentation-export-png-with-clicks:
+	npx slidev export --with-clicks --format png
+
+presentation-build:
+	npx slidev build
+
+presentation:
+	npx slidev --open
+
+pdf:
+	npx @marp-team/marp-cli --allow-local-files assignment_data/presentation.md --pdf

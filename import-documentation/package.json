@@ -5,7 +5,7 @@
   "bin": "bin/import-documentation.js",
   "type": "module",
   "scripts": {
-    "test": "npx -n --experimental-vm-modules jest --colors"
+    "test": "jest --colors"
   },
   "repository": {
     "type": "git",
@@ -18,27 +18,26 @@
   },
   "homepage": "https://github.com/hexlet-boilerplates/javascript-package#readme",
   "dependencies": {
-    "@babel/parser": "^7.11.5",
-    "@jest/globals": "^26.4.2",
-    "commander": "^6.1.0",
-    "core-js": "^3.6.5",
-    "debug": "^4.2.0",
-    "documentation": "^13.0.2",
+    "@babel/parser": "^7.17.3",
+    "@jest/globals": "^27.5.1",
+    "commander": "^9.0.0",
+    "debug": "^4.3.3",
+    "documentation": "^13.2.5",
     "get-installed-path": "^4.0.8",
-    "lodash": "^4.17.20",
-    "regenerator-runtime": "^0.13.7"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@hexlet/co": "^0.1.9",
-    "@hexlet/pairs": "^1.1.0",
-    "@hexlet/tagged-types": "^1.0.6",
-    "axios": "^0.20.0",
-    "eslint": "^7.9.0",
-    "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jest": "^24.0.2",
-    "jest": "^26.4.2",
-    "jest-cli": "^26.4.2"
+    "@hexlet/co": "^0.1.10",
+    "@hexlet/pairs": "^1.1.1",
+    "@hexlet/tagged-types": "^1.1.1",
+    "axios": "^0.26.0",
+    "eslint": "^8.9.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jest": "^26.1.1",
+    "jest": "^27.5.1",
+    "jest-cli": "^27.5.1",
+    "npm-check-updates": "^12.4.0"
   },
   "jest": {
     "testEnvironment": "node",

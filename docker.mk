@@ -32,14 +32,14 @@ build: stop
 	docker build -t $(IMAGE_ID) .
 
 bash:
-	docker run --read-only -it -v /tmp \
+	docker run --rm --read-only -it -v /tmp \
 		-v $(ROOT_DIR)scripts/get-forwarded-envs:/usr/local/bin/get-forwarded-envs \
 	  -v $(CURDIR)/exercise_internal:/exercise_internal \
 	  -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) \
 	  /bin/bash -c '$(GET_ENVS) && sudo "$${ENVS[@]}" -u $(USER) -s'
 
 bash-root:
-	docker run -it -v /tmp \
+	docker run --rm -it -v /tmp \
 		-v $(ROOT_DIR)scripts/get-forwarded-envs:/usr/local/bin/get-forwarded-envs \
 	  -v $(CURDIR)/exercise_internal:/exercise_internal \
 	  -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) \
@@ -88,7 +88,7 @@ else
 endif
 
 lint-js:
-	npx eslint .
+	@npx eslint .
 
 lint-hexlet-python:
 	@make lint L=python-flake8
@@ -104,6 +104,9 @@ lint-hexlet-java:
 
 lint-hexlet-sql:
 	@make lint L=sqlint
+
+lint-hexlet-ruby:
+	@make lint L=rubocop
 
 lint:
 	@docker run --rm -it -v $(CURDIR)/exercise:/usr/src/app hexlet/common-${L}

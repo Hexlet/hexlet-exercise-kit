@@ -9,6 +9,7 @@ setup: pull build-downloader install-linters
 	mkdir -p projects
 	mkdir -p programs
 	make -C import-documentation all
+	npm ci
 
 pull:
 	docker pull hexlet/hexlet-python
@@ -33,6 +34,11 @@ clone: build-downloader
 		--env-file ./.env \
 		--env UPDATE=$(UPDATE) \
 		$(DOWNLOADER_IMAGE_NAME):latest
+
+# TODO: implement it
+clone-courses:
+clone-exercises:
+clone-projects:
 
 rebase:
 	make clone UPDATE=true
