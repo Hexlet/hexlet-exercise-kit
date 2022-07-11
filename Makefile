@@ -10,6 +10,7 @@ setup: pull build-downloader install-linters
 	mkdir -p projects
 	mkdir -p programs
 	make -C import-documentation all
+	npm ci
 
 pull:
 	docker pull hexlet/hexlet-python
