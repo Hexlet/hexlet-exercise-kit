@@ -20,6 +20,9 @@ compose-test:
 compose-lint:
 	docker compose run --rm project make lint
 
+compose-check-current:
+	docker compose run --rm project make check-current ASSIGNMENT=${ASSIGNMENT}
+
 compose:
 	docker compose up
 
