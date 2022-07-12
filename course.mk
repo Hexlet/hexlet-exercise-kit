@@ -2,22 +2,23 @@ ci-check:
 	docker compose -f docker-compose.yml build
 	docker compose -f docker-compose.yml up --abort-on-container-exit
 
-compose-setup: compose-build compose-install
-
 compose-build:
 	docker compose build
 
+compose-setup:
+	docker compose run --rm project make setup
+
 compose-install:
-	docker compose run --rm course make setup
+	docker compose run --rm project make install
 
 compose-bash:
-	docker compose run --rm --service-ports course bash
+	docker compose run --rm --service-ports project bash
 
 compose-test:
-	docker compose run --rm course make test
+	docker compose run --rm project make test
 
 compose-lint:
-	docker compose run --rm course make lint
+	docker compose run --rm project make lint
 
 compose:
 	docker compose up
