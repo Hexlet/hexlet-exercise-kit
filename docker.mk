@@ -109,7 +109,11 @@ lint-hexlet-ruby:
 	@make lint L=rubocop
 
 lint:
-	@docker run --rm -it -v $(CURDIR)/exercise:/usr/src/app hexlet/common-${L}
+	@docker run --rm -it \
+		-v $(CURDIR)/exercise:/usr/src/app \
+		-v hexlet-linter-${L}:/usr/src/linter \
+		$(IMAGE_ID) \
+		/usr/src/linter/linter
 
 all: build start test
 

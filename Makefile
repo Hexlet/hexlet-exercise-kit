@@ -56,4 +56,17 @@ install-linters:
 	npm i react
 	npm i prettier-eslint
 
+update-hexlet-linter:
+	docker pull hexlet/common-${L}
+	docker volume rm -f hexlet-linter-${L}
+	docker run --rm -v hexlet-linter-${L}:/linter hexlet/common-${L} echo > /dev/null
+
+update-hexlet-linters:
+	make update-hexlet-linter L=eslint
+	make update-hexlet-linter L=python-flake8
+	make update-hexlet-linter L=phpcs
+	make update-hexlet-linter L=checkstyle
+	make update-hexlet-linter L=sqlint
+	make update-hexlet-linter L=rubocop
+
 .PHONY: clone
