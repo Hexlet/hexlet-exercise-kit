@@ -108,6 +108,9 @@ lint-hexlet-sql:
 lint-hexlet-ruby:
 	@make lint L=rubocop
 
+lint-hexlet-layout:
+	@make lint L=layout-designer-lint
+
 lint:
 	@docker run --rm -it \
 		-v $(CURDIR)/exercise:/usr/src/app \
