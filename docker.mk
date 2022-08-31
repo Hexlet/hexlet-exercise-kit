@@ -57,8 +57,11 @@ ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
 else
 	docker run -d -t --read-only --rm \
 		--label hexlet-exercise \
+		--memory=500m \
+		--memory-swap=500m \
 		-v $(ROOT_DIR)import-documentation:/import-documentation \
 		-v /tmp \
+		-v /var/tmp \
 		-v $(ROOT_DIR)scripts/get-forwarded-envs:/usr/local/bin/get-forwarded-envs \
 		-v $(CURDIR)/services.conf:/etc/supervisor/conf.d/services.conf \
 		-v $(CURDIR)/exercise/:/usr/src/app \
