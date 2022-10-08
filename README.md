@@ -18,7 +18,7 @@ If you have access to clone Hexlet repositories:
 * create a personal access token on this page: [https://gitlab.com/-/profile/personal_access_tokens](https://gitlab.com/-/profile/personal_access_tokens)
 * add created token to *config.env* file
 
-```sh
+```bash
 make clone
 
 # if your .ssh catalog has specific path:
@@ -27,28 +27,38 @@ make clone SSH_KEYS_PATH=/specific/path/to/your/.ssh
 
 For pulling into cloned repos:
 
-```sh
+```bash
 make rebase
+```
+
+## Using hexlet linters
+
+```bash
+# install/update all hexlet linters
+make update-hexlet-linters
+# install/update one hexlet linter. For example, eslint
+make update-hexlet-linter L=eslint
 ```
 
 ## Run exercise
 
-```sh
+```bash
 cd <path/to/exercise/catalog>
 make build # build exercise container
 make start # run exercise and listen port 80
 make test # run tests
 make lint-js # run linter
+make lint-hexlet-js # check exercise with linter, as in production
 ```
 
 For frontend exercise after `make start` open [http://localhost:80](http://localhost:80) in your browser.
 
-```sh
+```bash
 make stop # stopped container
 ```
 
 ## New stuff
 
-```sh
+```bash
 mkdir -p exercises/ru/course-<name>/<lesson-name>_exercise
 ```

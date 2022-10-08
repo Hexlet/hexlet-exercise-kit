@@ -57,8 +57,11 @@ ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
 else
 	docker run -d -t --read-only --rm \
 		--label hexlet-exercise \
+		--memory=500m \
+		--memory-swap=500m \
 		-v $(ROOT_DIR)import-documentation:/import-documentation \
 		-v /tmp \
+		-v /var/tmp \
 		-v $(ROOT_DIR)scripts/get-forwarded-envs:/usr/local/bin/get-forwarded-envs \
 		-v $(CURDIR)/services.conf:/etc/supervisor/conf.d/services.conf \
 		-v $(CURDIR)/exercise/:/usr/src/app \
@@ -108,8 +111,15 @@ lint-hexlet-sql:
 lint-hexlet-ruby:
 	@make lint L=rubocop
 
+lint-hexlet-layout:
+	@make lint L=layout-designer-lint
+
 lint:
-	@docker run --rm -it -v $(CURDIR)/exercise:/usr/src/app hexlet/common-${L}
+	@docker run --rm -it \
+		-v $(CURDIR)/exercise:/usr/src/app \
+		-v hexlet-linter-${L}:/usr/src/linter \
+		$(IMAGE_ID) \
+		/usr/src/linter/linter
 
 all: build start test
 
