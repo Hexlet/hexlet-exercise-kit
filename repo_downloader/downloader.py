@@ -27,7 +27,7 @@ def get_repos_data(url, token):
 
     # filter not Hexlet projects
     hexlet_projects = filter(
-        lambda project: 'https://gitlab.com/hexlethq' in project.web_url,
+        lambda project: 'https://gitlab.hexlet.io/hexlethq' in project.web_url,
         gl.projects.list(all=True, visibility='private', simple=True),
     )
 
