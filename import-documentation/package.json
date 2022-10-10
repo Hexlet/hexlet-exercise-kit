@@ -2,12 +2,10 @@
   "name": "import-documentation",
   "version": "0.2.5",
   "description": "",
-  "bin": "dist/bin/import-documentation.js",
-  "main": "dist/index.js",
+  "bin": "bin/import-documentation.js",
+  "type": "module",
   "scripts": {
-    "test": "jest",
-    "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
-    "prepublish": "npm run build"
+    "test": "jest --colors"
   },
   "repository": {
     "type": "git",
@@ -20,36 +18,29 @@
   },
   "homepage": "https://github.com/hexlet-boilerplates/javascript-package#readme",
   "dependencies": {
-    "@babel/parser": "^7.8.4",
-    "commander": "^4.1.1",
-    "core-js": "^3.6.4",
-    "debug": "^4.1.1",
-    "documentation": "^13.0.0",
+    "@babel/parser": "^7.17.3",
+    "@jest/globals": "^27.5.1",
+    "commander": "^9.0.0",
+    "debug": "^4.3.3",
+    "documentation": "^13.2.5",
     "get-installed-path": "^4.0.8",
-    "lodash": "^4.17.15",
-    "regenerator-runtime": "^0.13.3"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.8.4",
-    "@babel/generator": "^7.8.4",
-    "@babel/preset-env": "^7.8.4",
-    "@hexlet/co": "^0.1.8",
-    "@hexlet/pairs": "^1.0.10",
-    "@hexlet/tagged-types": "^1.0.4",
-    "axios": "^0.19.2",
-    "babel-eslint": "^10.1.0",
-    "babel-jest": "^25.1.0",
-    "babelify": "^10.0.0",
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-babel": "^5.3.0",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-jest": "^23.8.0",
-    "jest": "^25.1.0",
-    "jest-cli": "^25.1.0"
+    "@hexlet/co": "^0.1.10",
+    "@hexlet/pairs": "^1.1.1",
+    "@hexlet/tagged-types": "^1.1.1",
+    "axios": "^0.26.0",
+    "eslint": "^8.9.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jest": "^26.1.1",
+    "jest": "^27.5.1",
+    "jest-cli": "^27.5.1",
+    "npm-check-updates": "^12.4.0"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "transform": {}
   }
 }

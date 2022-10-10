@@ -1,19 +1,16 @@
 #! /usr/bin/env python3
 
-import base64
 import logging
-import math
 import os
 import sys
 
 import git
-import requests
+import gitlab
 
 
 if not os.path.exists('/repos/download.log'):
     with open('/repos/download.log', 'w'):
         pass
-
 
 logging.basicConfig(
     filename='/repos/download.log',
@@ -24,64 +21,47 @@ logging.basicConfig(
 logger = logging.getLogger()
 sys.tracebacklimit = 0
 
-
-def make_request(url, creds, pagelen=1, page=1):
-    headers = {
-        'authorization': f"Basic {creds}",
-    }
-    querystring = {
-        'pagelen': pagelen,
-        'page': page,
-    }
-    response = requests.get(url, headers=headers, params=querystring)
-    if response.status_code != 200:
-        raise ConnectionError('Check your credentials!\n')
-    return response
-
-
-def get_repos_quantity(url, creds):
-    return make_request(url, creds).json()['size']
-
-
-def get_repos_data(url, creds):
-    pagesize = 100
-    pages = math.ceil(get_repos_quantity(url, creds) / pagesize)
-
-    def get_type(name):
-        if 'exercise' in name:
-            return 'exercise'
-        if 'challenge' in name:
-            return 'challenge'
-        if 'course' in name:
-            return 'course'
-        return ''
-
+def get_repos_data(url, token):
+    gl = gitlab.Gitlab(url, private_token=token)
     repos = []
 
-    for page in range(1, pages + 1):
-        repos_info = make_request(url, creds, pagesize, page).json()['values']
-        for repo in repos_info:
-            repo_name = repo['name']
-            repo_type = get_type(repo_name)
-            dir_name = '' if repo_type == 'course' else repo['project']['name']
-            clone_links = repo['links']['clone']
-            ssh_link = list(filter(
-                lambda link: link['name'] == 'ssh', clone_links))[0]['href']
+    # filter not Hexlet projects
+    hexlet_projects = filter(
+        lambda project: 'https://gitlab.hexlet.io/hexlethq' in project.web_url,
+        gl.projects.list(all=True, visibility='private', simple=True),
+    )
 
+    for project in hexlet_projects:
+        # filter courses outside the en and ru directories. Now it's only course for tutors
+        if ' en ' in project.name_with_namespace or ' ru ' in project.name_with_namespace:
+            if "Hexlet Exercises" in project.name_with_namespace:
+                repos.append({
+                    'name': project.name,
+                    'dir': '/'.join(project.path_with_namespace.rsplit('/')[-3:]),
+                    'link': project.ssh_url_to_repo,
+                    'type': 'exercise',
+                })
+            elif "Hexlet Courses" in project.name_with_namespace:
+                repos.append({
+                    'name': project.name,
+                    'dir': '/'.join(project.path_with_namespace.rsplit('/')[-2:]),
+                    'link': project.ssh_url_to_repo,
+                    'type': 'course',
+                })
+        elif "Hexlet Projects" in project.name_with_namespace:
             repos.append({
-                'dir': dir_name,
-                'name': repo_name,
-                'type': repo_type,
-                'link': ssh_link,
+                'name': project.name,
+                'dir': project.path_with_namespace.rsplit('/')[-1],
+                'link': project.ssh_url_to_repo,
+                'type': 'project',
             })
-
     return repos
 
 
 def clone(repo, paths):
     if repo['type']:
         parent_dir = paths[repo['type']]
-        path = f"{parent_dir}/{repo['dir']}/{repo['name']}"
+        path = f"{parent_dir}/{repo['dir']}"
         if not os.path.exists(path):
             os.makedirs(path, exist_ok=True)
             print(f"Cloning {repo['name']}")
@@ -106,7 +86,7 @@ def clone(repo, paths):
 def pull(repo, paths):
     if repo['type']:
         parent_dir = paths[repo['type']]
-        path = f"{parent_dir}/{repo['dir']}/{repo['name']}"
+        path = f"{parent_dir}/{repo['dir']}"
         if os.path.exists(path):
             try:
                 local_repo = git.Repo(path)
@@ -124,8 +104,8 @@ def pull(repo, paths):
                 return False
 
             branch_name = local_repo.active_branch.name
-            if 'master' not in branch_name:
-                logger.warning(f"{path} is not in master branch. This repo was not updated")
+            if branch_name not in ['main', 'master']:
+                logger.warning(f"{path} is not master or main branch. This repo was not updated")
                 return False
 
             print(f"Updating {repo['name']}")
@@ -142,26 +122,22 @@ def pull(repo, paths):
 
 
 def main(params=None):
-    url = f"{os.environ['BITBUCKET_API_URL']}{os.environ['BITBUCKET_TEAM_NAME']}"
+    url = os.environ['GITLAB_URL']
+    token = os.environ['GITLAB_TOKEN']
     cur_dir = '/repos'
-    cred_bytes = ('{}:{}'.format(
-        os.environ['BITBUCKET_USERNAME'],
-        os.environ['BITBUCKET_APP_PASSWORD'],
-    ).encode('utf-8'))
-    credentials = str(base64.b64encode(cred_bytes), 'utf-8')
     paths = {
         'exercise': f"{cur_dir}/exercises",
         'course': f"{cur_dir}/courses",
-        'challenge': f"{cur_dir}/exercises",
+        'project': f"{cur_dir}/projects",
     }
 
     if '--update' in params:
-        for repo in get_repos_data(url, credentials):
+        for repo in get_repos_data(url, token):
             if not pull(repo, paths):
                 print(f"An error occured with {repo['name']}. See the log file for more details")
 
     else:
-        for repo in get_repos_data(url, credentials):
+        for repo in get_repos_data(url, token):
             if not clone(repo, paths):
                 print('An error occured. See the log file for more details')
                 break
