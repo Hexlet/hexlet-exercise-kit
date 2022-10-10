@@ -45,7 +45,10 @@ bash-root:
 	  -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) \
 	  /bin/bash -c '$(GET_ENVS) && sudo "$${ENVS[@]}" -u root -s'
 
-attach: start
+attach:
+ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
+	@ make start
+endif
 	docker exec -it $(CONTAINER_ID) /bin/bash -c '$(GET_ENVS) && sudo "$${ENVS[@]}" -u $(USER) -s'
 
 logs:
