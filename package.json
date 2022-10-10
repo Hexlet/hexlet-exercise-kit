@@ -11,13 +11,13 @@
   "author": "Stanislav Dzisiak",
   "license": "ISC",
   "dependencies": {
-    "@slidev/cli": "^0.34.3",
-    "monaco-editor": "^0.33.0",
+    "@slidev/cli": "^0.36.6",
+    "monaco-editor": "^0.34.0",
     "slidev-theme-hexlet": "^0.0.17"
   },
   "devDependencies": {
-    "@iconify-json/bi": "^1.1.4",
-    "@marp-team/marp-cli": "^2.0.4",
-    "playwright-chromium": "^1.23.2"
+    "@iconify-json/bi": "^1.1.8",
+    "@marp-team/marp-cli": "^2.2.0",
+    "playwright-chromium": "^1.27.0"
   }
 }
