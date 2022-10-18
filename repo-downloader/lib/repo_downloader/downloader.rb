@@ -8,7 +8,7 @@ require 'benchmark'
 module RepoDownloader
   class Downloader
     def initialize(options = {})
-      @parallel = options[:parallel].nil? ? 1 : options[:parallel].to_i
+      @parallel = options[:parallel].nil? ? 4 : options[:parallel].to_i
 
       filter = options[:filter].nil? ? 'all' : options[:filter]
       @filter_regexp =
