@@ -16,13 +16,19 @@ make setup
 If you have access to clone Hexlet repositories:
 
 * create a personal access token on this page: [https://gitlab.hexlet.io/-/profile/personal_access_tokens](https://gitlab.hexlet.io/-/profile/personal_access_tokens)
-* add created token to *config.env* file
+* add created token to *.env* file
+
+```
+GITLAB_API_PRIVATE_TOKEN=<token>
+GITLAB_API_ENDPOINT=https://gitlab.hexlet.io/api/v4
+PARALLEL=4
+```
 
 ```bash
 make clone
 
 # if your .ssh catalog has specific path:
-make clone SSH_KEYS_PATH=/specific/path/to/your/.ssh 
+make clone SSH_KEYS_PATH=/specific/path/to/your/.ssh
 ```
 
 For pulling into cloned repos:
