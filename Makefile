@@ -2,8 +2,9 @@ DOWNLOADER_IMAGE_NAME=hexlet/gitlab-downloader
 SSH_KEYS_PATH?=$(HOME)/.ssh
 UID := $(shell id -u)
 GID := $(shell id -g)
+FILTER?=all
 
-setup: pull build-downloader install-linters
+setup: create-config pull build-downloader
 	mkdir -p exercises
 	mkdir -p courses
 	mkdir -p projects
@@ -33,30 +34,35 @@ clone: build-downloader
 		-v $(CURDIR):/home/tirion/repos \
 		-v $(HOME)/.ssh:/home/tirion/.ssh \
 		--env-file ./.env \
+		--env FILTER=$(FILTER) \
 		--env UPDATE=$(UPDATE) \
 		$(DOWNLOADER_IMAGE_NAME):latest
 
+downloader-bash:
+	docker run --rm -it \
+		--name hexlet-exercise-kit-repo-downloader \
+		-v $(CURDIR)/repo-downloader:/home/tirion/app \
+		-v $(CURDIR):/home/tirion/repos \
+		-v $(HOME)/.ssh:/home/tirion/.ssh \
+		--env-file ./.env \
+		--env FILTER=$(FILTER) \
+		--env UPDATE=$(UPDATE) \
+		$(DOWNLOADER_IMAGE_NAME):latest \
+		bash
+
 # TODO: implement it
 clone-courses:
+	make clone FILTER=courses
+
 clone-exercises:
+	make clone FILTER=exercises
+
 clone-projects:
+	make clone FILTER=projects
+
 
 rebase:
 	make clone UPDATE=true
-
-install-linters:
-	npm i eslint
-	npm i eslint-config-airbnb
-	npm i eslint-plugin-react
-	npm i babel-eslint
-	npm i eslint-plugin-jsx-a11y
-	npm i eslint-plugin-jest
-	npm i eslint-plugin-import
-	npm i eslint-plugin-testing-library
-	npm i eslint-plugin-jest-dom
-	npm i jest
-	npm i react
-	npm i prettier-eslint
 
 update-hexlet-linter:
 	docker pull hexlet/common-${L}
