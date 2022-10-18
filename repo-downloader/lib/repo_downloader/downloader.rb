@@ -7,26 +7,10 @@ require 'benchmark'
 
 module RepoDownloader
   class Downloader
+    DEFAULT_PARALLELS = 4
     def initialize(options = {})
-      @parallel = options[:parallel].nil? ? 4 : options[:parallel].to_i
-
-      filter = options[:filter].nil? ? 'all' : options[:filter]
-      @filter_regexp =
-        case filter
-        when 'courses'
-          %r{^hexlethq/(courses)/(.+)$}
-        when 'exercises'
-          %r{^hexlethq/(exercises)/(.+)$}
-        when 'programs'
-          %r{^hexlethq/(programs)/(.+)$}
-        when 'projects'
-          %r{^hexlethq/(projects)/(.+)$}
-        when 'all'
-          %r{^hexlethq/(courses|exercises|programs|projects)/(.+)$}
-        else
-          raise "Unknown filter: #{filter}"
-        end
-
+      @parallel = options.fetch(:parallel, DEFAULT_PARALLELS).to_i
+      @update = options[:update] == 'true'
       @repos_path =
         if options[:repos_path].nil?
           File.expand_path('..', Dir.getwd)
@@ -34,7 +18,19 @@ module RepoDownloader
           File.expand_path(options[:repos_path])
         end
 
-      @update = options[:update] == 'true'
+      filter = options.fetch(:filter, :all).to_sym
+
+      regexp_filter_map = {
+        courses: %r{^hexlethq/(courses)/(.+)$},
+        exercises: %r{^hexlethq/(exercises)/(.+)$},
+        programs: %r{^hexlethq/(programs)/(.+)$},
+        projects: %r{^hexlethq/(projects)/(.+)$},
+        all: %r{^hexlethq/(courses|exercises|programs|projects)/(.+)$}
+      }
+
+      raise "Unknown filter: #{filter}" unless regexp_filter_map.key?(filter)
+
+      @filter_regexp = regexp_filter_map.fetch(filter)
     end
 
     def load_projects
