@@ -9,8 +9,9 @@ Gem::Specification.new do |spec|
   spec.summary       = 'Repositories downloader'
   spec.description   = 'CLI util for download repositories from Gitlab'
   spec.homepage      = 'https://gitlab.com/hexlethq/hexlet-exercise-kit'
-  spec.required_ruby_version = Gem::Requirement.new('>= 3.0.1')
+  spec.required_ruby_version = Gem::Requirement.new('>= 3.1.2')
 
+  spec.metadata['rubygems_mfa_required'] = 'true'
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = spec.homepage
   spec.metadata['changelog_uri'] = spec.homepage

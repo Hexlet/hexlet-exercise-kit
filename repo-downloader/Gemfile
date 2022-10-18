@@ -4,8 +4,4 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'dotenv', '~> 2.7.6'
-gem 'git', '~> 1.9.1'
-gem 'gitlab', '~> 4.17.0'
-gem 'mixlib-log', '~> 3.0.9'
-gem 'parallel', '~> 1.20.1'
+gem 'rubocop'

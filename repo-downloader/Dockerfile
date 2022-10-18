@@ -1,7 +1,7 @@
-FROM ruby:3.0.1-slim
+FROM ruby:3.1.2-slim
 
 RUN apt-get update \
-  && apt-get install -yq git make
+  && apt-get install -yq git make gcc
 
 ARG UID
 ARG GID

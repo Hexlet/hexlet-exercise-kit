@@ -9,15 +9,15 @@ module RepoDownloader
       Log.level(log_level)
 
       if ENV['GITLAB_API_PRIVATE_TOKEN'].nil? || ENV['GITLAB_API_PRIVATE_TOKEN'].empty?
-        raise "You should to add Gitlab private token in .env file"
+        raise 'You should to add Gitlab private token in .env file'
       end
 
       downloader = RepoDownloader::Downloader.new({
-        parallel: ENV['PARALLEL'],
-        filter: ENV['FILTER'],
-        repos_path: ENV['PATH_TO_REPOS'],
-        update: ENV['UPDATE']
-      })
+                                                    parallel: ENV.fetch('PARALLEL', nil),
+                                                    filter: ENV.fetch('FILTER', nil),
+                                                    repos_path: ENV.fetch('PATH_TO_REPOS', nil),
+                                                    update: ENV.fetch('UPDATE', nil)
+                                                  })
 
       downloader.download
     end

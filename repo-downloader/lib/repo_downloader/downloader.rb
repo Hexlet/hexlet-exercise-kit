@@ -8,23 +8,23 @@ require 'benchmark'
 module RepoDownloader
   class Downloader
     def initialize(options = {})
-      @parallel = options[:parallel].nil? ? 8 : options[:parallel].to_i
+      @parallel = options[:parallel].nil? ? 1 : options[:parallel].to_i
 
       filter = options[:filter].nil? ? 'all' : options[:filter]
       @filter_regexp =
         case filter
-          when 'courses'
-            /^hexlethq\/(courses)\/(.+)$/
-          when 'exercises'
-            /^hexlethq\/(exercises)\/(.+)$/
-          when 'programs'
-            /^hexlethq\/(programs)\/(.+)$/
-          when 'projects'
-            /^hexlethq\/(projects)\/(.+)$/
-          when 'all'
-            /^hexlethq\/(courses|exercises|programs|projects)\/(.+)$/
-          else
-            raise "Unknown filter: #{filter}"
+        when 'courses'
+          %r{^hexlethq/(courses)/(.+)$}
+        when 'exercises'
+          %r{^hexlethq/(exercises)/(.+)$}
+        when 'programs'
+          %r{^hexlethq/(programs)/(.+)$}
+        when 'projects'
+          %r{^hexlethq/(projects)/(.+)$}
+        when 'all'
+          %r{^hexlethq/(courses|exercises|programs|projects)/(.+)$}
+        else
+          raise "Unknown filter: #{filter}"
         end
 
       @repos_path =
@@ -37,48 +37,52 @@ module RepoDownloader
       @update = options[:update] == 'true'
     end
 
-    def loadProjectsList
+    def load_projects
       projects = []
       page = 1
 
       loop do
         projects_per_page = Gitlab.projects({
-          per_page: 100,
-          page: page,
-          visibility: :private,
-          simple: true,
-        })
+                                              per_page: 100,
+                                              page:,
+                                              visibility: :private,
+                                              simple: true
+                                            })
 
         projects += projects_per_page
         print "\033[K"
         Log.info("received data on #{projects.length} repositories")
         print "\033[A\r"
 
-        break if projects_per_page.length == 0
+        break if projects_per_page.length.zero?
 
         page += 1
       end
 
       projects
-        .select do |project|
-          matches = project.path_with_namespace.match(@filter_regexp)
-          project.path_with_namespace.match?(@filter_regexp) && !matches[2].match?(/^[^\/]+\/hexlet-groups\/.+$/)
-        end
-        .map do |project|
-          matches = project.path_with_namespace.match(@filter_regexp)
-          {
-            name: project.name,
-            ssh_url: project.ssh_url_to_repo,
-            path: File.join(@repos_path, File.join(matches[1], matches[2]))
-          }
-        end
+    end
+
+    def prepare_loaded_projects(projects)
+      matched_projects = projects.select do |project|
+        matches = project.path_with_namespace.match(@filter_regexp)
+        project.path_with_namespace.match?(@filter_regexp) && !matches[2].match?(%r{^[^/]+/hexlet-groups/.+$})
+      end
+
+      matched_projects.map do |project|
+        matches = project.path_with_namespace.match(@filter_regexp)
+        {
+          name: project.name,
+          ssh_url: project.ssh_url_to_repo,
+          path: File.join(@repos_path, File.join(matches[1], matches[2]))
+        }
+      end
     end
 
     # TODO: simplify method logic,
     # add error handle,
     # add logging to file if error
     def process_projects(projects)
-      Parallel.map(projects, in_processes: @parallel) do |project|
+      Parallel.each(projects, in_processes: @parallel, progress: 'Processing projects') do |project|
         action = nil
         time = Benchmark.measure do
           action =
@@ -88,13 +92,14 @@ module RepoDownloader
             elsif @update
               repo = Git.open(project[:path])
               if repo.current_branch.nil?
-                'skiped'
+                'skipped'
               else
+                repo.checkout('main')
                 repo.pull('origin', repo.current_branch)
                 'updated'
               end
             else
-              'skiped'
+              'skipped'
             end
         end
         ms = (time.real * 1000).round
@@ -105,17 +110,17 @@ module RepoDownloader
     end
 
     def download
-      Log.info('Loading projects list')
-      projects = loadProjectsList
+      Log.info('Begin loading projects list')
+      projects = prepare_loaded_projects(load_projects)
       print "\033[B"
-      Log.info("Finded #{projects.length} projects")
+      Log.info("Found #{projects.length} projects")
 
       Log.info('Projects processing started')
       process_time = Benchmark.measure do
         process_projects(projects)
       end
       print "\033[K"
-      
+
       ms = (process_time.real * 1000).round
       seconds = (ms / 1000 % 60).to_s.rjust(2, '0')
       minutes = (ms / (1000 * 60) % 60).to_s.rjust(2, '0')

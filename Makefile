@@ -28,6 +28,7 @@ build-downloader: create-config
 
 clone: build-downloader
 	docker run --rm -it \
+		--name hexlet-exercise-kit-repo-downloader \
 		-v $(CURDIR)/repo-downloader:/home/tirion/app \
 		-v $(CURDIR):/home/tirion/repos \
 		-v $(HOME)/.ssh:/home/tirion/.ssh \
