@@ -39,24 +39,18 @@ module RepoDownloader
 
     def load_projects
       projects = []
-      page = 1
 
-      loop do
-        projects_per_page = Gitlab.projects({
-                                              per_page: 100,
-                                              page:,
-                                              visibility: :private,
-                                              simple: true
-                                            })
+      response = Gitlab.projects({
+                                   per_page: 100,
+                                   visibility: :private,
+                                   simple: true
+                                 })
 
-        projects += projects_per_page
+      response.each_page do |current_projects|
+        projects += current_projects
         print "\033[K"
         Log.info("received data on #{projects.length} repositories")
         print "\033[A\r"
-
-        break if projects_per_page.length.zero?
-
-        page += 1
       end
 
       projects
@@ -70,6 +64,7 @@ module RepoDownloader
 
       matched_projects.map do |project|
         matches = project.path_with_namespace.match(@filter_regexp)
+
         {
           name: project.name,
           ssh_url: project.ssh_url_to_repo,
@@ -110,7 +105,7 @@ module RepoDownloader
     end
 
     def download
-      Log.info('Begin loading projects list')
+      Log.info('Begin fetching repositories list')
       projects = prepare_loaded_projects(load_projects)
       print "\033[B"
       Log.info("Found #{projects.length} projects")
