@@ -30,7 +30,7 @@ build-downloader: create-config
 clone: build-downloader downloader-run
 
 downloader-run:
-	docker run --rm -it \
+	docker run --rm \
 		--name hexlet-exercise-kit-repo-downloader \
 		-v $(CURDIR)/repo-downloader:/home/tirion/app \
 		-v $(CURDIR):/home/tirion/repos \
@@ -45,7 +45,11 @@ downloader-bash:
 	make downloader-run C=bash
 
 downloader-lint:
-	make downloader-run C='make lint'
+	docker run --rm \
+		-v $(CURDIR)/repo-downloader:/home/tirion/app \
+		$(DOWNLOADER_IMAGE_NAME):latest \
+		make lint
+
 
 # TODO: implement it
 clone-courses:
