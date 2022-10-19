@@ -41,7 +41,6 @@ downloader-run:
 		$(DOWNLOADER_IMAGE_NAME):latest \
 		$(C)
 
-
 downloader-bash:
 	make downloader-run C=bash
 
@@ -57,7 +56,6 @@ clone-exercises:
 
 clone-projects:
 	make clone FILTER=projects
-
 
 rebase:
 	make clone UPDATE=true
