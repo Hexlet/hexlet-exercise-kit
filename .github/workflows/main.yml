@@ -21,4 +21,4 @@ jobs:
           node-version: 18.x
 
       - run: make setup
-      - run: make lint
+      - run: make downloader-lint
