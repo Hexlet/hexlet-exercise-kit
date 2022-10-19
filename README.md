@@ -4,6 +4,13 @@
 
 This is a complete kit for teachers who want to create exercises on the Hexlet platform.
 
+## Requirements
+
+* Docker
+* Nodejs
+* Make
+* Ubuntu, Macos or WSL (for Windows)
+
 ## Setup
 
 ```bash
