@@ -27,40 +27,26 @@ build-downloader: create-config
 		--build-arg GID=$(GID) \
 		./repo-downloader
 
-clone: build-downloader
+clone: build-downloader downloader-run
+
+downloader-run:
 	docker run --rm -it \
 		--name hexlet-exercise-kit-repo-downloader \
 		-v $(CURDIR)/repo-downloader:/home/tirion/app \
 		-v $(CURDIR):/home/tirion/repos \
-		-v $(HOME)/.ssh:/home/tirion/.ssh \
+		-v $(SSH_KEYS_PATH):/home/tirion/.ssh \
 		--env-file ./.env \
 		--env FILTER=$(FILTER) \
 		--env UPDATE=$(UPDATE) \
-		$(DOWNLOADER_IMAGE_NAME):latest
+		$(DOWNLOADER_IMAGE_NAME):latest \
+		$(C)
+
 
 downloader-bash:
-	docker run --rm -it \
-		-v $(CURDIR)/repo-downloader:/home/tirion/app \
-		-v $(CURDIR):/home/tirion/repos \
-		-v $(HOME)/.ssh:/home/tirion/.ssh \
-		--env-file ./.env \
-		--env FILTER=$(FILTER) \
-		--env UPDATE=$(UPDATE) \
-		$(DOWNLOADER_IMAGE_NAME):latest \
-		bash
+	make downloader-run C=bash
 
 downloader-lint:
-	docker run --rm -it \
-		--name hexlet-exercise-kit-repo-downloader \
-		-v $(CURDIR)/repo-downloader:/home/tirion/app \
-		-v $(CURDIR):/home/tirion/repos \
-		-v $(HOME)/.ssh:/home/tirion/.ssh \
-		--env-file ./.env \
-		--env FILTER=$(FILTER) \
-		--env UPDATE=$(UPDATE) \
-		$(DOWNLOADER_IMAGE_NAME):latest \
-		make lint
-
+	make downloader-run C='make lint'
 
 # TODO: implement it
 clone-courses:
