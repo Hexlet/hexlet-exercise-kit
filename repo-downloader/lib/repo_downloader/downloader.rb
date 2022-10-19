@@ -7,7 +7,7 @@ require 'benchmark'
 
 module RepoDownloader
   class Downloader
-    DEFAULT_PARALLELS = 4
+    DEFAULT_PARALLELS = 8
     def initialize(options = {})
       @parallel = options.fetch(:parallel, DEFAULT_PARALLELS).to_i
       @update = options[:update] == 'true'

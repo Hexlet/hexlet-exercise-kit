@@ -19,6 +19,5 @@ COPY --chown=tirion ["Gemfile*", "*.gemspec", "./"]
 RUN bundle
 
 ENV PATH_TO_REPOS=/home/tirion/repos
-ENV GITLAB_API_ENDPOINT=https://gitlab.hexlet.io/api/v4
 
 CMD ["make", "run"]

@@ -21,7 +21,7 @@ If you have access to clone Hexlet repositories:
 ```
 GITLAB_API_PRIVATE_TOKEN=<token>
 GITLAB_API_ENDPOINT=https://gitlab.hexlet.io/api/v4
-PARALLEL=4
+PARALLEL=8
 ```
 
 ```bash
