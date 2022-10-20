@@ -25,7 +25,7 @@ module RepoDownloader
         update: ENV.fetch('UPDATE', nil) == 'true',
         gitlab_endpoint: ENV.fetch('GITLAB_API_ENDPOINT', nil),
         gitlab_private_token: ENV.fetch('GITLAB_API_PRIVATE_TOKEN', nil),
-        repos_path: repos_path
+        repos_path:
       }
 
       downloader = RepoDownloader::Downloader.new(options)
