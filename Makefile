@@ -30,7 +30,7 @@ build-downloader: create-config
 clone: build-downloader downloader-run
 
 downloader-run:
-	docker run --rm \
+	docker run -it --rm \
 		--name hexlet-exercise-kit-repo-downloader \
 		-v $(CURDIR)/repo-downloader:/home/tirion/app \
 		-v $(CURDIR):/home/tirion/repos \
@@ -38,8 +38,7 @@ downloader-run:
 		--env-file ./.env \
 		--env FILTER=$(FILTER) \
 		--env UPDATE=$(UPDATE) \
-		$(DOWNLOADER_IMAGE_NAME):latest \
-		$(C)
+		$(DOWNLOADER_IMAGE_NAME):latest $(C)
 
 downloader-bash:
 	make downloader-run C=bash
@@ -50,8 +49,6 @@ downloader-lint:
 		$(DOWNLOADER_IMAGE_NAME):latest \
 		make lint
 
-
-# TODO: implement it
 clone-courses:
 	make clone FILTER=courses
 

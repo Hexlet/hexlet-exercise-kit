@@ -4,21 +4,14 @@ require 'gitlab'
 require 'git'
 require 'parallel'
 require 'benchmark'
+require 'tty-cursor'
 
 module RepoDownloader
   class Downloader
-    DEFAULT_PARALLELS = 8
     def initialize(options = {})
-      @parallel = options.fetch(:parallel, DEFAULT_PARALLELS).to_i
-      @update = options[:update] == 'true'
-      @repos_path =
-        if options[:repos_path].nil?
-          File.expand_path('..', Dir.getwd)
-        else
-          File.expand_path(options[:repos_path])
-        end
-
-      filter = options.fetch(:filter, :all).to_sym
+      @options = options
+      filter = options.fetch(:filter).to_sym
+      @tty_cursor = TTY::Cursor
 
       regexp_filter_map = {
         courses: %r{^hexlethq/(courses)/(.+)$},
@@ -34,21 +27,20 @@ module RepoDownloader
     end
 
     def load_projects
-      projects = []
+      gitlab_client = Gitlab.client(
+        endpoint: @options[:gitlab_endpoint],
+        private_token: @options[:gitlab_private_token]
+      )
 
-      response = Gitlab.projects({
-                                   per_page: 100,
-                                   visibility: :private,
-                                   simple: true
-                                 })
+      projects = []
+      response = gitlab_client.projects per_page: 100
 
       response.each_page do |current_projects|
         projects += current_projects
-        print "\033[K"
+        print @tty_cursor.clear_line
         Log.info("received data on #{projects.length} repositories")
-        print "\033[A\r"
+        print @tty_cursor.up
       end
-
       projects
     end
 
@@ -64,7 +56,7 @@ module RepoDownloader
         {
           name: project.name,
           ssh_url: project.ssh_url_to_repo,
-          path: File.join(@repos_path, File.join(matches[1], matches[2]))
+          path: File.join(@options[:repos_path], File.join(matches[1], matches[2]))
         }
       end
     end
@@ -73,14 +65,14 @@ module RepoDownloader
     # add error handle,
     # add logging to file if error
     def process_projects(projects)
-      Parallel.each(projects, in_processes: @parallel, progress: 'Processing projects') do |project|
+      Parallel.each(projects, in_processes: @options[:parallel], progress: 'Processing projects') do |project|
         action = nil
         time = Benchmark.measure do
           action =
             if !File.directory?(project[:path])
               Git.clone(project[:ssh_url], project[:path])
               'cloned'
-            elsif @update
+            elsif @options[:update]
               repo = Git.open(project[:path])
               if repo.current_branch.nil?
                 'skipped'
@@ -94,23 +86,21 @@ module RepoDownloader
             end
         end
         ms = (time.real * 1000).round
-        print "\033[K"
+        @tty_cursor.clear_line
         Log.info("#{action} #{project[:name]} +#{ms}ms")
-        print "\033[A\r"
+        @tty_cursor.up
       end
     end
 
     def download
       Log.info('Begin fetching repositories list')
       projects = prepare_loaded_projects(load_projects)
-      print "\033[B"
       Log.info("Found #{projects.length} projects")
 
       Log.info('Projects processing started')
       process_time = Benchmark.measure do
         process_projects(projects)
       end
-      print "\033[K"
 
       ms = (process_time.real * 1000).round
       seconds = (ms / 1000 % 60).to_s.rjust(2, '0')

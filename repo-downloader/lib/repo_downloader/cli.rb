@@ -12,12 +12,16 @@ module RepoDownloader
         raise 'You should to add Gitlab private token in .env file'
       end
 
-      downloader = RepoDownloader::Downloader.new({
-                                                    parallel: ENV.fetch('PARALLEL', nil),
-                                                    filter: ENV.fetch('FILTER', nil),
-                                                    repos_path: ENV.fetch('PATH_TO_REPOS', nil),
-                                                    update: ENV.fetch('UPDATE', nil)
-                                                  })
+      options = {
+        parallel: ENV['PARALLEL'].to_i || 8,
+        filter: ENV.fetch('FILTER', nil),
+        update: ENV.fetch('UPDATE', nil) == 'true',
+        gitlab_endpoint: ENV.fetch('GITLAB_API_ENDPOINT', nil),
+        gitlab_private_token: ENV.fetch('GITLAB_API_PRIVATE_TOKEN', nil),
+        repos_path: File.expand_path('..', Dir.getwd)
+      }
+
+      downloader = RepoDownloader::Downloader.new(options)
 
       downloader.download
     end

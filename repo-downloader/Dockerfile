@@ -1,5 +1,7 @@
 FROM ruby:3.1.2-slim
 
+ENV PATH_TO_REPOS=/home/tirion/app
+
 RUN apt-get update \
   && apt-get install -yq git make gcc
 
@@ -11,13 +13,11 @@ RUN useradd -u $UID -g $GID -m tirion
 
 USER tirion
 
-RUN mkdir /home/tirion/repos
-WORKDIR /home/tirion/app
+RUN mkdir $PATH_TO_REPOS
+WORKDIR $PATH_TO_REPOS
 
 COPY --chown=tirion ["Gemfile*", "*.gemspec", "./"]
 
 RUN bundle
-
-ENV PATH_TO_REPOS=/home/tirion/repos
 
 CMD ["make", "run"]

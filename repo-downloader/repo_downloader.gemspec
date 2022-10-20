@@ -28,4 +28,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'gitlab', '~> 4.17.0'
   spec.add_dependency 'mixlib-log', '~> 3.0.9'
   spec.add_dependency 'parallel', '~> 1.20.1'
+  spec.add_dependency 'tty-cursor', '~> 0.7.1'
 end
