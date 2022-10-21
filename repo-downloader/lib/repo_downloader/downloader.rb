@@ -11,6 +11,7 @@ module RepoDownloader
     def initialize(options = {})
       @options = options
       @tty_cursor = TTY::Cursor
+      @errors = []
 
       regexp_filter_map = {
         courses: %r{^hexlethq/(courses)/(.+)$},
@@ -56,53 +57,74 @@ module RepoDownloader
       end
     end
 
-    # TODO: simplify method logic,
-    # add error handle,
-    # add logging to file if error
-    def process_projects(projects)
-      Parallel.each(projects, in_processes: @options[:parallel], progress: 'Processing projects') do |project|
-        action = nil
-        time = Benchmark.measure do
-          action =
-            if !File.directory?(project[:path])
-              Git.clone(project[:ssh_url], project[:path])
-              'cloned'
-            elsif @options[:update]
-              repo = Git.open(project[:path])
-              if repo.current_branch.nil?
-                'skipped'
-              else
-                repo.checkout('main')
-                repo.pull('origin', repo.current_branch)
-                'updated'
-              end
-            else
-              'skipped'
-            end
-        end
-        ms = (time.real * 1000).round
-        @tty_cursor.clear_line
-        Log.info("#{action} #{project[:name]} +#{ms}ms")
-        @tty_cursor.up
+    def make_error(error_type, path, url = '')
+      { error_type:, url:, path: }
+    end
+
+    def get_error_message(error)
+      if error[:error_type] == :clone
+        "#{error[:error_type]} #{error[:url]} to #{error[:path]}"
+      else
+        "#{error[:error_type]} #{error[:path]}"
       end
+    end
+
+    def clone_repo(url, path)
+      Git.clone(url, path)
+    rescue StandardError
+      make_error(:clone, path, url)
+    end
+
+    def update_repo(path)
+      repo = Git.open(path)
+      unless repo.current_branch.nil?
+        repo.checkout('main')
+        repo.pull('origin', repo.current_branch)
+      end
+    rescue StandardError
+      make_error(:update, path)
+    end
+
+    def process_projects(projects)
+      results = Parallel.map(projects, in_processes: @options[:parallel], progress: 'Processing projects') do |project|
+        if !File.directory?(project[:path])
+          clone_repo(project[:ssh_url], project[:path])
+        elsif @options[:update]
+          update_repo(project[:path])
+        end
+      end
+      @errors += results.filter { |el| el.is_a?(Hash) && el.key?(:error_type) }
     end
 
     def download
       Log.info('Begin fetching repositories list')
       projects = prepare_loaded_projects(load_projects)
       Log.info("Found #{projects.length} projects")
+      puts
 
       Log.info('Projects processing started')
       process_time = Benchmark.measure do
         process_projects(projects)
       end
+      puts
+
+      @errors.each do |error|
+        Log.error(get_error_message(error))
+      end
+      puts if @errors.any?
 
       ms = (process_time.real * 1000).round
       seconds = (ms / 1000 % 60).to_s.rjust(2, '0')
       minutes = (ms / (1000 * 60) % 60).to_s.rjust(2, '0')
       hours = (ms / (1000 * 60 * 60)).to_s.rjust(2, '0')
 
-      Log.info('Projects process completed successfully')
+      message = if @errors.any?
+                  'Projects process completed with errors. See above.'
+                else
+                  'Projects process completed successfully'
+                end
+
+      Log.info(message)
       Log.info("Total: #{projects.length} projects")
       Log.info("Elapsed time: #{hours}:#{minutes}:#{seconds}")
     end

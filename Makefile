@@ -26,7 +26,7 @@ build-downloader: create-config
 		--build-arg GID=$(GID) \
 		./repo-downloader
 
-clone: build-downloader downloader-run
+clone: downloader-run
 
 downloader-run:
 	docker run -it --rm \
