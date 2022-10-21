@@ -10,7 +10,6 @@ module RepoDownloader
   class Downloader
     def initialize(options = {})
       @options = options
-      filter = options.fetch(:filter).to_sym
       @tty_cursor = TTY::Cursor
 
       regexp_filter_map = {
@@ -21,9 +20,7 @@ module RepoDownloader
         all: %r{^hexlethq/(courses|exercises|programs|projects)/(.+)$}
       }
 
-      raise "Unknown filter: #{filter}" unless regexp_filter_map.key?(filter)
-
-      @filter_regexp = regexp_filter_map.fetch(filter)
+      @filter_regexp = regexp_filter_map.fetch(options[:filter])
     end
 
     def load_projects

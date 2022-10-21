@@ -8,28 +8,19 @@ module RepoDownloader
       log_level = ENV['DEBUG'] == 'true' ? :debug : :info
       Log.level(log_level)
 
-      if ENV['GITLAB_API_PRIVATE_TOKEN'].nil? || ENV['GITLAB_API_PRIVATE_TOKEN'].empty?
-        raise 'You should to add Gitlab private token in .env file'
-      end
-
-      repos_path =
-        if ENV['PATH_TO_REPOS'].nil?
-          File.expand_path('..', Dir.getwd)
-        else
-          File.expand_path(ENV['PATH_TO_REPOS'])
-        end
-
       options = {
-        parallel: ENV['PARALLEL'].to_i || 8,
-        filter: ENV.fetch('FILTER', nil),
-        update: ENV.fetch('UPDATE', nil) == 'true',
-        gitlab_endpoint: ENV.fetch('GITLAB_API_ENDPOINT', nil),
-        gitlab_private_token: ENV.fetch('GITLAB_API_PRIVATE_TOKEN', nil),
-        repos_path:
+        parallel: ENV.fetch('PARALLEL', 4).to_i,
+        filter: ENV.fetch('FILTER', 'all').to_sym,
+        update: ENV.fetch('UPDATE', 'false') == 'true',
+        gitlab_endpoint: ENV.fetch('GITLAB_API_ENDPOINT'),
+        gitlab_private_token: ENV.fetch('GITLAB_API_PRIVATE_TOKEN'),
+        repos_path: File.expand_path('..', Dir.getwd)
       }
 
-      downloader = RepoDownloader::Downloader.new(options)
+      raise 'You should to add Gitlab private token in .env file' if options[:gitlab_private_token].empty?
+      raise 'You should to add Gitlab api endpoint in .env file' if options[:gitlab_endpoint].empty?
 
+      downloader = RepoDownloader::Downloader.new(options)
       downloader.download
     end
   end

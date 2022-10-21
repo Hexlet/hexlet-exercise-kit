@@ -2,7 +2,6 @@ DOWNLOADER_IMAGE_NAME=hexlet/gitlab-downloader
 SSH_KEYS_PATH?=$(HOME)/.ssh
 UID := $(shell id -u)
 GID := $(shell id -g)
-FILTER?=all
 
 setup: create-config pull build-downloader
 	mkdir -p exercises
@@ -32,12 +31,11 @@ clone: build-downloader downloader-run
 downloader-run:
 	docker run -it --rm \
 		--name hexlet-exercise-kit-repo-downloader \
-		-v $(CURDIR)/repo-downloader:/home/tirion/app \
-		-v $(CURDIR):/home/tirion/repos \
+		-v $(CURDIR):/home/tirion/project \
 		-v $(SSH_KEYS_PATH):/home/tirion/.ssh \
 		--env-file ./.env \
-		--env FILTER=$(FILTER) \
-		--env UPDATE=$(UPDATE) \
+		--env FILTER \
+		--env UPDATE \
 		$(DOWNLOADER_IMAGE_NAME):latest $(C)
 
 downloader-bash:
@@ -45,7 +43,7 @@ downloader-bash:
 
 downloader-lint:
 	docker run --rm \
-		-v $(CURDIR)/repo-downloader:/home/tirion/app \
+		-v $(CURDIR):/home/tirion/project \
 		$(DOWNLOADER_IMAGE_NAME):latest \
 		make lint
 

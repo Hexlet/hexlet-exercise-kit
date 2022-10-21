@@ -27,6 +27,9 @@ If you have access to clone Hexlet repositories:
 
 ```
 GITLAB_API_PRIVATE_TOKEN=<token>
+
+# Adjust this value for faster or slower speed of repositories download
+PARALLEL=4
 ```
 
 ```bash
