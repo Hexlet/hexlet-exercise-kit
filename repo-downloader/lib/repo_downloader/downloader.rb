@@ -24,13 +24,9 @@ module RepoDownloader
     end
 
     def load_projects
-      gitlab_client = Gitlab.client(
-        endpoint: @options[:gitlab_endpoint],
-        private_token: @options[:gitlab_private_token]
-      )
-
       projects = []
-      response = gitlab_client.projects per_page: 100
+
+      response = Gitlab.projects(per_page: 100)
 
       response.each_page do |current_projects|
         projects += current_projects
@@ -38,6 +34,8 @@ module RepoDownloader
         Log.info("received data on #{projects.length} repositories")
         print @tty_cursor.up
       end
+
+      print @tty_cursor.down
       projects
     end
 
