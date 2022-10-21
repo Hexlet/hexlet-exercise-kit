@@ -1,10 +1,10 @@
-DOWNLOADER_IMAGE_NAME=hexlet/gitlab_downloader
+DOWNLOADER_IMAGE_NAME=hexlet/gitlab-downloader
 SSH_KEYS_PATH?=$(HOME)/.ssh
-DOWNLOADER_FLAG?=
-UNAME=$(shell whoami)
-UID=$(shell id -u)
+UID := $(shell id -u)
+GID := $(shell id -g)
+FILTER?=all
 
-setup: pull build-downloader install-linters
+setup: create-config pull build-downloader
 	mkdir -p exercises
 	mkdir -p courses
 	mkdir -p projects
@@ -19,42 +19,47 @@ pull:
 	docker pull hexlet/hexlet-php
 
 create-config:
-	cp -n config.env.example config.env || true
+	cp -n repo-downloader/.env.template .env
 
 build-downloader: create-config
 	docker build -t $(DOWNLOADER_IMAGE_NAME):latest \
-		--build-arg UNAME=$(UNAME) \
 		--build-arg UID=$(UID) \
-		./repo_downloader || true
+		--build-arg GID=$(GID) \
+		./repo-downloader
 
-clone: build-downloader
-	docker run --rm -it --name hexlet_downloader \
-		-v $(SSH_KEYS_PATH):/home/$(UNAME)/.ssh \
-		-v $(CURDIR):/repos \
-		--env-file ./config.env \
-		$(DOWNLOADER_IMAGE_NAME):latest $(DOWNLOADER_FLAG)
+clone: build-downloader downloader-run
 
-# TODO: implement it
+downloader-run:
+	docker run -it --rm \
+		--name hexlet-exercise-kit-repo-downloader \
+		-v $(CURDIR)/repo-downloader:/home/tirion/app \
+		-v $(CURDIR):/home/tirion/repos \
+		-v $(SSH_KEYS_PATH):/home/tirion/.ssh \
+		--env-file ./.env \
+		--env FILTER=$(FILTER) \
+		--env UPDATE=$(UPDATE) \
+		$(DOWNLOADER_IMAGE_NAME):latest $(C)
+
+downloader-bash:
+	make downloader-run C=bash
+
+downloader-lint:
+	docker run --rm \
+		-v $(CURDIR)/repo-downloader:/home/tirion/app \
+		$(DOWNLOADER_IMAGE_NAME):latest \
+		make lint
+
 clone-courses:
+	make clone FILTER=courses
+
 clone-exercises:
+	make clone FILTER=exercises
+
 clone-projects:
+	make clone FILTER=projects
 
 rebase:
-	make clone DOWNLOADER_FLAG=--update
-
-install-linters:
-	npm i eslint
-	npm i eslint-config-airbnb
-	npm i eslint-plugin-react
-	npm i babel-eslint
-	npm i eslint-plugin-jsx-a11y
-	npm i eslint-plugin-jest
-	npm i eslint-plugin-import
-	npm i eslint-plugin-testing-library
-	npm i eslint-plugin-jest-dom
-	npm i jest
-	npm i react
-	npm i prettier-eslint
+	make clone UPDATE=true
 
 update-hexlet-linter:
 	docker pull hexlet/common-${L}
