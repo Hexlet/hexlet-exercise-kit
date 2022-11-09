@@ -117,7 +117,7 @@ lint-hexlet-ruby:
 lint-hexlet-layout:
 	@make lint L=layout-designer-lint
 
-lint-multi-language:
+lint-hexlet-multi-language:
 	@make lint L=multi-language
 
 lint:
