@@ -117,6 +117,9 @@ lint-hexlet-ruby:
 lint-hexlet-layout:
 	@make lint L=layout-designer-lint
 
+lint-multi-language:
+	@make lint L=multi-language
+
 lint:
 	@docker run --rm -it \
 		-v $(CURDIR)/exercise:/usr/src/app \

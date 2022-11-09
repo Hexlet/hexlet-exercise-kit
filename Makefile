@@ -71,5 +71,6 @@ update-hexlet-linters:
 	make update-hexlet-linter L=checkstyle
 	make update-hexlet-linter L=sqlint
 	make update-hexlet-linter L=rubocop
+	make update-hexlet-linter L=multi-language
 
 .PHONY: clone
