@@ -18,7 +18,8 @@ module RepoDownloader
         exercises: %r{^hexlethq/(exercises)/(.+)$},
         programs: %r{^hexlethq/(programs)/(.+)$},
         projects: %r{^hexlethq/(projects)/(.+)$},
-        all: %r{^hexlethq/(courses|exercises|programs|projects)/(.+)$}
+        boilerplates: %r{^hexlethq/(boilerplates)/(.+)$},
+        all: %r{^hexlethq/(courses|exercises|programs|projects|boilerplates)/(.+)$}
       }
 
       @filter_regexp = regexp_filter_map.fetch(options[:filter])

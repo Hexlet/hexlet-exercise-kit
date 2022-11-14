@@ -56,6 +56,9 @@ clone-exercises:
 clone-projects:
 	make clone FILTER=projects
 
+clone-boilerplates:
+	make clone FILTER=boilerplates
+
 rebase:
 	make clone UPDATE=true
 
