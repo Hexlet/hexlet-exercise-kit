@@ -14,7 +14,7 @@ This is a complete kit for teachers who want to create exercises on the Hexlet p
 ## Setup
 
 ```bash
-git clone https://gitlab.hexlet.io/hexlethq/hexlet-exercise-kit.git
+git clone git@github.com:Hexlet/hexlet-exercise-kit.git
 
 cd hexlet-exercise-kit
 make setup
