@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'dotenv', '~> 2.7.6'
-  spec.add_dependency 'git', '~> 1.9.1'
+  spec.add_dependency 'git', '>= 1.9.1', '< 1.14.0'
   spec.add_dependency 'gitlab', '~> 4.17.0'
   spec.add_dependency 'mixlib-log', '~> 3.0.9'
   spec.add_dependency 'parallel', '~> 1.20.1'

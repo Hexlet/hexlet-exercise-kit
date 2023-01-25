@@ -3,7 +3,7 @@ PATH
   specs:
     repo_downloader (0.1.0)
       dotenv (~> 2.7.6)
-      git (~> 1.9.1)
+      git (>= 1.9.1, < 1.14.0)
       gitlab (~> 4.17.0)
       mixlib-log (~> 3.0.9)
       parallel (~> 1.20.1)
@@ -12,9 +12,12 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    addressable (2.8.1)
+      public_suffix (>= 2.0.2, < 6.0)
     ast (2.4.2)
     dotenv (2.7.6)
-    git (1.9.1)
+    git (1.13.1)
+      addressable (~> 2.8)
       rchardet (~> 1.8)
     gitlab (4.17.0)
       httparty (~> 0.18)
@@ -31,6 +34,7 @@ GEM
     parallel (1.20.1)
     parser (3.1.2.1)
       ast (~> 2.4.1)
+    public_suffix (5.0.1)
     rainbow (3.1.1)
     rchardet (1.8.0)
     regexp_parser (2.6.0)
