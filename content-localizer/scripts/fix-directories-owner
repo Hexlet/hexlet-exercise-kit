@@ -1,0 +1,3 @@
+#!/bin/bash
+
+chown -fR $UID:$GID /root/data /root/ts /root/db /root/dist

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+
+fix-directories-owner
+envsubst < /opt/config.serge > /root/config.serge
+
+exec "$@"

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+serge pull-ts
+serge localize
+fix-directories-owner
+
+echo "----------------------------"
+echo "Traslated data have received"
+echo "----------------------------"

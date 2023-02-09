@@ -53,3 +53,39 @@ assignment-pdf:
 assignment-presentation:
 	npx @marp-team/marp-cli -w assignment_data/presentation.md
 	open presentation.html
+
+run-translation:
+	@mkdir -p .localize_data
+	@docker run --rm -it \
+		-v $(CURDIR):/root/source \
+		-v $(CURDIR)/.localize_data/data:/root/data \
+		-v $(CURDIR)/.localize_data/db:/root/db \
+		-v $(CURDIR)/.localize_data/ts:/root/ts \
+		-v $(CURDIR)/.localize_data/dist:/root/dist \
+		--env-file ../../../content-localizer/.env \
+		--env SRC_LANG=ru \
+		--env DEST_LANG=en \
+		--env SMARTCAT_PROJECT_ID=${PROJECT_ID} \
+		hexlet/content-localizer $(ACTION)
+
+translations-prepare:
+	@make run-translation ACTION=prepare-to-translate
+
+translations-send:
+	@if [ -z "${PROJECT_ID}" ]; then echo "Please set PROJECT_ID=<smartcat-project-id>"; exit 1; fi
+	@make run-translation ACTION=send-to-translate
+
+translations-get:
+	@if [ -z "${PROJECT_ID}" ]; then echo "Please set PROJECT_ID=<smartcat-project-id>"; exit 1; fi
+	@make run-translation ACTION=get-translations
+
+translations-write:
+	@if [ -z "${COURSE_PATH}" ]; then echo "Please set COURSE_PATH=<full-path-to-result-course>"; exit 1; fi
+	@mkdir -p ${COURSE_PATH}
+	@make run-translation ACTION=build-translations
+	@cp -r .localize_data/dist/. ${COURSE_PATH}
+	# @rm -rf .localize_data/dist/*
+	@echo "------------------------------------------"
+	@echo "Traslated files have copied to course path"
+	@echo "------------------------------------------"
+	@echo ${COURSE_PATH}

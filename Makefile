@@ -76,4 +76,13 @@ update-hexlet-linters:
 	make update-hexlet-linter L=rubocop
 	make update-hexlet-linter L=multi-language
 
+create-localizer-config:
+	cp -n content-localizer/.env.template content-localizer/.env || echo 'already exists'
+
+build-localizer: create-localizer-config
+	docker build -t hexlet/content-localizer \
+		--build-arg UID=$(UID) \
+		--build-arg GID=$(GID) \
+		./content-localizer
+
 .PHONY: clone

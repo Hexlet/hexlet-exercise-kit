@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+serge push-ts
+
+echo "------------------------------"
+echo "Data for translation have sent"
+echo "------------------------------"

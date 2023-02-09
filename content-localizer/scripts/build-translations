@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+for i in $(find source/* -maxdepth 2 -type d);
+do
+  lesson=$(basename $i)
+  mkdir -p dist/$lesson
+  loctools-json2md < data/$DEST_LANG/$lesson/README.json > dist/$lesson/README.md
+done
+fix-directories-owner
+
+echo "--------------------------"
+echo "Traslated files have built"
+echo "--------------------------"

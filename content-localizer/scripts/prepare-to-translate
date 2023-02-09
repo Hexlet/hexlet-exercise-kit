@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+mkdir -p data/$SRC_LANG data/$DEST_LANG
+
+for i in $(find source/* -maxdepth 2 -type d);
+do
+  lesson=$(basename $i)
+  mkdir -p data/$SRC_LANG/$lesson data/$DEST_LANG/$lesson
+  loctools-md2json < source/$lesson/README.md > data/$SRC_LANG/$lesson/README.json
+done
+
+serge localize
+fix-directories-owner
+
+echo "--------------------------------------"
+echo "Preparing for translation has comleted"
+echo "--------------------------------------"

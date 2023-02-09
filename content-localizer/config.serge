@@ -1,0 +1,189 @@
+sync
+{
+    ts
+    {
+        plugin                                  smartcat_v2
+
+        data
+        {
+            /*
+            Provide the base API server URL here. Note that the trailing slash
+            must be omitted. Options are:
+            https://smartcat.ai       (Europe)
+            https://us.smartcat.ai    (North America)
+            https://ea.smartcat.ai    (Asia)
+            You will know the server your account is on by signing into your account
+            and looking at the URL.
+            */
+            base_url                            ${SMARTCAT_URL}
+
+            /*
+            Provide your account ID as it is displayed on
+            your `Settings > API` page once you sign into
+            your Smartcat account.
+            */
+            account_id                          ${SMARTCAT_ACCOUNT_ID}
+
+            /*
+            Go to `Settings > API` page in your account,
+            and generate an API key. Key name can be anything,
+            e.g. 'Serge', and the auto-generated secret part
+            of the key is what needs to be added here.
+            */
+            token                               ${SMARTCAT_TOKEN}
+
+            # Project to synchronize data with. To get the ID, navigate to the
+            # target project and take it from the URL. For example, if the URL is
+            # https://us.smartcat.ai/projects/01234567-890a-bcde-f012-34567890abcd/files?documentPage=1
+            # then the ID will be 01234567-890a-bcde-f012-34567890abcd
+            project_id                          ${SMARTCAT_PROJECT_ID}
+
+            # `--mode=current`   = download any translations, even unconfirmed ones (default).
+            # `--mode=confirmed` = download segments at the confirmed stage
+            # `--mode=complete`  = download segments that passed through all translation stages.
+            # pull_params                         --mode=confirmed
+        }
+    }
+
+    vcs
+    {
+        plugin                                  git
+
+        data
+        {
+            add_unversioned                     YES
+
+            clone_params                        --depth 1
+            email                               l10n@mycompany.com
+            name                                L10N Robot
+
+            local_path                          data
+
+            # Set this parameter to be your Git clone URL. If your repository
+            # main branch is not called 'master', you need to specify it
+            # explicitly at the end of the URL, like this: #main
+            remote_path                         git@github.com:my-company/my-project.git#main
+        }
+    }
+}
+
+inc
+{
+    common-job-settings
+    {
+        /*
+        Usually you want to have a single database for all your
+        translation projects, unless you have multiple source languages.
+        In that case it is recommended to split databases for each
+        source language.
+        */
+        db_source                               DBI:SQLite:dbname=db/translate.db3
+        db_namespace                            default
+
+        /*
+        Source language must be recognized by Smartcat.
+        See https://smartcat.ai/Home/Languages
+        */
+        source_language                         ${SRC_LANG}
+
+        /*
+        Destination (target) languages must be recognized by Smartcat.
+        */
+        destination_languages                   ${DEST_LANG}
+
+        output_bom                              NO
+
+        ts_file_path                            ts/%LANG%/%FILE%.po
+
+        /*
+        Cross-file repetitions will be handled on Smartcat side
+        */
+        reuse_translations                      NO
+
+        callback_plugins
+        {
+            /*
+            Currently Smartcat expects a flat list of .po files
+            in each language directory, i.e. it doesn't support
+            subdirectories in its projects.
+            The code below will flatten output file paths
+            by replacing `/` with a custom separator, `--`.
+            */
+            :flatten-ts-file-path
+            {
+                plugin                          replace_strings
+                phase                           rewrite_relative_ts_file_path
+
+                data
+                {
+                    replace                     `\/` `--` g
+                }
+            }
+
+           /*
+            Filter out strings that don't need to be translated
+            */
+            :skip-unsupported-strings
+            {
+                plugin                          process_if
+                phase                           can_extract
+
+                data
+                {
+                    # Do not extract empty strings as these are not supported by Smartcat.
+                    # Also skip strings consisting of whitespace only since Smartcat
+                    # doesn't show them for translation and keeps them untranslated
+                    # in the output .po file.
+                    if
+                    {
+                        content_matches         ^\s*$
+
+                        then
+                        {
+                            return              NO
+                        }
+                    }
+
+                    # Apply the default rule (allow the extraction of all keys).
+                    if
+                    {
+                        content_matches         .
+
+                        then
+                        {
+                            return              YES
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+jobs
+{
+    {
+        @inherit                                .#inc/common-job-settings
+
+        name                                    Localize Json files
+        id                                      json
+
+        source_dir                              data/${SRC_LANG}
+        source_process_subdirs                  YES
+        source_match                            \.json$
+        output_file_path                        data/${DEST_LANG}/%FILE%
+
+        use_keys_as_context                     YES
+
+        parser
+        {
+            plugin                   parse_json
+
+            data
+            {
+                path_matches         \/text$
+                path_doesnt_match    \/context\/text$
+            }
+        }
+    }
+}
