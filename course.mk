@@ -84,7 +84,7 @@ translations-write:
 	@mkdir -p ${COURSE_PATH}
 	@make run-translation ACTION=build-translations
 	@cp -r .localize_data/dist/. ${COURSE_PATH}
-	# @rm -rf .localize_data/dist/*
+	@rm -rf .localize_data/dist/*
 	@echo "------------------------------------------"
 	@echo "Traslated files have copied to course path"
 	@echo "------------------------------------------"

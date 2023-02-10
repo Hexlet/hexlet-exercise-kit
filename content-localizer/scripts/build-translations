@@ -2,7 +2,7 @@
 
 set -e
 
-for i in $(find source/* -maxdepth 2 -type d);
+for i in $(find source/* -maxdepth 0 -type d);
 do
   lesson=$(basename $i)
   mkdir -p dist/$lesson

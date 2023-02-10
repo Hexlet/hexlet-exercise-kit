@@ -4,7 +4,7 @@ set -e
 
 mkdir -p data/$SRC_LANG data/$DEST_LANG
 
-for i in $(find source/* -maxdepth 2 -type d);
+for i in $(find source/* -maxdepth 0 -type d);
 do
   lesson=$(basename $i)
   mkdir -p data/$SRC_LANG/$lesson data/$DEST_LANG/$lesson
