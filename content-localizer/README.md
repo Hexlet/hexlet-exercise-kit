@@ -51,6 +51,7 @@ make translations-prepare
 make translations-send PROJECT_ID=<smartcat-project-id>
 git add .
 git commit -m 'prepare data to translate'
+git push origin translate-to-en
 ```
 
 9. Get translated files from smartcat when translate is ready and add them to git repository
@@ -59,6 +60,7 @@ git commit -m 'prepare data to translate'
 make translations-get PROJECT_ID=<smartcat-project-id>
 git add .
 git commit -m 'get translated files'
+git push origin translate-to-en
 ```
 
 10. Build translated files and copy them to new course directory. It will be created if doesn't exist
