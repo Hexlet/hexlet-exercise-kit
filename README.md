@@ -1,6 +1,6 @@
 # hexlet-exercise-kit
 
-[![Hexlet chat](http://slack-ru.hexlet.io/badge.svg)](http://slack-ru.hexlet.io) [![Main](https://github.com/hexlet/hexlet-exercise-kit/actions/workflows/main.yml/badge.svg)](https://github.com/hexlet/hexlet-exercise-kit/actions/workflows/main.yml)
+[![Main](https://github.com/hexlet/hexlet-exercise-kit/actions/workflows/main.yml/badge.svg)](https://github.com/hexlet/hexlet-exercise-kit/actions/workflows/main.yml)
 
 This is a complete kit for teachers who want to create exercises on the Hexlet platform.
 
