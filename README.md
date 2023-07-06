@@ -76,3 +76,13 @@ make stop # stopped container
 ```bash
 mkdir -p exercises/ru/course-<name>/<lesson-name>_exercise
 ```
+
+## Troubleshooting
+
+```text
+Unable to find image 'hexlet/gitlab-downloader:latest' locally
+docker: Error response from daemon: pull access denied for hexlet/gitlab-downloader, repository does not exist or may require 'docker login': denied: requested access to the resource is denied.
+See 'docker run --help'.
+```
+
+Build downloader `make build-downloader` or see [setup](#setup) or fresh installation
