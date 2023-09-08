@@ -8,6 +8,7 @@ setup: create-config pull build-downloader
 	mkdir -p courses
 	mkdir -p projects
 	mkdir -p programs
+	mkdir -p boilerplates
 	make -C import-documentation all
 	npm ci
 
@@ -32,6 +33,7 @@ downloader-run:
 	docker run -it --rm \
 		--name hexlet-exercise-kit-repo-downloader \
 		-v $(CURDIR):/home/tirion/project \
+		-v /home/tirion/project/.git \
 		-v $(SSH_KEYS_PATH):/home/tirion/.ssh \
 		--env-file ./.env \
 		--env FILTER \
