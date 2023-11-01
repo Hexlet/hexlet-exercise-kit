@@ -1,0 +1,9 @@
+{
+  "default": true,
+  "header-style": { "style": "atx" },
+  "ul-style": { "style": "asterisk" },
+  "ul-indent": { "indent": 4 },
+  "line-length": false,
+  "emphasis-style": {"style": "underscore"},
+  "first-line-h1": false
+}
