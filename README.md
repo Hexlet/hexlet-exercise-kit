@@ -71,6 +71,21 @@ For frontend exercise after `make start` open [http://localhost:80](http://local
 make stop # stopped container
 ```
 
+## Run markdown linter
+
+Add `Makefile` in the course directory:
+
+```makefile
+include ../../../course.mk
+```
+
+and run:
+
+```bash
+make markdown-lint # view error list
+make markdown-lint-fix # fix errors
+```
+
 ## New stuff
 
 ```bash
