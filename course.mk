@@ -91,4 +91,7 @@ translations-write:
 	@echo ${COURSE_PATH}
 
 markdown-lint:
+	npx markdownlint -c ../../../.markdownlint.json ${CURDIR}
+
+markdown-lint-fix:
 	npx markdownlint -f -c ../../../.markdownlint.json ${CURDIR}
