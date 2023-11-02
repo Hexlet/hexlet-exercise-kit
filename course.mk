@@ -89,3 +89,9 @@ translations-write:
 	@echo "Traslated files have copied to course path"
 	@echo "------------------------------------------"
 	@echo ${COURSE_PATH}
+
+markdown-lint:
+	npx markdownlint -c ../../../.markdownlint.json ${CURDIR}
+
+markdown-lint-fix:
+	npx markdownlint -f -c ../../../.markdownlint.json ${CURDIR}
