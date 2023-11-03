@@ -71,6 +71,12 @@ For frontend exercise after `make start` open [http://localhost:80](http://local
 make stop # stopped container
 ```
 
+## Copy a course from code-basics to Hexlet
+
+```bash
+make copy-from-cb I=path-to-source O=path-to-destination
+```
+
 ## New stuff
 
 ```bash

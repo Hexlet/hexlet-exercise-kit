@@ -4,6 +4,9 @@
   "description": "",
   "main": "src/index.js",
   "type": "module",
+  "bin": {
+    "copy": "bin/synchronize.js" 
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,6 +16,8 @@
   "dependencies": {
     "commander": "^11.1.0",
     "glob": "^10.3.10",
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "listr": "^0.14.3",
+    "lodash": "^4.17.21"
   }
 }

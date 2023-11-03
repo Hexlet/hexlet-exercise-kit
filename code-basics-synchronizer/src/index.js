@@ -1,6 +1,7 @@
 import { glob } from 'glob';
 import fs from 'fs/promises';
 import path from 'path';
+import Listr from 'listr';
 
 import parse from './parseCodeBasicExercise.js';
 
@@ -27,16 +28,26 @@ const getHexletLessons = async (coursePath) => {
 }
 
 export default async (inputPath, outputPath) => {
-  // const inputData = getData(inputPath);
   const cbLessons = await getCbLessons(inputPath);
   const hexletLessons = await getHexletLessons(outputPath);
+  const tasks = cbLessons.filter((item) => item.name).map((cbLesson) => {
+    const task = async () => {
+      const hexletLesson = hexletLessons.find((lesson) => lesson.name?.toLowerCase() === cbLesson.name.toLowerCase());
+      if (!hexletLesson) {
+        return Promise.reject(Error('Not found lesson on Hexlet'));
+      }
+      if (!cbLesson.theory) {
+        return Promise.reject(Error('Not found content'));
+      }
+      return fs.writeFile(hexletLesson.readmePath, cbLesson.theory, 'utf-8');
+    };
 
-  return Promise.all(cbLessons.map(async (cbLesson) => {
-    const hexletLesson = hexletLessons.find((lesson) => lesson.name === cbLesson.name);
-    if (!hexletLesson) {
-      return Promise.resolve(`Урок ${cbLesson.name} не найден на Hexlet`);
-    }
-    await fs.writeFile(hexletLesson.readmePath, cbLesson.theory, 'utf-8');
-    return `Урок ${cbLesson.name} обновлен`;
-  }));
+    return {
+      title: cbLesson.name || '',
+      task,
+    };
+  });
+
+  const listr = new Listr(tasks, { concurrent: true, exitOnError: false });
+  return listr.run();
 };
