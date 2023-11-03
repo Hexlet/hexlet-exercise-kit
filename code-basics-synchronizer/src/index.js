@@ -25,7 +25,7 @@ const getHexletLessons = async (coursePath) => {
     return result;
   }));
   return parsedLessons;
-}
+};
 
 export default async (inputPath, outputPath) => {
   const cbLessons = await getCbLessons(inputPath);

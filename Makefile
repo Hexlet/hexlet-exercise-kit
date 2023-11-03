@@ -67,9 +67,6 @@ clone-boilerplates:
 rebase:
 	make clone UPDATE=true
 
-code-basics-to-hexlet:
-
-
 update-hexlet-linter:
 	docker pull hexlet/common-${L}
 	docker volume rm -f hexlet-linter-${L}
