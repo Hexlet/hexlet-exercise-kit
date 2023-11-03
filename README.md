@@ -71,10 +71,25 @@ For frontend exercise after `make start` open [http://localhost:80](http://local
 make stop # stopped container
 ```
 
-## Copy a course from code-basics to Hexlet
+## Copy a course from Code-Basics to Hexlet
 
 ```bash
 make copy-from-cb I=path-to-source O=path-to-destination
+```
+
+## Run markdown linter
+
+Add `Makefile` in the course directory:
+
+```makefile
+include ../../../course.mk
+```
+
+and run:
+
+```bash
+make markdown-lint # view error list
+make markdown-lint-fix # fix errors
 ```
 
 ## New stuff
