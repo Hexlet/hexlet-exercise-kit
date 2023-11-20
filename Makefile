@@ -29,6 +29,9 @@ build-downloader: create-config
 
 clone: downloader-run
 
+copy-from-cb:
+	make -C code-basics-synchronizer
+
 downloader-run:
 	docker run -it --rm \
 		--name hexlet-exercise-kit-repo-downloader \
