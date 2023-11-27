@@ -134,3 +134,9 @@ lint:
 all: build start test
 
 .PHONY: test build bash run stop start
+
+markdown-lint:
+	npx markdownlint -c ../../../../.markdownlint.json ${CURDIR}
+
+markdown-lint-fix:
+	npx markdownlint -f -c ../../../../.markdownlint.json ${CURDIR}
