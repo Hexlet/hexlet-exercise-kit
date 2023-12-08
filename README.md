@@ -7,9 +7,9 @@ This is a complete kit for teachers who want to create exercises on the Hexlet p
 ## Requirements
 
 * Docker
-* Nodejs
+* Node.js
 * Make
-* Ubuntu, Macos or WSL (for Windows)
+* Ubuntu, macOS or WSL (for Windows)
 
 ## Setup
 

@@ -91,7 +91,7 @@ build-localizer: create-localizer-config
 		./content-localizer
 
 start-languagetool:
-	docker run -d --rm -p 8081:8010 --name hexlet_languagetool silviof/docker-languagetool
+	docker run -d -p 8081:8010 --name hexlet_languagetool --restart unless-stopped silviof/docker-languagetool
 
 stop-languagetool:
 	docker stop hexlet_languagetool
