@@ -90,4 +90,10 @@ build-localizer: create-localizer-config
 		--build-arg GID=$(GID) \
 		./content-localizer
 
+start-languagetool:
+	docker run -d --rm -p 8081:8010 --name hexlet_languagetool silviof/docker-languagetool
+
+stop-languagetool:
+	docker stop hexlet_languagetool
+
 .PHONY: clone

@@ -98,6 +98,13 @@ make markdown-lint-fix # fix errors
 mkdir -p exercises/ru/course-<name>/<lesson-name>_exercise
 ```
 
+## Run LanguageTool
+
+* Install LanguageTool for your code editor. For example VS Code [LanguageTool Linter](https://marketplace.visualstudio.com/items?itemName=davidlday.languagetool-linter)
+* Set URL of your LanguageTool server. Defaults to localhost on port 8081
+* Run LanguageTool server `make start-languagetool`
+* Stop LanguageTool server `make stop-languagetool`
+
 ## Troubleshooting
 
 ```text
