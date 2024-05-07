@@ -34,38 +34,24 @@ copy-from-cb:
 
 downloader-run:
 	docker run -it --rm \
-		--name hexlet-exercise-kit-repo-downloader \
-		-v $(CURDIR):/home/tirion/project \
-		-v /home/tirion/project/.git \
-		-v $(SSH_KEYS_PATH):/home/tirion/.ssh \
 		--env-file ./.env \
-		--env FILTER \
-		--env UPDATE \
-		$(DOWNLOADER_IMAGE_NAME):latest $(C)
-
-downloader-bash:
-	make downloader-run C=bash
-
-downloader-lint:
-	docker run --rm \
-		-v $(CURDIR):/home/tirion/project \
-		$(DOWNLOADER_IMAGE_NAME):latest \
-		make lint
+		-v $(SSH_KEYS_PATH):/home/.ssh \
+		-v $(CURDIR):/home/data/hexlethq \
+		-v $(CURDIR)/repo-downloader/config:/config \
+		$(DOWNLOADER_IMAGE_NAME) \
+		ghorg clone hexlethq
 
 clone-courses:
-	make clone FILTER=courses
+	make clone FILTER=/courses
 
 clone-exercises:
-	make clone FILTER=exercises
+	make clone FILTER=/exercises
 
 clone-projects:
-	make clone FILTER=projects
+	make clone FILTER=/projects
 
 clone-boilerplates:
-	make clone FILTER=boilerplates
-
-rebase:
-	make clone UPDATE=true
+	make clone FILTER=/boilerplates
 
 update-hexlet-linter:
 	docker pull hexlet/common-${L}
@@ -92,5 +78,3 @@ build-localizer: create-localizer-config
 
 spellcheck-courses:
 	docker run -v ./courses:/content hexlet/languagetool-cli
-
-.PHONY: clone

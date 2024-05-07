@@ -1,20 +1,45 @@
-FROM ruby:3.1.2-slim
+# ==================================================
+# Build image
+# ==================================================
+FROM golang:alpine AS build-image
 
-RUN apt-get update \
-  && apt-get install -yq git make gcc
+# ENV GO111MODULE=on
+ENV CGO_ENABLED=0
 
+WORKDIR /go/src/github.com/gabrie30/ghorg
+
+COPY . .
+
+RUN go install github.com/gabrie30/ghorg@latest
+
+# ==================================================
+# Runtime image
+# ==================================================
+FROM alpine:latest AS runtime-image
+
+ARG USER=ghorg
+ARG GROUP=ghorg
 ARG UID
 ARG GID
 
-RUN groupadd -g $GID tirion || true
-RUN useradd -u $UID -g $GID -m tirion
+ENV XDG_CONFIG_HOME=/config
+ENV GHORG_CONFIG=/config/conf.yaml
+ENV GHORG_RECLONE_PATH=/config/reclone.yaml
 
-USER tirion
+RUN apk add -U --no-cache ca-certificates openssh-client tzdata git \
+    && mkdir -p /data $XDG_CONFIG_HOME \
+    && addgroup --gid $GID $GROUP \
+    && adduser -D -H --gecos "" \
+                     --home "/home" \
+                     --ingroup "$GROUP" \
+                     --uid "$UID" \
+                     "$USER" \
+    && chown -R $USER:$GROUP /home /data $XDG_CONFIG_HOME \
+    && rm -rf /tmp/* /var/{cache,log}/* /var/lib/apt/lists/*
 
-WORKDIR /home/tirion/project/repo-downloader
+USER ghorg
 
-COPY --chown=tirion ["Gemfile*", "*.gemspec", "./"]
+RUN mkdir -p /home/data/hexlethq
+WORKDIR /home/data/hexlethq
 
-RUN bundle
-
-CMD ["make", "run"]
+COPY --from=build-image --chown=$USER:$GROUP /go/bin/ghorg /usr/local/bin
