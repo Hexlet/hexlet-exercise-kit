@@ -2,6 +2,7 @@ DOWNLOADER_IMAGE_NAME=hexlet/gitlab-downloader
 SSH_KEYS_PATH?=$(HOME)/.ssh
 UID := $(shell id -u)
 GID := $(shell id -g)
+HEXLETHQ=hexlethq
 
 setup: create-config pull build-downloader
 	mkdir -p exercises
@@ -27,8 +28,6 @@ build-downloader: create-config
 		--build-arg GID=$(GID) \
 		./repo-downloader
 
-clone: downloader-run
-
 copy-from-cb:
 	make -C code-basics-synchronizer
 
@@ -39,19 +38,22 @@ downloader-run:
 		-v $(CURDIR):/home/data/hexlethq \
 		-v $(CURDIR)/repo-downloader/config:/config \
 		$(DOWNLOADER_IMAGE_NAME) \
-		ghorg clone hexlethq
+		ghorg clone $(FILTER)
+
+clone:
+	make downloader-run FILTER=$(HEXLETHQ)
 
 clone-courses:
-	make clone FILTER=/courses
+	make downloader-run FILTER=$(HEXLETHQ)/courses
 
 clone-exercises:
-	make clone FILTER=/exercises
+	make downloader-run FILTER=$(HEXLETHQ)/exercises
 
 clone-projects:
-	make clone FILTER=/projects
+	make downloader-run FILTER=$(HEXLETHQ)/projects
 
 clone-boilerplates:
-	make clone FILTER=/boilerplates
+	make downloader-run FILTER=$(HEXLETHQ)/boilerplates
 
 update-hexlet-linter:
 	docker pull hexlet/common-${L}
