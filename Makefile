@@ -20,7 +20,7 @@ pull:
 	docker pull hexlet/hexlet-php
 
 create-config:
-	cp -n repo-downloader/.env.template .env || echo 'already exists'
+	cp -n .env.example .env || echo 'already exists'
 
 build-downloader: create-config
 	docker build -t $(DOWNLOADER_IMAGE_NAME):latest \
