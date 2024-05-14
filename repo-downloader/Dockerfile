@@ -1,20 +1,20 @@
-FROM ruby:3.1.2-slim
+# NOTE:
+FROM ghcr.io/gabrie30/ghorg:master-c66a7af
 
-RUN apt-get update \
-  && apt-get install -yq git make gcc
-
+ENV GHORG_CONFIG_DIR=$HOME/.config/ghorg
+ENV GHORG_CONFIG=$GHORG_CONFIG_DIR/conf.yaml
+ARG USER=tirion
+ARG GROUP=tirion
 ARG UID
 ARG GID
 
-RUN groupadd -g $GID tirion || true
-RUN useradd -u $UID -g $GID -m tirion
+USER root
 
-USER tirion
+RUN addgroup --gid $GID $GROUP && adduser -D -H --gecos "" --ingroup "$GROUP" --uid "$UID" "$USER"
 
-WORKDIR /home/tirion/project/repo-downloader
+USER $USER
 
-COPY --chown=tirion ["Gemfile*", "*.gemspec", "./"]
+WORKDIR $HOME/data/hexlethq
+RUN mkdir -p data/hexlethq
 
-RUN bundle
-
-CMD ["make", "run"]
+COPY config/conf.yaml $GHORG_CONFIG_DIR/conf.yaml

@@ -1,7 +1,9 @@
 DOWNLOADER_IMAGE_NAME=hexlet/gitlab-downloader
+DOWNLOADER_HOME=/home/tirion
 SSH_KEYS_PATH?=$(HOME)/.ssh
 UID := $(shell id -u)
 GID := $(shell id -g)
+HEXLETHQ=hexlethq
 
 setup: create-config pull build-downloader
 	mkdir -p exercises
@@ -19,7 +21,7 @@ pull:
 	docker pull hexlet/hexlet-php
 
 create-config:
-	cp -n repo-downloader/.env.template .env || echo 'already exists'
+	cp -n .env.example .env || echo 'already exists'
 
 build-downloader: create-config
 	docker build -t $(DOWNLOADER_IMAGE_NAME):latest \
@@ -27,45 +29,30 @@ build-downloader: create-config
 		--build-arg GID=$(GID) \
 		./repo-downloader
 
-clone: downloader-run
-
 copy-from-cb:
 	make -C code-basics-synchronizer
 
 downloader-run:
 	docker run -it --rm \
-		--name hexlet-exercise-kit-repo-downloader \
-		-v $(CURDIR):/home/tirion/project \
-		-v /home/tirion/project/.git \
-		-v $(SSH_KEYS_PATH):/home/tirion/.ssh \
 		--env-file ./.env \
-		--env FILTER \
-		--env UPDATE \
-		$(DOWNLOADER_IMAGE_NAME):latest $(C)
+		-v $(SSH_KEYS_PATH):/home/tirion/.ssh \
+		-v $(CURDIR):/data/hexlethq \
+		$(DOWNLOADER_IMAGE_NAME) \
+		clone $(FILTER)
 
-downloader-bash:
-	make downloader-run C=bash
-
-downloader-lint:
-	docker run --rm \
-		-v $(CURDIR):/home/tirion/project \
-		$(DOWNLOADER_IMAGE_NAME):latest \
-		make lint
+clone: clone-courses clone-exercises clone-projects clone-boilerplates
 
 clone-courses:
-	make clone FILTER=courses
+	make downloader-run FILTER=$(HEXLETHQ)/courses
 
 clone-exercises:
-	make clone FILTER=exercises
+	make downloader-run FILTER=$(HEXLETHQ)/exercises
 
 clone-projects:
-	make clone FILTER=projects
+	make downloader-run FILTER=$(HEXLETHQ)/projects
 
 clone-boilerplates:
-	make clone FILTER=boilerplates
-
-rebase:
-	make clone UPDATE=true
+	make downloader-run FILTER=$(HEXLETHQ)/boilerplates
 
 update-hexlet-linter:
 	docker pull hexlet/common-${L}
@@ -92,5 +79,3 @@ build-localizer: create-localizer-config
 
 spellcheck-courses:
 	docker run -v ./courses:/content hexlet/languagetool-cli
-
-.PHONY: clone
