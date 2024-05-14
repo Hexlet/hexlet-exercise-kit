@@ -1,4 +1,5 @@
 DOWNLOADER_IMAGE_NAME=hexlet/gitlab-downloader
+DOWNLOADER_HOME=/home/tirion
 SSH_KEYS_PATH?=$(HOME)/.ssh
 UID := $(shell id -u)
 GID := $(shell id -g)
@@ -34,11 +35,10 @@ copy-from-cb:
 downloader-run:
 	docker run -it --rm \
 		--env-file ./.env \
-		-v $(SSH_KEYS_PATH):/home/.ssh \
-		-v $(CURDIR):/home/data/hexlethq \
-		-v $(CURDIR)/repo-downloader/config:/config \
+		-v $(SSH_KEYS_PATH):/home/tirion/.ssh \
+		-v $(CURDIR):/data/hexlethq \
 		$(DOWNLOADER_IMAGE_NAME) \
-		ghorg clone $(FILTER)
+		clone $(FILTER)
 
 clone: clone-courses clone-exercises clone-projects clone-boilerplates
 

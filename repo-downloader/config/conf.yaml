@@ -18,7 +18,7 @@ GHORG_CLONE_PROTOCOL: ssh
 # See https://github.com/gabrie30/ghorg#changing-clone-directories for example
 # default: YOUR_HOME_DIR/ghorg
 # flag (--path, -p) eg: --path=/tmp/ghorg
-GHORG_ABSOLUTE_PATH_TO_CLONE_TO: /home/data
+GHORG_ABSOLUTE_PATH_TO_CLONE_TO:
 
 # Folder ghorg will clone all repos into. Cloning will result in: GHORG_ABSOLUTE_PATH_TO_CLONE_TO/GHORG_OUTPUT_DIR/repo
 # See https://github.com/gabrie30/ghorg#changing-clone-directories for example
@@ -74,7 +74,7 @@ GHORG_BACKUP: false
 
 # Max goroutines created while cloning
 # flag (--concurrency)
-GHORG_CONCURRENCY: 25
+GHORG_CONCURRENCY: 4
 
 # Create a shallow clone with a history truncated to the specified number of commits
 # https://git-scm.com/docs/git-clone#Documentation/git-clone.txt---depthltdepthgt

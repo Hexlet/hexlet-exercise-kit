@@ -1,45 +1,20 @@
-# ==================================================
-# Build image
-# ==================================================
-FROM golang:alpine AS build-image
+# NOTE:
+FROM ghcr.io/gabrie30/ghorg:master-c66a7af
 
-# ENV GO111MODULE=on
-ENV CGO_ENABLED=0
-
-WORKDIR /go/src/github.com/gabrie30/ghorg
-
-COPY . .
-
-RUN go install github.com/gabrie30/ghorg@latest
-
-# ==================================================
-# Runtime image
-# ==================================================
-FROM alpine:latest AS runtime-image
-
-ARG USER=ghorg
-ARG GROUP=ghorg
+ENV GHORG_CONFIG_DIR=$HOME/.config/ghorg
+ENV GHORG_CONFIG=$GHORG_CONFIG_DIR/conf.yaml
+ARG USER=tirion
+ARG GROUP=tirion
 ARG UID
 ARG GID
 
-ENV XDG_CONFIG_HOME=/config
-ENV GHORG_CONFIG=/config/conf.yaml
-ENV GHORG_RECLONE_PATH=/config/reclone.yaml
+USER root
 
-RUN apk add -U --no-cache ca-certificates openssh-client tzdata git \
-    && mkdir -p /data $XDG_CONFIG_HOME \
-    && addgroup --gid $GID $GROUP \
-    && adduser -D -H --gecos "" \
-                     --home "/home" \
-                     --ingroup "$GROUP" \
-                     --uid "$UID" \
-                     "$USER" \
-    && chown -R $USER:$GROUP /home /data $XDG_CONFIG_HOME \
-    && rm -rf /tmp/* /var/{cache,log}/* /var/lib/apt/lists/*
+RUN addgroup --gid $GID $GROUP && adduser -D -H --gecos "" --ingroup "$GROUP" --uid "$UID" "$USER"
 
-USER ghorg
+USER $USER
 
-RUN mkdir -p /home/data/hexlethq
-WORKDIR /home/data/hexlethq
+WORKDIR $HOME/data/hexlethq
+RUN mkdir -p data/hexlethq
 
-COPY --from=build-image --chown=$USER:$GROUP /go/bin/ghorg /usr/local/bin
+COPY config/conf.yaml $GHORG_CONFIG_DIR/conf.yaml
