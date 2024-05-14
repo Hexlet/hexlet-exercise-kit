@@ -26,7 +26,7 @@ If you have access to clone Hexlet repositories:
 * add created token to *.env* file
 
 ```
-GITLAB_API_PRIVATE_TOKEN=<token>
+GHORG_GITLAB_TOKEN=<token>
 
 # Adjust this value for faster or slower speed of repositories download
 PARALLEL=4
@@ -42,7 +42,7 @@ make clone SSH_KEYS_PATH=/specific/path/to/your/.ssh
 For pulling into cloned repos:
 
 ```bash
-make rebase
+make clone
 ```
 
 ## Using hexlet linters

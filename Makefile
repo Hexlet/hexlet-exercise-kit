@@ -40,8 +40,7 @@ downloader-run:
 		$(DOWNLOADER_IMAGE_NAME) \
 		ghorg clone $(FILTER)
 
-clone:
-	make downloader-run FILTER=$(HEXLETHQ)
+clone: clone-courses clone-exercises clone-projects clone-boilerplates
 
 clone-courses:
 	make downloader-run FILTER=$(HEXLETHQ)/courses
