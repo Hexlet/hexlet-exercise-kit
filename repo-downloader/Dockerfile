@@ -1,4 +1,4 @@
-# NOTE:
+# NOTE: https://github.com/gabrie30/ghorg/issues/409#issuecomment-2111383139
 FROM ghcr.io/gabrie30/ghorg:master-c66a7af
 
 ENV GHORG_CONFIG_DIR=$HOME/.config/ghorg
