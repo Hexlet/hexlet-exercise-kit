@@ -95,3 +95,6 @@ markdown-lint:
 
 markdown-lint-fix:
 	npx markdownlint -f -c ../../../.markdownlint.json ${CURDIR}
+
+spellcheck:
+	npx languagetool-node ./**/*.md

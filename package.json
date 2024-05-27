@@ -11,6 +11,7 @@
   "author": "Stanislav Dzisiak",
   "license": "ISC",
   "dependencies": {
+    "@343dev/languagetool-node": "^2.0.0",
     "@slidev/cli": "^0.43.13",
     "babel-eslint": "^10.1.0",
     "eslint": "^8.52.0",
