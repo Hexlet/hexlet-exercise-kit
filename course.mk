@@ -1,3 +1,5 @@
+ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+
 ci-check:
 	docker compose -f docker-compose.yml build
 	docker compose -f docker-compose.yml up --abort-on-container-exit
@@ -98,3 +100,6 @@ markdown-lint-fix:
 
 spellcheck:
 	npx languagetool-node ./**/*.md
+
+print-course-lessons-names:
+	$(ROOT_DIR)/scripts/print-course-lessons-names
