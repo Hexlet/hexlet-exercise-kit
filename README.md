@@ -10,6 +10,7 @@ This is a complete kit for teachers who want to create exercises on the Hexlet p
 * Node.js
 * Make
 * Ubuntu, macOS or WSL (for Windows)
+* yq
 
 ## Setup
 

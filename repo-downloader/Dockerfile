@@ -9,7 +9,8 @@ ARG GID
 
 USER root
 
-RUN addgroup --gid $GID $GROUP && adduser -D -H --gecos "" --ingroup "$GROUP" --uid "$UID" "$USER"
+RUN addgroup --gid $GID $GROUP || true \
+  && adduser -D -H --gecos "" --ingroup `getent group $GID | cut -d: -f1` --uid "$UID" "$USER"
 
 USER $USER
 

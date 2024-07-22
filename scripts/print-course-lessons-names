@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Находим все файлы spec.yml в поддиректориях
+files=$(find * -mindepth 1 -maxdepth 1 -type f -name 'spec.yml')
+
+# Парсим значение ключа .lesson.name из каждого файла используя утилиту yq
+for file in $files; do
+    lesson_name=$(yq '.lesson.name' $file)
+    directory=$(dirname $file)
+    # NOTE: выводим \t как есть, чтобы потом его заменить как есть. в 99% случаев вывод копируется в эксель, но bash выводит не таб-символ, а пробелы. Может это чисто моя проблема.
+    echo "$directory\t$lesson_name"
+done | sort -t '/' -k 2
