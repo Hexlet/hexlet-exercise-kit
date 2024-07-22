@@ -77,5 +77,5 @@ build-localizer: create-localizer-config
 		--build-arg GID=$(GID) \
 		./content-localizer
 
-spellcheck-courses:
-	docker run -v ./courses:/content hexlet/languagetool-cli
+spellcheck:
+	docker run --rm -v ./:/content hexlet/languagetool-cli node ./bin/run.js check /content/**/*.md
