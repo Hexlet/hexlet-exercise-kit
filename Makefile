@@ -19,6 +19,7 @@ pull:
 	docker pull hexlet/hexlet-java
 	docker pull hexlet/hexlet-javascript
 	docker pull hexlet/hexlet-php
+	docker pull hexlet/languagetool-cli
 
 create-config:
 	cp -n .env.example .env || echo 'already exists'
@@ -76,6 +77,3 @@ build-localizer: create-localizer-config
 		--build-arg UID=$(UID) \
 		--build-arg GID=$(GID) \
 		./content-localizer
-
-spellcheck-courses:
-	docker run -v ./courses:/content hexlet/languagetool-cli
