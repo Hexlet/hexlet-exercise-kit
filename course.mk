@@ -99,7 +99,6 @@ markdown-lint-fix:
 	npx markdownlint -f -c ../../../.markdownlint.json ${CURDIR}
 
 spellcheck:
-	docker pull hexlet/languagetool-cli:latest
 	docker run --rm -v ./:/content hexlet/languagetool-cli node ./bin/run.js check /content/**/*.md
 
 print-course-lessons-names:
