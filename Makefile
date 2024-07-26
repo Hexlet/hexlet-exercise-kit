@@ -4,6 +4,7 @@ SSH_KEYS_PATH?=$(HOME)/.ssh
 UID := $(shell id -u)
 GID := $(shell id -g)
 HEXLETHQ=hexlethq
+LOCALE ?=
 
 setup: create-config pull build-downloader
 	mkdir -p exercises
@@ -39,21 +40,21 @@ downloader-run:
 		-v $(SSH_KEYS_PATH):/home/tirion/.ssh \
 		-v $(CURDIR):/data/hexlethq \
 		$(DOWNLOADER_IMAGE_NAME) \
-		clone $(FILTER)
+		clone $(HEXLETHQ)$(if $(FILTER),/$(FILTER))$(if $(LOCALE),/$(LOCALE))
 
 clone: clone-courses clone-exercises clone-projects clone-boilerplates
 
 clone-courses:
-	make downloader-run FILTER=$(HEXLETHQ)/courses
+	make downloader-run FILTER=courses
 
 clone-exercises:
-	make downloader-run FILTER=$(HEXLETHQ)/exercises
+	make downloader-run FILTER=exercises
 
 clone-projects:
-	make downloader-run FILTER=$(HEXLETHQ)/projects
+	make downloader-run FILTER=projects
 
 clone-boilerplates:
-	make downloader-run FILTER=$(HEXLETHQ)/boilerplates
+	make downloader-run FILTER=boilerplates
 
 update-hexlet-linter:
 	docker pull hexlet/common-${L}
