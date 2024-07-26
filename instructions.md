@@ -17,10 +17,7 @@
 3. Создаём поддиректории в которых будем размещать практики, проекты, курсы, программы
 
     ```bash
-    mkdir courses
-    mkdir exercises
-    mkdir programs
-    mkdir projects
+    make prepare-dirs
     ```
 
 ## Работа с практиками

@@ -6,14 +6,16 @@ GID := $(shell id -g)
 HEXLETHQ=hexlethq
 LOCALE ?=
 
-setup: create-config pull build-downloader
+setup: create-config pull build-downloader prepare-dirs
+	make -C import-documentation all
+	npm ci
+
+prepare-dirs:
 	mkdir -p exercises
 	mkdir -p courses
 	mkdir -p projects
 	mkdir -p programs
 	mkdir -p boilerplates
-	make -C import-documentation all
-	npm ci
 
 pull:
 	docker pull hexlet/hexlet-python

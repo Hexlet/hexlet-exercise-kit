@@ -43,7 +43,9 @@ make clone SSH_KEYS_PATH=/specific/path/to/your/.ssh
 For pulling into cloned repos:
 
 ```bash
-make clone
+make clone # clone all content
+make clone-projects # clone all projects
+make clone-projects LOCALE=ru # clone projects on in ru locale hexlethq/projects/ru/
 ```
 
 ## Using hexlet linters
