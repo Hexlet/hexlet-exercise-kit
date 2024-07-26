@@ -42,7 +42,7 @@ downloader-run:
 		-v $(SSH_KEYS_PATH):/home/tirion/.ssh \
 		-v $(CURDIR):/data/hexlethq \
 		$(DOWNLOADER_IMAGE_NAME) \
-		clone $(HEXLETHQ)$(if $(FILTER),/$(FILTER))$(if $(LOCALE),/$(LOCALE))
+		clone $(HEXLETHQ)/$(FILTER)$(if $(LOCALE),/$(LOCALE))
 
 clone: clone-courses clone-exercises clone-projects clone-boilerplates
 
