@@ -45,6 +45,7 @@ For pulling into cloned repos:
 ```bash
 make clone # clone all content
 make clone-projects # clone all projects
+make clone LOCALE=ru # clone all in ru locale
 make clone-projects LOCALE=ru # clone projects on in ru locale hexlethq/projects/ru/
 ```
 
