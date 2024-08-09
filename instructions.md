@@ -88,3 +88,12 @@
 2. Директория с курсом создаётся по шаблону https://gitlab.com/hexlethq/boilerplates/example_course. Смотрите ридми репозитория и подробные комментарии внутри файлов
 
 3. Работа с курсом не предусматривает выполнение каких-либо команд `make`
+
+## Полезные команды и примеры использования.
+
+Чтобы скачать/обновить практики курса, можете вызывать загрузчик и указать путь к курсу
+
+```bash
+# скачиваем практики из https://gitlab.hexlet.io/hexlethq/exercises/ru/course-python-lists
+make downloader-run FILTER=exercises/ru/course-python-lists
+```
