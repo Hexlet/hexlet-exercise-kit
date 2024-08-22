@@ -60,8 +60,8 @@ ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
 else
 	docker run -d -t --read-only --rm \
 		--label hexlet-exercise \
-		--memory=400m \
-		--memory-swap=400m \
+		--memory=500m \
+		--memory-swap=500m \
 		--cpu-shares=256 \
 		--oom-kill-disable=true \
 		--pids-limit=150 \
