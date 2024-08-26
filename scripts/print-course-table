@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Находим все файлы spec.yml в поддиректориях
+files=$(find * -mindepth 1 -maxdepth 1 -type f -name 'spec.yml')
+
+printf "%s\t%s\t%s\n" "slug" "name" "goal"
+for file in $files; do
+    # Парсим значение ключи из каждого файла используя утилиту yq
+    lesson_name=$(yq '.lesson.name' $file)
+    lesson_goal=$(yq '.lesson.goal' $file)
+    directory=$(dirname $file)
+    printf "%s\t%s\t%s\n" "$directory" "$lesson_name" "$lesson_goal"
+done | sort -t '/' -k 2

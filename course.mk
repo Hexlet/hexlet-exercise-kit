@@ -101,6 +101,5 @@ markdown-lint-fix:
 spellcheck:
 	docker run --rm -v ./:/content hexlet/languagetool-cli node ./bin/run.js check /content/**/*.md
 
-print-course-lessons-names:
-	$(ROOT_DIR)/scripts/print-course-lessons-names
-
+print-course-table:
+	@bash $(ROOT_DIR)scripts/print-course-table
