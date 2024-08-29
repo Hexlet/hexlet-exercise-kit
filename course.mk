@@ -95,8 +95,14 @@ translations-write:
 markdown-lint:
 	npx markdownlint -c ../../../.markdownlint.json ${CURDIR}
 
+lint:
+	npx eslint -c ${ROOT_DIR}/eslint.config.js ${CURDIR}
+
 markdown-lint-fix:
 	npx markdownlint -f -c ../../../.markdownlint.json ${CURDIR}
+
+lint-fix:
+	npx eslint -c ${ROOT_DIR}/eslint.config.js ${CURDIR} --fix
 
 spellcheck:
 	docker run --rm -v ./:/content hexlet/languagetool-cli node ./bin/run.js check /content/**/*.md
