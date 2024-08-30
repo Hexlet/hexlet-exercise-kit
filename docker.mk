@@ -141,4 +141,4 @@ markdown-lint-fix:
 	npx markdownlint -f -c ../../../../.markdownlint.json ${CURDIR}
 
 spellcheck:
-	docker run --rm -v ./:/content hexlet/languagetool-cli node ./bin/run.js check /content/**/*.md
+	docker run --rm -v ./:/content ghcr.io/hexlet/languagetool-cli node ./bin/run.js check /content/**/*.md
