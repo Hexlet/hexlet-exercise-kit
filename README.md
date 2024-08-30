@@ -96,6 +96,18 @@ make markdown-lint # view error list
 make markdown-lint-fix # fix errors
 ```
 
+Check for code blocks:
+
+```bash
+make lint
+```
+
+Check and fix for code blocks:
+
+```bash
+make lint-fix
+```
+
 ## New stuff
 
 ```bash
