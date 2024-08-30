@@ -1,7 +1,7 @@
-import stylistic from '@stylistic/eslint-plugin'
-import globals from 'globals'
-import pluginJs from '@eslint/js'
-import markdown from '@eslint/markdown'
+import stylistic from '@stylistic/eslint-plugin';
+import globals from 'globals';
+import pluginJs from '@eslint/js';
+import markdown from '@eslint/markdown';
 
 export default [
   pluginJs.configs.recommended,
