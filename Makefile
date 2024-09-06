@@ -5,6 +5,7 @@ UID := $(shell id -u)
 GID := $(shell id -g)
 HEXLETHQ=hexlethq
 LOCALE ?=
+REGISTRY := cr.yandex/crpa5i79t7oiqnj0ap8g
 
 setup: create-config pull build-downloader prepare-dirs
 	make -C import-documentation all
@@ -18,11 +19,11 @@ prepare-dirs:
 	mkdir -p boilerplates
 
 pull:
-	docker pull hexlet/hexlet-python
-	docker pull hexlet/hexlet-java
-	docker pull hexlet/hexlet-javascript
-	docker pull hexlet/hexlet-php
-	docker pull hexlet/languagetool-cli
+	docker pull $(REGISTRY)/hexlet-python
+	docker pull $(REGISTRY)/hexlet-java
+	docker pull $(REGISTRY)/hexlet-javascript
+	docker pull $(REGISTRY)/hexlet-php
+	docker pull $(REGISTRY)/languagetool-cli
 
 create-config:
 	cp -n .env.example .env || echo 'already exists'
@@ -59,9 +60,9 @@ clone-boilerplates:
 	make downloader-run FILTER=boilerplates
 
 update-hexlet-linter:
-	docker pull hexlet/common-${L}
+	docker pull $(REGISTRY)/common-${L}
 	docker volume rm -f hexlet-linter-${L}
-	docker run --rm -v hexlet-linter-${L}:/linter hexlet/common-${L} echo > /dev/null
+	docker run --rm -v hexlet-linter-${L}:/linter $(REGISTRY)/common-${L} echo > /dev/null
 
 update-hexlet-linters:
 	make update-hexlet-linter L=eslint
