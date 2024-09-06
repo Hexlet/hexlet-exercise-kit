@@ -23,7 +23,7 @@ pull:
 	docker pull $(REGISTRY)/hexlet-java
 	docker pull $(REGISTRY)/hexlet-javascript
 	docker pull $(REGISTRY)/hexlet-php
-	docker pull $(REGISTRY)/languagetool-cli
+	docker pull ghcr.io/hexlet/languagetool-cli
 
 create-config:
 	cp -n .env.example .env || echo 'already exists'

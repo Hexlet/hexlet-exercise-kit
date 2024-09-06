@@ -105,7 +105,7 @@ lint-fix:
 	npx eslint -c ${ROOT_DIR}/eslint.config.js ${CURDIR} --fix
 
 spellcheck:
-	docker run --rm -v ./:/content hexlet/languagetool-cli node ./bin/run.js check /content/**/*.md
+	docker run --rm -v ./:/content ghcr.io/hexlet/languagetool-cli node ./bin/run.js check /content/**/*.md
 
 print-course-table:
 	@bash $(ROOT_DIR)scripts/print-course-table
