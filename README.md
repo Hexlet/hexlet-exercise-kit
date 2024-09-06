@@ -133,6 +133,8 @@ Build downloader `make build-downloader` or see [setup](#setup) or fresh install
 
 ---
 
+The hint below is for linux users only.
+
 If you encounter a “Permision denied” error after the `make bash` command or during practice testing, it means that the volume with the practice on the host and the container user have different UID.
 To solve the problem, you can create a new user on your system with the UID `tirion` (currently UID is `1001`, but may change in the future). Then use the `setfacl` (read more about [ACL](https://www.redhat.com/sysadmin/linux-access-control-lists)) to share permissions on the files
 
