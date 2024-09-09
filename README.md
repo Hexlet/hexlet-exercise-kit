@@ -130,3 +130,21 @@ See 'docker run --help'.
 ```
 
 Build downloader `make build-downloader` or see [setup](#setup) or fresh installation
+
+---
+
+The hint below is for linux users only.
+
+If you encounter a “Permision denied” error after the `make bash` command or during exercise testing, it means that the volume with the exercise on the host and the container user have different UID.
+To solve the problem, you can create a new user on your system with the UID `tirion` (currently UID is `1001`, but may change in the future). Then use the `setfacl` (read more about [ACL](https://www.redhat.com/sysadmin/linux-access-control-lists)) to share permissions on the files
+
+```bash
+sudo useradd -u 1001 -m <new-username>
+sudo setfacl -R -m u:<new-username>:rwX /path/to/exercise-kit
+```
+
+And how to remove permissions
+
+```bash
+sudo setfacl -R -x u:<new-username> /path/to/exercise-kit
+```
