@@ -59,7 +59,7 @@ clone-boilerplates:
 	make downloader-run FILTER=boilerplates
 
 update-hexlet-linter:
-	docker pull hexlet/common-${L}
+# 	docker pull hexlet/common-${L}
 	docker volume rm -f hexlet-linter-${L}
 	docker run --rm -v hexlet-linter-${L}:/linter hexlet/common-${L} echo > /dev/null
 
