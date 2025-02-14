@@ -5,7 +5,7 @@ GID := $(shell id -g)
 HEXLETHQ=hexlethq
 LOCALE ?=
 
-setup: create-config pull prepare-dirs
+setup: create-config build-downloader pull prepare-dirs
 	make -C import-documentation all
 	npm ci
 
@@ -24,9 +24,10 @@ pull:
 	docker pull hexlet/languagetool-cli
 
 create-config:
-	@cp --update=none repo-downloader/config/example.conf.yaml ghorg.conf.yaml || echo 'already exists'
+	touch gitlab.token
 
-build-downloader: create-config
+build-downloader:
+	./scripts/download-downloader
 
 copy-from-cb:
 	make -C code-basics-synchronizer

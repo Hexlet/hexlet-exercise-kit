@@ -21,10 +21,11 @@ cd hexlet-exercise-kit
 make setup
 ```
 
+It will pull images, create config for token and download [ghorg](https://github.com/gabrie30/ghorg)
+
 If you have access to clone Hexlet repositories:
 
 * create a personal access token on this page: [https://gitlab.hexlet.io/-/profile/personal_access_tokens](https://gitlab.hexlet.io/-/profile/personal_access_tokens)
-* go to [ghorg](https://github.com/gabrie30/ghorg/releases) download it with name *ghorg* into *hexlet-exercise-kit*.
 * Add created Gitlab token into *gitlab.token* file:
 
     ```

@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# URL для загрузки
+BASE_URL="https://github.com/gabrie30/ghorg/releases/download/v1.11.0"
+
+# Определяем архитектуру и ОС
+OS=""
+ARCH=""
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    OS="Darwin"
+    if [[ "$(uname -m)" == "arm64" ]]; then
+        ARCH="arm64"
+    else
+        ARCH="x86_64"
+    fi
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    OS="Linux"
+    if [[ "$(uname -m)" == "aarch64" ]]; then
+        ARCH="arm64"
+    elif [[ "$(uname -m)" == "i386" ]]; then
+        ARCH="i386"
+    else
+        ARCH="x86_64"
+    fi
+else
+    echo "Unsupported OS: $OSTYPE"
+    exit 1
+fi
+
+# Формируем имя файла
+FILENAME="ghorg_1.11.0_${OS}_${ARCH}.tar.gz"
+TEMP_DIR="/tmp"
+TEMP_FILE="$TEMP_DIR/$FILENAME"
+
+# Загружаем файл во временную директорию
+echo "Downloading $FILENAME to $TEMP_DIR..."
+if ! curl -Lo "$TEMP_FILE" "$BASE_URL/$FILENAME"; then
+    echo "Failed to download $FILENAME"
+    exit 1
+fi
+
+# Проверяем, что файл существует и не пустой
+if [[ ! -s "$TEMP_FILE" ]]; then
+    echo "Downloaded file is empty or does not exist."
+    exit 1
+fi
+
+# Проверяем, что файл является архивом
+if ! file "$TEMP_FILE" | grep -q "gzip compressed data"; then
+    echo "Downloaded file is not a valid gzip archive."
+    exit 1
+fi
+
+# Распаковываем только бинарник ghorg
+echo "Extracting ghorg from $TEMP_FILE..."
+tar -xzf "$TEMP_FILE" --strip-components=1 ghorg
+
+# Удаляем загруженный архив
+rm "$TEMP_FILE"
+
+echo "ghorg has been updated successfully!"
