@@ -184,7 +184,7 @@ GHORG_GITHUB_APP_ID:
 
 # Add your GitLab token
 # flag (--token, -t) eg: --token=bGVhdmUgYSBjb21tZW50IG9uIGlzc3VlIDY2 or --token=~/path/to/file/containing/token
-GHORG_GITLAB_TOKEN:
+GHORG_GITLAB_TOKEN: ./gitlab.token
 
 # clones repos in a directory structure that matches gitlab namespaces eg company/unit/subunit/app would clone into ghorg/org/unit/subunit/app
 # flag (--preserve-dir)

@@ -1,4 +1,3 @@
-DOWNLOADER_IMAGE_NAME=hexlet/gitlab-downloader
 DOWNLOADER_HOME=/home/tirion
 SSH_KEYS_PATH?=$(HOME)/.ssh
 UID := $(shell id -u)
@@ -7,7 +6,7 @@ HEXLETHQ=hexlethq
 LOCALE ?=
 REGISTRY := cr.yandex/crpa5i79t7oiqnj0ap8g
 
-setup: create-config pull build-downloader prepare-dirs
+setup: create-config build-downloader pull prepare-dirs
 	make -C import-documentation all
 	npm ci
 
@@ -26,24 +25,16 @@ pull:
 	docker pull ghcr.io/hexlet/languagetool-cli
 
 create-config:
-	cp -n .env.example .env || echo 'already exists'
+	touch gitlab.token
 
-build-downloader: create-config
-	docker build -t $(DOWNLOADER_IMAGE_NAME):latest \
-		--build-arg UID=$(UID) \
-		--build-arg GID=$(GID) \
-		./repo-downloader
+build-downloader:
+	./scripts/download-downloader
 
 copy-from-cb:
 	make -C code-basics-synchronizer
 
 downloader-run:
-	docker run -it --rm \
-		--env-file ./.env \
-		-v $(SSH_KEYS_PATH):/home/tirion/.ssh \
-		-v $(CURDIR):/data/hexlethq \
-		$(DOWNLOADER_IMAGE_NAME) \
-		clone $(HEXLETHQ)/$(FILTER)$(if $(LOCALE),/$(LOCALE))
+		./ghorg clone --config ghorg.conf.yaml $(HEXLETHQ)/$(FILTER)$(if $(LOCALE),/$(LOCALE))
 
 clone: clone-courses clone-exercises clone-projects clone-boilerplates
 

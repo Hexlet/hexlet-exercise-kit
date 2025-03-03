@@ -21,23 +21,22 @@ cd hexlet-exercise-kit
 make setup
 ```
 
+It will pull images, create config for token and download [ghorg](https://github.com/gabrie30/ghorg)
+
 If you have access to clone Hexlet repositories:
 
 * create a personal access token on this page: [https://gitlab.hexlet.io/-/profile/personal_access_tokens](https://gitlab.hexlet.io/-/profile/personal_access_tokens)
-* add created token to *.env* file
+* Add created Gitlab token into *gitlab.token* file:
 
-```
-GHORG_GITLAB_TOKEN=<token>
+    ```
+    glpat-example
 
-# Adjust this value for faster or slower speed of repositories download
-PARALLEL=4
-```
+    ```
+
+You are ready to pull all repos:
 
 ```bash
 make clone
-
-# if your .ssh catalog has specific path:
-make clone SSH_KEYS_PATH=/specific/path/to/your/.ssh
 ```
 
 For pulling into cloned repos:
