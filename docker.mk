@@ -63,9 +63,7 @@ else
 		--memory=500m \
 		--memory-swap=500m \
 		--cpu-shares=256 \
-		--oom-kill-disable=true \
 		--pids-limit=150 \
-		--memory-swappiness=0 \
 		-v $(ROOT_DIR)import-documentation:/import-documentation \
 		-v /tmp \
 		-v /var/tmp \
