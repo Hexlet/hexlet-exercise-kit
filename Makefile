@@ -34,7 +34,7 @@ copy-from-cb:
 	make -C code-basics-synchronizer
 
 downloader-run:
-		./ghorg clone --config ghorg.conf.yaml $(HEXLETHQ)/$(FILTER)$(if $(LOCALE),/$(LOCALE))
+		./ghorg clone --config ghorg.conf.yaml --path $(CURDIR) $(HEXLETHQ)/$(FILTER)$(if $(LOCALE),/$(LOCALE))
 
 clone: clone-courses clone-exercises clone-projects clone-boilerplates
 
