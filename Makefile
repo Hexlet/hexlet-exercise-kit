@@ -22,6 +22,7 @@ pull:
 	docker pull $(REGISTRY)/hexlet-java
 	docker pull $(REGISTRY)/hexlet-javascript
 	docker pull $(REGISTRY)/hexlet-php
+	docker pull $(REGISTRY)/hexlet-go
 	docker pull ghcr.io/hexlet/languagetool-cli
 
 create-config:

@@ -121,6 +121,9 @@ lint-hexlet-layout:
 lint-hexlet-multi-language:
 	@make lint L=multi-language
 
+lint-hexlet-go:
+	@make lint L=golangci-lint
+
 lint:
 	@docker run --rm -it \
 		-v $(CURDIR)/exercise:/usr/src/app \
