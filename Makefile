@@ -16,6 +16,7 @@ prepare-dirs:
 	mkdir -p projects
 	mkdir -p programs
 	mkdir -p boilerplates
+	ln -s $(CURDIR) $(CURDIR)/hexlethq
 
 pull:
 	docker pull $(REGISTRY)/hexlet-python
