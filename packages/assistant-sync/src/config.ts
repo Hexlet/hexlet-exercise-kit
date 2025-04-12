@@ -4,6 +4,8 @@ export const baseDir = path.join(import.meta.dirname, '../../..')
 export const coursesDir = path.join(baseDir, 'courses/ru')
 export const courseRagFilesDir = path.join(baseDir, 'course_rag_files')
 
+export const coursesStoreId = 'vs_67fa998a38148191a3625c2faf2e89e8'
+
 // export const storeIds = {
 //   javascript: 'vs_67d63d7f17b08191b48891045f2f2cb1',
 //   java: 'vs_67e355d6a524819192f3912b3f67730f',

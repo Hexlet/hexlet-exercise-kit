@@ -18,3 +18,6 @@ lint:
 
 assistant-prepare:
 	bin/dev.js prepare
+
+assistant-upload:
+	bin/dev.js upload

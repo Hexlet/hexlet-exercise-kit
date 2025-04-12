@@ -5,6 +5,13 @@ import { Dirent } from 'fs'
 import { readYamlFile } from './utils'
 
 export default async function prepare() {
+  try {
+    await fs.rm(courseRagFilesDir, { recursive: true, force: true })
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  catch (e) {
+    // not exists
+  }
   await fs.mkdir(courseRagFilesDir, { recursive: true })
   console.log(`Dest: ${courseRagFilesDir}`)
 
@@ -13,8 +20,10 @@ export default async function prepare() {
     if (!dir.isDirectory()) continue
     console.log(`Course: ${dir.name}`)
     const content = await prepareFileContent(dir)
-    const filePath = path.join(courseRagFilesDir, dir.name)
-    await fs.writeFile(filePath, content)
+    if (content !== '') {
+      const filePath = path.join(courseRagFilesDir, dir.name) + '.txt'
+      await fs.writeFile(filePath, content)
+    }
   }
 }
 
@@ -48,5 +57,5 @@ async function prepareFileContent(dir: Dirent) {
     }
   }
 
-  return readmes.join('\n\n---\n\n')
+  return readmes.join('\n\n---\n\n').trim()
 }
