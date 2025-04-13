@@ -2,7 +2,7 @@ import fse from 'fs-extra'
 import path from 'path'
 import { fdir } from 'fdir'
 import { readYamlFile } from './utils'
-import { ragFilesDir, coursesDir, exercisesDir } from './config'
+import { ragFilesDir, coursesDir, exercisesDir, projectsDir } from './config'
 
 export default async function prepare() {
   await fse.remove(ragFilesDir)
@@ -20,6 +20,12 @@ export default async function prepare() {
   await writeExercisesToStream(exercisesDir, exercisesStream)
   exercisesStream.end()
   console.log(`Written: ${exercisesOutputPath}`)
+
+  const projectsOutputPath = path.join(ragFilesDir, 'all_projects.md')
+  const projectsStream = fse.createWriteStream(projectsOutputPath, { encoding: 'utf-8' })
+  await writeProjectsToStream(projectsDir, projectsStream)
+  projectsStream.end()
+  console.log(`Written: ${projectsOutputPath}`)
 }
 
 const isValidLessonDir = (name: string): boolean => /^\d+-[\w_]+$/i.test(name)
@@ -84,6 +90,60 @@ async function writeExercisesToStream(baseDir: string, stream: fse.WriteStream) 
 
       stream.write('---\n\n')
     }
+  }
+}
+
+async function writeProjectsToStream(baseDir: string, stream: fse.WriteStream) {
+  const projects = await fse.readdir(baseDir, { withFileTypes: true })
+
+  for (const project of projects) {
+    if (!project.isDirectory()) continue
+    const projectPath = path.join(baseDir, project.name)
+    const dataPath = path.join(projectPath, '__data__')
+
+    const specPath = path.join(dataPath, 'spec.yml')
+    if (!(await fse.pathExists(specPath))) continue
+
+    const spec = await readYamlFile<{
+      project: { name: string, language: string, summary?: string, link?: string }
+    }>(specPath)
+
+    stream.write(`# ${spec.project.name}\n\n`)
+    stream.write(`**Язык**: ${spec.project.language}\n\n`)
+    if (spec.project.link) stream.write(`**Ссылка**: ${spec.project.link}\n\n`)
+    if (spec.project.summary) stream.write(`${spec.project.summary.trim()}\n\n`)
+
+    // README.md
+    const readmePath = path.join(dataPath, 'README.md')
+    if (await fse.pathExists(readmePath)) {
+      const content = await fse.readFile(readmePath, 'utf-8')
+      stream.write(`${content.trim()}\n\n`)
+    }
+
+    // checklist.md
+    const checklistPath = path.join(dataPath, 'checklist.md')
+    if (await fse.pathExists(checklistPath)) {
+      const content = await fse.readFile(checklistPath, 'utf-8')
+      stream.write(`${content.trim()}\n\n`)
+    }
+
+    // steps/*.md
+    const stepsDir = path.join(dataPath, 'steps')
+    if (await fse.pathExists(stepsDir)) {
+      const stepFiles = (await fse.readdir(stepsDir))
+        .filter(f => /^\d+-.+\.md$/.test(f))
+        .sort((a, b) => parseInt(a) - parseInt(b)) // по номеру
+
+      for (const stepFile of stepFiles) {
+        const stepPath = path.join(stepsDir, stepFile)
+        const content = await fse.readFile(stepPath, 'utf-8')
+        // const title = stepFile.replace(/^\d+-/, '')
+        //   .replace(/\.md$/, '')
+        stream.write(`${content.trim()}\n\n`)
+      }
+    }
+
+    stream.write('---\n\n')
   }
 }
 

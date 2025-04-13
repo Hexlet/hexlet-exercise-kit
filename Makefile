@@ -6,9 +6,9 @@ HEXLETHQ=hexlethq
 LOCALE ?=
 REGISTRY := cr.yandex/crpa5i79t7oiqnj0ap8g
 
-setup: create-config build-downloader pull prepare-dirs
-	make -C import-documentation all
-	npm ci
+setup: create-config prepare-dirs # pull
+	# make -C import-documentation all
+	# npm ci
 
 prepare-dirs:
 	mkdir -p exercises
@@ -29,14 +29,11 @@ pull:
 create-config:
 	touch gitlab.token
 
-build-downloader:
-	./scripts/download-downloader
-
 copy-from-cb:
 	make -C code-basics-synchronizer
 
 downloader-run:
-		./ghorg clone --config ghorg.conf.yaml --path $(CURDIR) $(HEXLETHQ)/$(FILTER)$(if $(LOCALE),/$(LOCALE))
+		ghorg clone --config .ghorg.conf.yaml --path $(CURDIR) $(HEXLETHQ)/$(FILTER)$(if $(LOCALE),/$(LOCALE))
 
 clone: clone-courses clone-exercises clone-projects clone-boilerplates
 
@@ -75,3 +72,6 @@ build-localizer: create-localizer-config
 		--build-arg UID=$(UID) \
 		--build-arg GID=$(GID) \
 		./content-localizer
+
+macos-prepare:
+	brew install gabrie30/utils/ghorg

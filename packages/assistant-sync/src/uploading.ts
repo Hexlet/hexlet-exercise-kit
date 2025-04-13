@@ -20,9 +20,11 @@ export default async function upload() {
   const promises = files.map((file) => {
     // if (!dir.isDirectory()) continue
     return () => {
-      console.log(`Course: ${file.name}`)
+      console.log(`Uploading Course: ${file.name}`)
       const stream = fs.createReadStream(path.join(file.parentPath, file.name))
-      return client.vectorStores.files.uploadAndPoll(coursesStoreId, stream)
+      const result = client.vectorStores.files.uploadAndPoll(coursesStoreId, stream)
+      console.log(`Uploaded Course: ${file.name}`)
+      return result
     }
   })
 
