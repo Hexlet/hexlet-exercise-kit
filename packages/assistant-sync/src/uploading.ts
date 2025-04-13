@@ -2,7 +2,7 @@ import fsp from 'fs/promises'
 import fs from 'fs'
 import OpenAI from 'openai'
 import PQueue from 'p-queue'
-import { courseRagFilesDir, coursesStoreId } from './config'
+import { ragFilesDir, coursesStoreId } from './config'
 import path from 'path'
 
 export default async function upload() {
@@ -15,7 +15,7 @@ export default async function upload() {
     await client.vectorStores.files.del(coursesStoreId, storeFile.id)
   }
 
-  const files = await fsp.readdir(courseRagFilesDir, { withFileTypes: true })
+  const files = await fsp.readdir(ragFilesDir, { withFileTypes: true })
   const queue = new PQueue({ concurrency: 5 })
   const promises = files.map((file) => {
     // if (!dir.isDirectory()) continue
