@@ -19,11 +19,11 @@ export default async function upload() {
   const queue = new PQueue({ concurrency: 5 })
   const promises = files.map((file) => {
     // if (!dir.isDirectory()) continue
-    console.log(`Course: ${file.name}`)
-    return () => client.vectorStores.files.uploadAndPoll(
-      coursesStoreId,
-      fs.createReadStream(path.join(file.parentPath, file.name)),
-    )
+    return () => {
+      console.log(`Course: ${file.name}`)
+      const stream = fs.createReadStream(path.join(file.parentPath, file.name))
+      return client.vectorStores.files.uploadAndPoll(coursesStoreId, stream)
+    }
   })
 
   await queue.addAll(promises)
