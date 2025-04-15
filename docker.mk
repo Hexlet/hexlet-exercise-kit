@@ -143,3 +143,6 @@ markdown-lint-fix:
 
 spellcheck:
 	docker run --rm -v ./:/content ghcr.io/hexlet/languagetool-cli node ./bin/run.js check /content/**/*.md
+
+php-prepare:
+	docker container cp $(CONTAINER_ID):/composer/vendor $(CURDIR)/exercise/vendor
