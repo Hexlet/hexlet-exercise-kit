@@ -51,7 +51,18 @@ async function writeLessonsToStream(baseDir: string, stream: fse.WriteStream) {
 
       stream.write(`# ${spec.lesson.name} (${lessonDir.name})\n\n`)
       stream.write(content.trim())
-      stream.write('\n\n---\n\n')
+      stream.write('\n\n')
+
+      const questionsPath = path.join(lessonPath, 'questions.yml')
+      if (await fse.pathExists(questionsPath)) {
+        const questionsContent = await fse.readFile(questionsPath, 'utf-8')
+        stream.write('## Вопросы (Тесты/Квиз) (questions.yml)\n\n')
+        stream.write('```yaml\n')
+        stream.write(questionsContent.trim())
+        stream.write('\n```\n\n')
+      }
+
+      stream.write('---\n\n')
     }
   }
 }
