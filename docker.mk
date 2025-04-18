@@ -33,14 +33,14 @@ build: stop
 
 bash:
 	docker run --rm --read-only -it -v /tmp \
-		-v $(ROOT_DIR)scripts/get-forwarded-envs:/usr/local/bin/get-forwarded-envs \
+		-v $(ROOT_DIR)bin/get-forwarded-envs:/usr/local/bin/get-forwarded-envs \
 	  -v $(CURDIR)/exercise_internal:/exercise_internal \
 	  -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) \
 	  /bin/bash -c '$(GET_ENVS) && sudo "$${ENVS[@]}" -u $(USER) -s'
 
 bash-root:
 	docker run --rm -it -v /tmp \
-		-v $(ROOT_DIR)scripts/get-forwarded-envs:/usr/local/bin/get-forwarded-envs \
+		-v $(ROOT_DIR)bin/get-forwarded-envs:/usr/local/bin/get-forwarded-envs \
 	  -v $(CURDIR)/exercise_internal:/exercise_internal \
 	  -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) \
 	  /bin/bash -c '$(GET_ENVS) && sudo "$${ENVS[@]}" -u root -s'
@@ -67,7 +67,7 @@ else
 		-v $(ROOT_DIR)import-documentation:/import-documentation \
 		-v /tmp \
 		-v /var/tmp \
-		-v $(ROOT_DIR)scripts/get-forwarded-envs:/usr/local/bin/get-forwarded-envs \
+		-v $(ROOT_DIR)bin/get-forwarded-envs:/usr/local/bin/get-forwarded-envs \
 		-v $(CURDIR)/exercise/:/usr/src/app \
 		-v $(CURDIR)/exercise_internal:/exercise_internal \
 		-p 8000:8000 -p 80:8080 -p 5006:5006 --name $(CONTAINER_ID) $(IMAGE_ID)
