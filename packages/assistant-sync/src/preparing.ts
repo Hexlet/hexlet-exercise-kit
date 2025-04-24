@@ -36,6 +36,8 @@ async function writeLessonsToStream(baseDir: string, stream: fse.WriteStream) {
   for (const courseDir of courseDirs) {
     if (!courseDir.isDirectory()) continue
     const coursePath = path.join(baseDir, courseDir.name)
+    const courseSpecPath = path.join(coursePath, 'spec.yml')
+    const courseSpec = await readYamlFile<{ course: { name: string } }>(courseSpecPath)
 
     const lessonDirs = await fse.readdir(coursePath, { withFileTypes: true })
     for (const lessonDir of lessonDirs) {
@@ -46,10 +48,10 @@ async function writeLessonsToStream(baseDir: string, stream: fse.WriteStream) {
       if (!readmePath) continue
 
       const content = await fse.readFile(readmePath, 'utf-8')
-      const specPath = path.join(lessonPath, 'spec.yml')
-      const spec = await readYamlFile<{ lesson: { name: string } }>(specPath)
+      const lessonSpecPath = path.join(lessonPath, 'spec.yml')
+      const lessonSpec = await readYamlFile<{ lesson: { name: string } }>(lessonSpecPath)
 
-      stream.write(`# ${spec.lesson.name} (${lessonDir.name})\n\n`)
+      stream.write(`# Урок: ${lessonSpec.lesson.name}. Курс: ${courseSpec.course.name}\n\n`)
       stream.write(content.trim())
       stream.write('\n\n')
 
@@ -119,8 +121,7 @@ async function writeProjectsToStream(baseDir: string, stream: fse.WriteStream) {
       project: { name: string, language: string, summary?: string, link?: string }
     }>(specPath)
 
-    stream.write(`# ${spec.project.name}\n\n`)
-    stream.write(`**Язык**: ${spec.project.language}\n\n`)
+    stream.write(`# ${spec.project.name} (${spec.project.language})\n\n`)
     if (spec.project.link) stream.write(`**Ссылка**: ${spec.project.link}\n\n`)
     if (spec.project.summary) stream.write(`${spec.project.summary.trim()}\n\n`)
 
