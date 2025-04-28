@@ -112,3 +112,6 @@ print-course-table:
 
 adoc2md:
 	find $(CURDIR) -name "*.adoc" -exec $(ROOT_DIR)scripts/asciidoc_to_markdown {} \;
+
+lesson:
+	rsync -v --progress $(ROOT_DIR)boilerplates/example_course/110-example/ $(NAME)/
