@@ -2,12 +2,24 @@ import fse from 'fs-extra'
 import path from 'path'
 import { fdir } from 'fdir'
 import { readYamlFile } from './utils'
-import { ragFilesDir, coursesDir, exercisesDir, projectsDir } from './config'
+import {
+  ragFilesDir,
+  coursesDir,
+  exercisesDir,
+  projectsDir,
+  helpDir,
+} from './config'
 
 export default async function prepare() {
   await fse.remove(ragFilesDir)
   await fse.ensureDir(ragFilesDir)
   console.log(`Dest: ${ragFilesDir}`)
+
+  const helpOutputPath = path.join(ragFilesDir, 'all_help.md')
+  const helpStream = fse.createWriteStream(helpOutputPath, { encoding: 'utf-8' })
+  await writeHelpToStream(helpDir, helpStream)
+  helpStream.end()
+  console.log(`Written: ${helpOutputPath}`)
 
   const lessonsOutputPath = path.join(ragFilesDir, 'all_lessons.md')
   const lessonsStream = fse.createWriteStream(lessonsOutputPath, { encoding: 'utf-8' })
@@ -177,4 +189,25 @@ async function findTestFilePaths(baseDir: string): Promise<string[]> {
     .withPromise()
 
   return filepaths
+}
+
+async function writeHelpToStream(baseDir: string, stream: fse.WriteStream) {
+  const sections = await fse.readdir(baseDir, { withFileTypes: true })
+
+  for (const section of sections) {
+    if (!section.isDirectory()) continue
+    const sectionPath = path.join(baseDir, section.name)
+
+    const topics = await fse.readdir(sectionPath, { withFileTypes: true })
+
+    for (const topic of topics) {
+      if (!topic.isFile() || !topic.name.endsWith('.md')) continue
+
+      const filePath = path.join(sectionPath, topic.name)
+      const content = await fse.readFile(filePath, 'utf-8')
+
+      stream.write(`${content.trim()}\n\n`)
+      stream.write('---\n\n')
+    }
+  }
 }

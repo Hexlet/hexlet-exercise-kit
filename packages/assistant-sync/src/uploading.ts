@@ -1,3 +1,5 @@
+import '@dotenvx/dotenvx/config'
+
 import fsp from 'fs/promises'
 import fs from 'fs'
 import OpenAI from 'openai'

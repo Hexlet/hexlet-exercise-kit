@@ -16,6 +16,7 @@ prepare-dirs:
 	mkdir -p projects
 	mkdir -p programs
 	mkdir -p boilerplates
+	mkdir -p help
 	# ln -s $(CURDIR) $(CURDIR)/hexlethq
 
 pull:
@@ -35,7 +36,10 @@ copy-from-cb:
 downloader-run:
 		ghorg clone --config .ghorg.conf.yaml --path $(CURDIR) $(HEXLETHQ)/$(FILTER)$(if $(LOCALE),/$(LOCALE))
 
-clone: clone-courses clone-exercises clone-projects clone-boilerplates
+clone: clone-courses clone-exercises clone-projects clone-boilerplates clone-help
+
+clone-help:
+	git clone git@github.com:Hexlet/hexlet.github.io.git help
 
 clone-courses:
 	make downloader-run FILTER=courses

@@ -2,6 +2,7 @@ import path from 'node:path'
 
 export const baseDir = path.join(import.meta.dirname, '../../..')
 export const coursesDir = path.join(baseDir, 'courses/ru')
+export const helpDir = path.join(baseDir, 'help/articles')
 export const exercisesDir = path.join(baseDir, 'exercises/ru')
 export const projectsDir = path.join(baseDir, 'projects/ru')
 export const ragFilesDir = path.join(baseDir, 'rag_files')
