@@ -77,7 +77,8 @@ make stop # stopped container
 ## Copy a course from Code-Basics to Hexlet
 
 ```bash
-make copy-from-cb I=path-to-source O=path-to-destination
+cd packages/code-basics-synchronizer
+npx copy path-to-source path-to-destination
 ```
 
 ## Run markdown linter
