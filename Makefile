@@ -31,7 +31,7 @@ create-config:
 	touch gitlab.token
 
 copy-from-cb:
-	make -C code-basics-synchronizer
+	make -C packages/code-basics-synchronizer
 
 downloader-run:
 		ghorg clone --config .ghorg.conf.yaml --path $(CURDIR) $(HEXLETHQ)/$(FILTER)$(if $(LOCALE),/$(LOCALE))

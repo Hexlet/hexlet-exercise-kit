@@ -10,10 +10,9 @@ program
   .arguments('<code-basic course>', '<hexlet course>')
   .action(async (inputPath, outputPath) => {
     try {
-      const result = await synchronizer(inputPath, outputPath);
-      console.log(result);
+      await synchronizer(inputPath, outputPath);
     } catch(e) {
-      _.noop(e);
+      console.error(e);
     }
   })
   .parse(process.argv);
